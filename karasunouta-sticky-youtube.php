@@ -13,7 +13,7 @@
  * License URI: https://www.karasunouta.com/
  * 
  * Copyright (c) 2026 karasunouta
- * Licensed for single site use.
+ * Licensed for two site use.
  */
 
 // 直接ファイルにアクセスされた場合に終了
