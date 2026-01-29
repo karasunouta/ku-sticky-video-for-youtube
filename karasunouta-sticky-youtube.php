@@ -8,7 +8,7 @@
  * Requires PHP: 7.0
  * Author: karasunouta
  * Author URI: https://www.karasunouta.com/
- * Text Domain: karasunouta-sticky-youtube
+ * Text Domain: ku-sticky-yt
  * License: Commercial
  * License URI: https://www.karasunouta.com/
  * 
