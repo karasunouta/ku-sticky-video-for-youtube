@@ -3,7 +3,7 @@
  * Plugin Name: Karasunouta Sticky YouTube
  * Plugin URI: https://www.karasunouta.com/
  * Description: WordPress投稿内のYouTube動画プレイヤーをスクロール状態に応じて追従表示
- * Version: 1.1.0
+ * Version: 1.1.1
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Author: karasunouta
@@ -29,7 +29,7 @@ class Karasunouta_Sticky_YouTube {
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '1.1.1';
 
 	/**
 	 * コンストラクタ
@@ -43,22 +43,28 @@ class Karasunouta_Sticky_YouTube {
 	 * フロントエンド用スクリプトを読み込み
 	 */
 	public function enqueue_scripts() {		
-		// プラグイン用JSファイルを読み込み
-		$js_flag = 'karasunouta-sticky-youtube';
-		$js_file_location = 'build/index.js';
-
-		$js_url = plugin_dir_url( __FILE__ ) . $js_file_location; 
-		$js_path = plugin_dir_path( __FILE__ ) . $js_file_location; 
-
-		if ( file_exists( $js_path ) ) {
-			wp_enqueue_script(
-				$js_flag,
-				$js_url,
-				array(),
-				filemtime( $js_path ),
-				true
-			);
+		// 管理画面なら処理回避
+		if (  is_admin() ) {
+			return;
 		}
+
+		// 依存関係定義ファイルがなければ処理回避
+		$asset_file = plugin_dir_path( __FILE__ ) . 'build/index.asset.php';
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		// 依存関係定義ファイルの読み込み
+		$assets = include( $asset_file );
+
+		// フロント用JSの読み込み
+		wp_enqueue_script(
+			'karasunouta-sticky-youtube',
+			plugins_url( 'build/index.js', __FILE__ ),
+			$assets['dependencies'],  // 依存関係の自動解決
+			$assets['version'],       // バージョン情報の自動制御
+			true                      // フッターで読み込み
+		);
 	}
 }
 
