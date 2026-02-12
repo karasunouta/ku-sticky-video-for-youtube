@@ -249,25 +249,6 @@
   }
 
   $(document).ready(function() {
-    // 処理開始条件の確認
-    if (typeof KSYLK_JS !== 'string') {
-        return;
-    }
-
-    const meta = document.querySelector(
-        'meta[name="ksylk-meta"]'
-    );
-
-    if (!meta) {
-        return;
-    }
-
-    const metaValue = meta.getAttribute('content');
-
-    if (metaValue !== KSYLK_JS) {
-        return;
-    }
-
     // 処理開始
     init();
   });
