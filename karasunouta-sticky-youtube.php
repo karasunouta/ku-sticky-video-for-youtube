@@ -2,13 +2,14 @@
 /**
  * Plugin Name: Karasunouta Sticky YouTube
  * Plugin URI: https://www.karasunouta.com/
- * Description: WordPress投稿内のYouTube動画プレイヤーをスクロール状態に応じて追従表示
- * Version: 1.1.1
+ * Description: Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
+ * Version: 1.2.0
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Author: karasunouta
  * Author URI: https://www.karasunouta.com/
  * Text Domain: ku-sticky-yt
+ * Domain Path: /languages
  * License: Commercial
  * License URI: https://www.karasunouta.com/
  * 
@@ -29,14 +30,29 @@ class Karasunouta_Sticky_YouTube {
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.1.1';
+	const VERSION = '1.2.0';
+
+	/**
+	 * スラッグ
+	 */
+	private $slug = 'ku-sticky-yt';
 
 	/**
 	 * コンストラクタ
 	 */
 	public function __construct() {
+		// 多言語対応
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+
 		// フロントエンド用スクリプトを登録
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+	}
+
+	/**
+	 * 多言語対応
+	 */
+	public function load_textdomain() {
+		load_plugin_textdomain( $this->slug, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
 	/**
