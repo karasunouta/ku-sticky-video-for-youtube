@@ -3,7 +3,7 @@
  * Plugin Name: Karasunouta Sticky YouTube
  * Plugin URI: https://www.karasunouta.com/
  * Description: WordPress投稿内のYouTube動画プレイヤーをスクロール状態に応じて追従表示
- * Version: 1.0.0
+ * Version: 1.1.0
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Author: karasunouta
@@ -42,20 +42,19 @@ class Karasunouta_Sticky_YouTube {
 	/**
 	 * フロントエンド用スクリプトを読み込み
 	 */
-	public function enqueue_scripts() {
-		// jQueryを読み込み
-		wp_enqueue_script( 'jquery' );
-		
+	public function enqueue_scripts() {		
 		// プラグイン用JSファイルを読み込み
 		$js_flag = 'karasunouta-sticky-youtube';
-		$js_file_location = 'assets/js/karasunouta_sticky_youtube.min.js';
+		$js_file_location = 'build/index.js';
+
 		$js_url = plugin_dir_url( __FILE__ ) . $js_file_location; 
 		$js_path = plugin_dir_path( __FILE__ ) . $js_file_location; 
+
 		if ( file_exists( $js_path ) ) {
 			wp_enqueue_script(
 				$js_flag,
 				$js_url,
-				array( 'jquery' ),
+				array(),
 				filemtime( $js_path ),
 				true
 			);

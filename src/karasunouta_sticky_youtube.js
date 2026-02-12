@@ -19,8 +19,7 @@
  * @package Karasunouta_Sticky_YouTube
  * @version 1.0.0
  */
-
-(function($) {
+(function() {
   'use strict';
 
   // 設定
@@ -41,83 +40,88 @@
   let originalStyles = {};
 
   function init() {
-    $originalVideo = $('iframe[src*="youtube.com"], iframe[src*="youtu.be"]').first();
+    // iframe[src*="youtube.com"], iframe[src*="youtu.be"] の最初の要素を取得
+    $originalVideo = document.querySelector('iframe[src*="youtube.com"], iframe[src*="youtu.be"]');
     
-    if ($originalVideo.length === 0) {
+    if (!$originalVideo) {
       return;
     }
 
     // 元のスタイルを保存
+    const computedStyle = window.getComputedStyle($originalVideo);
     originalStyles = {
-      position: $originalVideo.css('position'),
-      top: $originalVideo.css('top'),
-      left: $originalVideo.css('left'),
-      right: $originalVideo.css('right'),
-      bottom: $originalVideo.css('bottom'),
-      width: $originalVideo.css('width'),
-      height: $originalVideo.css('height'),
-      zIndex: $originalVideo.css('z-index'),
-      boxShadow: $originalVideo.css('box-shadow'),
-      borderRadius: $originalVideo.css('border-radius'),
+      position: computedStyle.position,
+      top: computedStyle.top,
+      left: computedStyle.left,
+      right: computedStyle.right,
+      bottom: computedStyle.bottom,
+      width: computedStyle.width,
+      height: computedStyle.height,
+      zIndex: computedStyle.zIndex,
+      boxShadow: computedStyle.boxShadow,
+      borderRadius: computedStyle.borderRadius,
+      opacity: computedStyle.opacity,
     };
 
     // プレースホルダーを作成
-    $placeholder = $('<div>', {
-      class: 'youtube-placeholder',
-      css: {
-        width: $originalVideo.outerWidth() + 'px',
-        height: $originalVideo.outerHeight() + 'px',
-        display: 'none',
-      }
+    $placeholder = document.createElement('div');
+    $placeholder.className = 'youtube-placeholder';
+    Object.assign($placeholder.style, {
+      width: $originalVideo.offsetWidth + 'px',
+      height: $originalVideo.offsetHeight + 'px',
+      display: 'none',
     });
 
     // 閉じるボタンを作成
     if (config.closeButton) {
-      $closeButton = $('<button>', {
-        class: 'sticky-video-close',
-        html: '✕',
-        css: {
-          position: 'fixed',
-          width: '30px',
-          height: '30px',
-          background: 'rgba(0,0,0,0.7)',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '50%',
-          cursor: 'pointer',
-          fontSize: '16px',
-          zIndex: config.zIndex + 1,
-          display: 'none',
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        click: function() {
-          hideSticky();
-          isForceClosed = true;
-        },
-        mouseenter: function() {
-          $(this).css('background', 'rgba(255,0,0,0.8)');
-        },
-        mouseleave: function() {
-          $(this).css('background', 'rgba(0,0,0,0.7)');
-        }
+      $closeButton = document.createElement('button');
+      $closeButton.className = 'sticky-video-close';
+      $closeButton.innerHTML = '✕';
+      Object.assign($closeButton.style, {
+        position: 'fixed',
+        width: '30px',
+        height: '30px',
+        background: 'rgba(0,0,0,0.7)',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '50%',
+        cursor: 'pointer',
+        fontSize: '16px',
+        zIndex: config.zIndex + 1,
+        display: 'none',
+        alignItems: 'center',
+        justifyContent: 'center',
       });
-      $('body').append($closeButton);
+
+      $closeButton.addEventListener('click', function() {
+        hideSticky();
+        isForceClosed = true;
+      });
+
+      $closeButton.addEventListener('mouseenter', function() {
+        this.style.background = 'rgba(255,0,0,0.8)';
+      });
+
+      $closeButton.addEventListener('mouseleave', function() {
+        this.style.background = 'rgba(0,0,0,0.7)';
+      });
+
+      document.body.appendChild($closeButton);
     }
 
-    $(window).on('scroll', checkScroll);
-    $(window).on('resize', handleResize);
+    window.addEventListener('scroll', checkScroll);
+    window.addEventListener('resize', handleResize);
   }
 
   function checkScroll() {
-    if (!$originalVideo || $originalVideo.length === 0) return;
+    if (!$originalVideo) return;
 
     const $reference = isSticky ? $placeholder : $originalVideo;
     
-    if ($reference.length === 0) return;
+    if (!$reference) return;
     
-    const rect = $reference[0].getBoundingClientRect();
-    const windowHeight = $(window).height();
+    const rect = $reference.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
     const isOutOfView = (rect.bottom < 0) || (rect.top > windowHeight);
 
     if (isOutOfView && !isSticky) {
@@ -134,9 +138,9 @@
     isForceClosed = false;
 
     // 1. プレースホルダーを元の位置に挿入
-    $originalVideo.before($placeholder);
-    $placeholder.show();
-    $originalVideo.css({ opacity: 0 });
+    $originalVideo.parentNode.insertBefore($placeholder, $originalVideo);
+    $placeholder.style.display = 'block';
+    $originalVideo.style.opacity = '0';
 
     // 2. 目的の位置を計算
     const positions = {
@@ -167,19 +171,23 @@
       right: targetPos.right !== undefined ? targetPos.right + 'px' : 'auto',
     };
 
+    Object.assign($originalVideo.style, newStyles);
+
     if (config.useFade) {
       // フェードあり
-      $originalVideo.css({ ...newStyles });
-      $originalVideo.animate({ opacity: 1 }, 200);
+      $originalVideo.animate([
+        { opacity: 0 },
+        { opacity: 1 }
+      ], { duration: 200, fill: 'forwards' });
     } else {
       // フェードなし
-      $originalVideo.css({ ...newStyles, opacity: 1 });
+      $originalVideo.style.opacity = '1';
     }
 
     // 5. 閉じるボタンを表示
     if ($closeButton) {
       const btnOffset = 5;
-      $closeButton.css({
+      Object.assign($closeButton.style, {
         top: targetPos.top !== undefined ? (targetPos.top + btnOffset) + 'px' : 'auto',
         bottom: targetPos.bottom !== undefined ? (targetPos.bottom + stickyHeight - btnOffset - 30) + 'px' : 'auto',
         left: targetPos.left !== undefined ? (targetPos.left + config.width - btnOffset - 30) + 'px' : 'auto',
@@ -196,20 +204,27 @@
     
     const complete = function() {
       // 1. 元のスタイルを復元
-      $originalVideo.css(originalStyles);
+      Object.assign($originalVideo.style, originalStyles);
       
       // フェードあり
       if (config.useFade) {
-           $originalVideo.animate({ opacity: 1 }, 200);
+        $originalVideo.animate([
+          { opacity: 0 },
+          { opacity: 1 }
+        ], { duration: 200, fill: 'forwards' });
       }
 
       // 2. プレースホルダーを非表示
-      $placeholder.hide();
+      $placeholder.style.display = 'none';
     };
 
     if (config.useFade) {
       // フェードあり
-      $originalVideo.animate({ opacity: 0 }, 200, complete);
+      const anim = $originalVideo.animate([
+        { opacity: 1 },
+        { opacity: 0 }
+      ], { duration: 200, fill: 'forwards' });
+      anim.onfinish = complete;
     } else {
       // フェードなし
       complete();
@@ -217,40 +232,44 @@
 
     // 3. 閉じるボタンを非表示
     if ($closeButton) {
-      $closeButton.hide();
+      $closeButton.style.display = 'none';
     }
     
     isSticky = false;
   }
 
   function handleResize() {
-    if (!$originalVideo || $originalVideo.length === 0) return;
+    if (!$originalVideo) return;
 
     if (!isSticky) {
       // 元のサイズを更新
-      originalStyles.width = $originalVideo.css('width');
-      originalStyles.height = $originalVideo.css('height');
-      $placeholder.css({
-        width: $originalVideo.outerWidth() + 'px',
-        height: $originalVideo.outerHeight() + 'px',
+      const computed = window.getComputedStyle($originalVideo);
+      originalStyles.width = computed.width;
+      originalStyles.height = computed.height;
+      Object.assign($placeholder.style, {
+        width: $originalVideo.offsetWidth + 'px',
+        height: $originalVideo.offsetHeight + 'px',
       });
     } else {
       // Sticky状態の場合は一度戻してから再計算
       const wasSticky = isSticky;
       isSticky = false;
-      $originalVideo.css(originalStyles);
-      if ($closeButton) $closeButton.hide();
+      Object.assign($originalVideo.style, originalStyles);
+      if ($closeButton) $closeButton.style.display = 'none';
       
-      originalStyles.width = $originalVideo.css('width');
-      originalStyles.height = $originalVideo.css('height');
+      const computed = window.getComputedStyle($originalVideo);
+      originalStyles.width = computed.width;
+      originalStyles.height = computed.height;
       
       setTimeout(checkScroll, 100);
     }
   }
 
-  $(document).ready(function() {
-    // 処理開始
+  // DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
     init();
-  });
+  }
 
-})(jQuery);
+})();
