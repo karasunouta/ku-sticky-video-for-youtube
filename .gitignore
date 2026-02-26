@@ -7,3 +7,4 @@ build/*.map
 # その他の開発用ファイル
 .DS_Store
 *.log
+*.zip

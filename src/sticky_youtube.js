@@ -1,7 +1,7 @@
 /*!
- * Karasunouta Sticky YouTube - JavaScript Component
+ * Sticky YouTube - JavaScript Component
  * 
- * Part of: Karasunouta Sticky YouTube WordPress Plugin
+ * Part of: Sticky YouTube WordPress Plugin
  * Version: 1.0.0
  * Author: karasunouta
  * Author URI: https://www.karasunouta.com/
@@ -16,10 +16,10 @@
  * Licenses can be purchased from the author's website.
  * Licensed for single site use.
  * 
- * @package Karasunouta_Sticky_YouTube
+ * @package Sticky_YouTube
  * @version 1.0.0
  */
-(function() {
+(function () {
   'use strict';
 
   // 設定
@@ -42,7 +42,7 @@
   function init() {
     // iframe[src*="youtube.com"], iframe[src*="youtu.be"] の最初の要素を取得
     $originalVideo = document.querySelector('iframe[src*="youtube.com"], iframe[src*="youtu.be"]');
-    
+
     if (!$originalVideo) {
       return;
     }
@@ -93,16 +93,16 @@
         justifyContent: 'center',
       });
 
-      $closeButton.addEventListener('click', function() {
+      $closeButton.addEventListener('click', function () {
         hideSticky();
         isForceClosed = true;
       });
 
-      $closeButton.addEventListener('mouseenter', function() {
+      $closeButton.addEventListener('mouseenter', function () {
         this.style.background = 'rgba(255,0,0,0.8)';
       });
 
-      $closeButton.addEventListener('mouseleave', function() {
+      $closeButton.addEventListener('mouseleave', function () {
         this.style.background = 'rgba(0,0,0,0.7)';
       });
 
@@ -117,9 +117,9 @@
     if (!$originalVideo) return;
 
     const $reference = isSticky ? $placeholder : $originalVideo;
-    
+
     if (!$reference) return;
-    
+
     const rect = $reference.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     const isOutOfView = (rect.bottom < 0) || (rect.top > windowHeight);
@@ -195,17 +195,17 @@
         display: 'flex',
       });
     }
-    
+
     isSticky = true;
   }
 
   function hideSticky() {
     if (!isSticky) return;
-    
-    const complete = function() {
+
+    const complete = function () {
       // 1. 元のスタイルを復元
       Object.assign($originalVideo.style, originalStyles);
-      
+
       // フェードあり
       if (config.useFade) {
         $originalVideo.animate([
@@ -234,7 +234,7 @@
     if ($closeButton) {
       $closeButton.style.display = 'none';
     }
-    
+
     isSticky = false;
   }
 
@@ -256,11 +256,11 @@
       isSticky = false;
       Object.assign($originalVideo.style, originalStyles);
       if ($closeButton) $closeButton.style.display = 'none';
-      
+
       const computed = window.getComputedStyle($originalVideo);
       originalStyles.width = computed.width;
       originalStyles.height = computed.height;
-      
+
       setTimeout(checkScroll, 100);
     }
   }

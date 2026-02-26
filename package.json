@@ -1,5 +1,5 @@
 {
-  "name": "karasunouta-sticky-youtube",
+  "name": "sticky-youtube",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://karasunouta@github.com/karasunouta/karasunouta-sticky-youtube.git"
+    "url": "git+https://karasunouta@github.com/karasunouta/sticky-youtube.git"
   },
   "keywords": [],
   "author": "karasunouta",
   "bugs": {
-    "url": "https://github.com/karasunouta/karasunouta-sticky-youtube/issues"
+    "url": "https://github.com/karasunouta/sticky-youtube/issues"
   },
-  "homepage": "https://github.com/karasunouta/karasunouta-sticky-youtube#readme",
+  "homepage": "https://github.com/karasunouta/sticky-youtube#readme",
   "devDependencies": {
     "@wordpress/scripts": "^31.4.0"
   }
