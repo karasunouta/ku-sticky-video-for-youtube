@@ -1,18 +1,22 @@
 # WordPress Plugin Development Rules
 
 ## Project Context
-- This is a WordPress plugin named "Karasunouta Sticky Youtube".
+- This is a WordPress plugin named "Sticky Youtube".
 - WordPress Coding Standards (WPCS) should be followed.
 - Minimum PHP version: 8.0
 - Target WordPress version: 6.4+
 
 ## File Access Rules (Ignore/Scan)
-- **IGNORE CONTENT:** - `/node_modules/**` : Directory structure only. Do not read file content.
+- **IGNORE CONTENT:**
+  - `/node_modules/**` : Directory structure only. Do not read file content.
   - `/vendor/**` : Directory structure only.
   - `*.log` : Do not read unless explicitly asked.
   - `/.git/**` : Completely ignore.
+  - `/.antigravity/**` : Completely ignore.
+  - `/.vscode/**` : Completely ignore.
+
 - **PRIORITIZE:**
-  - `karasunouta-sticky-youtube.php` (Entry point)
+  - `sticky-youtube.php` (Entry point)
   - `/src/**` (Core logic)
   - `/languages/**` (Localization files)
 
