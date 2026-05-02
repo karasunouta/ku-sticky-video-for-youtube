@@ -3,7 +3,7 @@
  * Plugin Name: Sticky YouTube
  * Plugin URI: https://www.karasunouta.com/
  * Description: Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
- * Version: 1.3.0
+ * Version: 1.4.0
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Author: karasunouta
@@ -31,7 +31,7 @@ class Sticky_YouTube {
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.3.0';
+	const VERSION = '1.4.0';
 
 	/**
 	 * スラッグ

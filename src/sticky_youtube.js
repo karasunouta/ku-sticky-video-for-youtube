@@ -61,14 +61,29 @@
       boxShadow: computedStyle.boxShadow,
       borderRadius: computedStyle.borderRadius,
       opacity: computedStyle.opacity,
+      marginTop: computedStyle.marginTop,
+      marginBottom: computedStyle.marginBottom,
+      marginLeft: computedStyle.marginLeft,
+      marginRight: computedStyle.marginRight,
+      display: computedStyle.display,
     };
 
     // プレースホルダーを作成
     $placeholder = document.createElement('div');
     $placeholder.className = 'youtube-placeholder';
+    const rect = $originalVideo.getBoundingClientRect();
     Object.assign($placeholder.style, {
-      width: $originalVideo.offsetWidth + 'px',
-      height: $originalVideo.offsetHeight + 'px',
+      width: rect.width + 'px',
+      height: rect.height + 'px',
+      position: originalStyles.position,
+      top: originalStyles.top,
+      left: originalStyles.left,
+      bottom: originalStyles.bottom,
+      right: originalStyles.right,
+      marginTop: originalStyles.marginTop,
+      marginBottom: originalStyles.marginBottom,
+      marginLeft: originalStyles.marginLeft,
+      marginRight: originalStyles.marginRight,
       display: 'none',
     });
 
@@ -122,7 +137,17 @@
 
     const rect = $reference.getBoundingClientRect();
     const windowHeight = window.innerHeight;
-    const isOutOfView = (rect.bottom < 0) || (rect.top > windowHeight);
+    
+    // 境界付近でのフリッカー（点滅）を防ぐための閾値（ヒステリシス）
+    const threshold = 10;
+    let isOutOfView;
+    if (!isSticky) {
+      // 画面外に threshold ピクセル以上出た場合に Sticky 化する
+      isOutOfView = (rect.bottom < -threshold) || (rect.top > windowHeight + threshold);
+    } else {
+      // 画面内に threshold ピクセル以上戻ってきた場合に Sticky を解除する
+      isOutOfView = (rect.bottom <= threshold) || (rect.top >= windowHeight - threshold);
+    }
 
     if (isOutOfView && !isSticky) {
       showSticky();
@@ -139,7 +164,12 @@
 
     // 1. プレースホルダーを元の位置に挿入
     $originalVideo.parentNode.insertBefore($placeholder, $originalVideo);
-    $placeholder.style.display = 'block';
+    
+    let targetDisplay = originalStyles.display !== 'none' ? originalStyles.display : 'block';
+    if (targetDisplay === 'inline') {
+      targetDisplay = 'inline-block'; // width/height needs block or inline-block
+    }
+    $placeholder.style.display = targetDisplay;
     $originalVideo.style.opacity = '0';
 
     // 2. 目的の位置を計算
@@ -246,9 +276,10 @@
       const computed = window.getComputedStyle($originalVideo);
       originalStyles.width = computed.width;
       originalStyles.height = computed.height;
+      const rect = $originalVideo.getBoundingClientRect();
       Object.assign($placeholder.style, {
-        width: $originalVideo.offsetWidth + 'px',
-        height: $originalVideo.offsetHeight + 'px',
+        width: rect.width + 'px',
+        height: rect.height + 'px',
       });
     } else {
       // Sticky状態の場合は一度戻してから再計算
