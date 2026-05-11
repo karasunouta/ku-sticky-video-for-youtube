@@ -12,7 +12,7 @@
   - `/vendor/**` : Directory structure only.
   - `*.log` : Do not read unless explicitly asked.
   - `/.git/**` : Completely ignore.
-  - `/.antigravity/**` : Completely ignore.
+  - `/.antigravity/**` : Ignore all logs and internal data, **EXCEPT** `.antigravity/rules.md`.
   - `/.vscode/**` : Completely ignore.
 
 - **PRIORITIZE:**
