@@ -28,12 +28,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Sticky_YouTube {
 
-
-
-
-
-
-
 	/**
 	 * プラグインバージョン
 	 */
