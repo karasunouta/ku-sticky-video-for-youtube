@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Plugin Name: Sticky YouTube
  * Plugin URI: https://www.karasunouta.com/
  * Description: Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
- * Version: 1.4.0
+ * Version: 1.4.1
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Author: karasunouta
@@ -28,10 +29,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Sticky_YouTube {
 
 
+
+
+
+
+
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.4.0';
+	const VERSION = '1.4.1';
 
 	/**
 	 * スラッグ
@@ -67,21 +73,26 @@ class Sticky_YouTube {
 			return;
 		}
 
-		// 依存関係定義ファイルがなければ処理回避
-		$asset_file = plugin_dir_path( __FILE__ ) . 'build/index.asset.php';
-		if ( ! file_exists( $asset_file ) ) {
+		// パスの整理
+		$entry_point = 'sticky-youtube';
+		$asset_path  = plugin_dir_path( __FILE__ ) . "build/{$entry_point}.asset.php";
+		$script_url  = plugins_url( "/build/{$entry_point}.js", __FILE__ );
+		// $style_url      = plugins_url( "/build/{$entry_point}.css", __FILE__ );
+		// $style_path     = plugin_dir_path( __FILE__ ) . "build/{$entry_point}.css";
+		$languages_path = plugin_dir_path( __FILE__ ) . 'languages';
+
+		// ビルド済みファイルが存在するかチェック
+		if ( ! file_exists( $asset_path ) ) {
 			return;
 		}
-
-		// 依存関係定義ファイルの読み込み
-		$assets = include $asset_file;
+		$assets = include $asset_path;
 
 		// フロント用JSの読み込み
 		wp_enqueue_script(
-			'sticky-youtube',
-			plugins_url( 'build/index.js', __FILE__ ),
-			$assets['dependencies'], // 依存関係の自動解決
-			$assets['version'], // バージョン情報の自動制御
+			$entry_point,
+			$script_url,
+			$assets['dependencies'],
+			$assets['version'],
 			true // フッターで読み込み
 		);
 	}
