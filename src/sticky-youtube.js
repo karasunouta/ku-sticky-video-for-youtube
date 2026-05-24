@@ -30,7 +30,13 @@
     zIndex: 9999,
     closeButton: true,
     useFade: true, // フェード効果の使用
+    showAbove: false, // 動画プレイヤーより上で縮小表示するかどうか（デフォルトはfalse）
   };
+
+  // PHP側から設定が渡されている場合はマージする
+  if (typeof stickyYouTubeSettings !== 'undefined') {
+    Object.assign(config, stickyYouTubeSettings);
+  }
 
   let $originalVideo = null;
   let $placeholder = null;
@@ -143,10 +149,18 @@
     let isOutOfView;
     if (!isSticky) {
       // 画面外に threshold ピクセル以上出た場合に Sticky 化する
-      isOutOfView = (rect.bottom < -threshold) || (rect.top > windowHeight + threshold);
+      if (config.showAbove) {
+        isOutOfView = (rect.bottom < -threshold) || (rect.top > windowHeight + threshold);
+      } else {
+        isOutOfView = (rect.bottom < -threshold);
+      }
     } else {
       // 画面内に threshold ピクセル以上戻ってきた場合に Sticky を解除する
-      isOutOfView = (rect.bottom <= threshold) || (rect.top >= windowHeight - threshold);
+      if (config.showAbove) {
+        isOutOfView = (rect.bottom <= threshold) || (rect.top >= windowHeight - threshold);
+      } else {
+        isOutOfView = (rect.bottom <= threshold);
+      }
     }
 
     if (isOutOfView && !isSticky) {

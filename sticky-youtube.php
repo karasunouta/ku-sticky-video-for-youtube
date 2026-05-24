@@ -4,18 +4,16 @@
  * Plugin Name: Sticky YouTube
  * Plugin URI: https://www.karasunouta.com/
  * Description: Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
- * Version: 1.4.1
+ * Version: 1.4.2
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Author: karasunouta
  * Author URI: https://www.karasunouta.com/
  * Text Domain: sticky-youtube
  * Domain Path: /languages
- * License: Commercial
- * License URI: https://www.karasunouta.com/
- *
- * Copyright (c) 2026 karasunouta
- * Licensed for two sites use.
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * * Copyright (c) 2026 karasunouta
  */
 
 // 直接ファイルにアクセスされた場合に終了
@@ -31,7 +29,7 @@ class Sticky_YouTube {
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.4.1';
+	const VERSION = '1.4.2';
 
 	/**
 	 * スラッグ
@@ -88,6 +86,18 @@ class Sticky_YouTube {
 			$assets['dependencies'],
 			$assets['version'],
 			true // フッターで読み込み
+		);
+
+		// 将来の設定ページ実装を見据えたベタ書きフラグ
+		// true: 動画埋め込み位置より上でも追従表示する / false: 表示しない（デフォルト）
+		$show_above = false;
+
+		wp_localize_script(
+			$entry_point,
+			'stickyYouTubeSettings',
+			array(
+				'showAbove' => $show_above,
+			)
 		);
 	}
 }
