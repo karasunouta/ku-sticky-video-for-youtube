@@ -2,8 +2,8 @@
 # This file is distributed under the Commercial.
 msgid ""
 msgstr ""
-"Project-Id-Version: Sticky YouTube 1.4.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/sticky-youtube\n"
+"Project-Id-Version: KU Sticky Video for YouTube 1.4.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ku-sticky-video-for-youtube\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -12,25 +12,25 @@ msgstr ""
 "POT-Creation-Date: 2026-05-21T15:51:32+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: sticky-youtube\n"
+"X-Domain: ku-sticky-video-for-youtube\n"
 
 #. Plugin Name of the plugin
-#: sticky-youtube.php
-msgid "Sticky YouTube"
+#: ku-sticky-video-for-youtube.php
+msgid "KU Sticky Video for YouTube"
 msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: sticky-youtube.php
+#: ku-sticky-video-for-youtube.php
 msgid "https://www.karasunouta.com/"
 msgstr ""
 
 #. Description of the plugin
-#: sticky-youtube.php
+#: ku-sticky-video-for-youtube.php
 msgid "Make YouTube video player in posts follow the scroll position, showing in the corner of the page."
 msgstr ""
 
 #. Author of the plugin
-#: sticky-youtube.php
+#: ku-sticky-video-for-youtube.php
 msgid "karasunouta"
 msgstr ""

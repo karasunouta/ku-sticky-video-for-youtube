@@ -1,9 +1,9 @@
-.sticky-youtube-admin-wrap {
+.ku-sticky-video-for-youtube-admin-wrap {
 	max-width: 800px;
 	margin: 20px auto 0 auto;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
-.sticky-youtube-header {
+.ku-sticky-video-for-youtube-header {
 	background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
 	color: #ffffff;
 	padding: 30px 40px;
@@ -13,7 +13,7 @@
 	position: relative;
 	overflow: hidden;
 }
-.sticky-youtube-header::before {
+.ku-sticky-video-for-youtube-header::before {
 	content: "";
 	position: absolute;
 	top: -50%;
@@ -24,7 +24,7 @@
 	border-radius: 50%;
 	pointer-events: none;
 }
-.sticky-youtube-header h1 {
+.ku-sticky-video-for-youtube-header h1 {
 	color: #ffffff;
 	font-size: 28px;
 	font-weight: 700;
@@ -35,7 +35,7 @@
 	align-items: center;
 	gap: 10px;
 }
-.sticky-youtube-header h1 span {
+.ku-sticky-video-for-youtube-header h1 span {
 	background: rgba(255, 255, 255, 0.2);
 	font-size: 12px;
 	padding: 3px 8px;
@@ -44,14 +44,14 @@
 	letter-spacing: 0.5px;
 	text-transform: uppercase;
 }
-.sticky-youtube-header p {
+.ku-sticky-video-for-youtube-header p {
 	margin: 0;
 	font-size: 15px;
 	opacity: 0.9;
 	max-width: 600px;
 	line-height: 1.5;
 }
-.sticky-youtube-card {
+.ku-sticky-video-for-youtube-card {
 	background: #ffffff;
 	border-radius: 12px;
 	padding: 35px;
@@ -60,10 +60,10 @@
 	margin-bottom: 24px;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.sticky-youtube-card:hover {
+.ku-sticky-video-for-youtube-card:hover {
 	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
 }
-.sticky-youtube-card-title {
+.ku-sticky-video-for-youtube-card-title {
 	font-size: 18px;
 	font-weight: 600;
 	color: #1f2937;
@@ -75,7 +75,7 @@
 	align-items: center;
 	gap: 8px;
 }
-.sticky-youtube-card-title svg {
+.ku-sticky-video-for-youtube-card-title svg {
 	color: #4f46e5;
 }
 .form-group {

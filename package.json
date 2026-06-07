@@ -1,31 +1,31 @@
 {
-  "name": "sticky-youtube",
-  "version": "1.4.3",
-  "description": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "wp-scripts build src/sticky-youtube.js src/sticky-youtube-admin.js",
-    "start": "wp-scripts start src/sticky-youtube.js src/sticky-youtube-admin.js",
-    "format": "wp-scripts format",
-    "lint:css": "wp-scripts lint-style",
-    "lint:js": "wp-scripts lint-js",
-    "make-json": "wp i18n make-json languages/ --no-purge && bash scripts/make-json-rename.sh sticky-youtube",
-    "make-pot": "wp i18n make-pot . languages/sticky-youtube.pot --exclude=\"src\"",
-    "packages-update": "wp-scripts packages-update",
-    "plugin-zip": "wp-scripts plugin-zip",
-    "plugin-export": "npm run build && npm run plugin-zip"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://karasunouta@github.com/karasunouta/sticky-youtube.git"
-  },
-  "keywords": [],
-  "author": "karasunouta",
-  "bugs": {
-    "url": "https://github.com/karasunouta/sticky-youtube/issues"
-  },
-  "homepage": "https://github.com/karasunouta/sticky-youtube#readme",
-  "devDependencies": {
-    "@wordpress/scripts": "^31.4.0"
-  }
+	"name": "ku-sticky-video-for-youtube",
+	"version": "1.4.3",
+	"description": "",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "wp-scripts build src/ku-sticky-video-for-youtube.js src/ku-sticky-video-for-youtube-admin.js",
+		"start": "wp-scripts start src/ku-sticky-video-for-youtube.js src/ku-sticky-video-for-youtube-admin.js",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"make-json": "wp i18n make-json languages/ --no-purge && bash scripts/make-json-rename.sh ku-sticky-video-for-youtube",
+		"make-pot": "wp i18n make-pot . languages/ku-sticky-video-for-youtube.pot --exclude=\"src\"",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"plugin-export": "npm run build && npm run plugin-zip"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://karasunouta@github.com/karasunouta/ku-sticky-video-for-youtube.git"
+	},
+	"keywords": [],
+	"author": "karasunouta",
+	"bugs": {
+		"url": "https://github.com/karasunouta/ku-sticky-video-for-youtube/issues"
+	},
+	"homepage": "https://github.com/karasunouta/ku-sticky-video-for-youtube#readme",
+	"devDependencies": {
+		"@wordpress/scripts": "^31.4.0"
+	}
 }
