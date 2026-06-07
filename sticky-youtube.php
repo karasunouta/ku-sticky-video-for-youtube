@@ -121,7 +121,7 @@ class Sticky_YouTube {
 		$defaults = array(
 			'exclude_class' => 'no-sticky',
 		);
-		$options = get_option( 'sticky-youtube-options', array() );
+		$options  = get_option( 'sticky-youtube-options', array() );
 		return wp_parse_args( $options, $defaults );
 	}
 
@@ -166,7 +166,7 @@ class Sticky_YouTube {
 		if ( isset( $input['exclude_class'] ) ) {
 			$class_name = sanitize_text_field( $input['exclude_class'] );
 			// 先頭のドットや余分な空白を除去
-			$class_name = ltrim( trim( $class_name ), '.' );
+			$class_name              = ltrim( trim( $class_name ), '.' );
 			$output['exclude_class'] = $class_name;
 		} else {
 			$output['exclude_class'] = 'no-sticky';
@@ -235,7 +235,7 @@ class Sticky_YouTube {
 	 * 設定ページの描画
 	 */
 	public function render_settings_page() {
-		$options = $this->get_options();
+		$options       = $this->get_options();
 		$exclude_class = $options['exclude_class'];
 		?>
 		<div class="wrap sticky-youtube-admin-wrap">
@@ -270,7 +270,7 @@ class Sticky_YouTube {
 						</div>
 						<p class="field-description">
 							<?php esc_html_e( 'If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position.', 'sticky-youtube' ); ?><br>
-							<?php echo sprintf( esc_html__( 'Default: %s', 'sticky-youtube' ), '<code>no-sticky</code>' ); ?>
+							<?php printf( esc_html__( 'Default: %s', 'sticky-youtube' ), '<code>no-sticky</code>' ); ?>
 						</p>
 					</div>
 
@@ -279,7 +279,7 @@ class Sticky_YouTube {
 						<ol>
 							<li><?php esc_html_e( 'Open the post editor and select the YouTube block you want to exclude.', 'sticky-youtube' ); ?></li>
 							<li><?php esc_html_e( 'In the block settings sidebar, expand the "Advanced" (高度な設定) panel.', 'sticky-youtube' ); ?></li>
-							<li><?php echo sprintf( esc_html__( 'Add the configured class name %s to the "Additional CSS class(es)" (追加 CSS クラス) input field.', 'sticky-youtube' ), '<code>' . esc_html( $exclude_class ) . '</code>' ); ?></li>
+							<li><?php printf( esc_html__( 'Add the configured class name %s to the "Additional CSS class(es)" (追加 CSS クラス) input field.', 'sticky-youtube' ), '<code>' . esc_html( $exclude_class ) . '</code>' ); ?></li>
 						</ol>
 					</div>
 				</div>
