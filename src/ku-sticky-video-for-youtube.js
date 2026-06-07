@@ -2,7 +2,6 @@
  * KU Sticky Video for YouTube - JavaScript Component
  *
  * Part of: KU Sticky Video for YouTube WordPress Plugin
- * Version: 1.0.0
  * Author: karasunouta
  * Author URI: https://www.karasunouta.com/
  *
@@ -14,9 +13,6 @@
  *
  * Copyright (c) 2026 karasunouta
  * License: GPLv2 or later
- *
- * @package KU_Sticky_Video_For_YouTube
- * @version 1.4.3
  */
 
 /* global kuStickyVideoForYouTubeSettings */

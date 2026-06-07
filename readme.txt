@@ -5,7 +5,7 @@ Tags: youtube, video, sticky, scroll, floating
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.3
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,10 @@ KU Sticky Video for YouTube is a lightweight WordPress plugin that automatically
 You can add the excluded CSS class (configured in the settings page, default: `no-sticky`) to the YouTube block or its parent container in the WordPress editor under "Advanced" -> "Additional CSS class(es)".
 
 == Changelog ==
+
+=== 1.5.0 ===
+* Rename: Renamed plugin from "Sticky YouTube" to "KU Sticky Video for YouTube".
+* Update: Updated version to 1.5.0.
 
 === 1.4.3 ===
 * Fix: Compatibility headers and PHP version.
