@@ -1,11 +1,11 @@
 {
   "name": "sticky-youtube",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "wp-scripts build src/sticky-youtube.js",
-    "start": "wp-scripts start src/sticky-youtube.js",
+    "build": "wp-scripts build src/sticky-youtube.js src/sticky-youtube-admin.js",
+    "start": "wp-scripts start src/sticky-youtube.js src/sticky-youtube-admin.js",
     "format": "wp-scripts format",
     "lint:css": "wp-scripts lint-style",
     "lint:js": "wp-scripts lint-js",

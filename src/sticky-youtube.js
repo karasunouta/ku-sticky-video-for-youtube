@@ -31,6 +31,7 @@
     closeButton: true,
     useFade: true, // フェード効果の使用
     showAbove: false, // 動画プレイヤーより上で縮小表示するかどうか（デフォルトはfalse）
+    excludeClass: 'no-sticky', // デフォルト除外クラス
   };
 
   // PHP側から設定が渡されている場合はマージする
@@ -46,8 +47,22 @@
   let originalStyles = {};
 
   function init() {
-    // iframe[src*="youtube.com"], iframe[src*="youtu.be"] の最初の要素を取得
-    $originalVideo = document.querySelector('iframe[src*="youtube.com"], iframe[src*="youtu.be"]');
+    // すべてのYouTube iframeを取得し、除外設定を適用する
+    const iframes = document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]');
+    
+    // 除外クラスをクリーニング（先頭のドットを除去）してセレクターを構築
+    const cleanClass = config.excludeClass ? config.excludeClass.trim().replace(/^\.+/, '') : '';
+    const selector = cleanClass ? '.' + cleanClass : '';
+
+    for (let i = 0; i < iframes.length; i++) {
+      const iframe = iframes[i];
+      // 自分自身、または親要素に除外クラスが含まれている場合はスキップ
+      if (selector && iframe.closest(selector)) {
+        continue;
+      }
+      $originalVideo = iframe;
+      break;
+    }
 
     if (!$originalVideo) {
       return;
