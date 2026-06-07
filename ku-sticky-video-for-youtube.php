@@ -4,7 +4,7 @@
  * Plugin Name: KU Sticky Video for YouTube
  * Plugin URI: https://www.karasunouta.com/
  * Description: Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
- * Version: 1.5.0
+ * Version: 1.5.1
  * Requires at least: 5.6
  * Requires PHP: 7.4
  * Author: karasunouta
@@ -29,7 +29,7 @@ class KU_Sticky_Video_For_YouTube {
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.5.0';
+	const VERSION = '1.5.1';
 
 	/**
 	 * スラッグ
@@ -42,9 +42,6 @@ class KU_Sticky_Video_For_YouTube {
 	 * コンストラクタ
 	 */
 	public function __construct() {
-		// 多言語対応
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-
 		// フロントエンド用スクリプトを登録
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
@@ -54,13 +51,6 @@ class KU_Sticky_Video_For_YouTube {
 			add_action( 'admin_init', array( $this, 'register_settings' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		}
-	}
-
-	/**
-	 * 多言語対応
-	 */
-	public function load_textdomain() {
-		load_plugin_textdomain( $this->slug, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
 	/**
@@ -246,6 +236,7 @@ class KU_Sticky_Video_For_YouTube {
 			</div>
 
 			<?php
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if ( isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) {
 				echo '<div class="success-badge"><svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20" style="margin-right: 4px;"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>' . esc_html__( 'Settings saved successfully.', 'ku-sticky-video-for-youtube' ) . '</div>';
 			}
@@ -270,7 +261,10 @@ class KU_Sticky_Video_For_YouTube {
 						</div>
 						<p class="field-description">
 							<?php esc_html_e( 'If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position.', 'ku-sticky-video-for-youtube' ); ?><br>
-							<?php printf( esc_html__( 'Default: %s', 'ku-sticky-video-for-youtube' ), '<code>no-sticky</code>' ); ?>
+							<?php
+							/* translators: %s: default class name */
+							printf( esc_html__( 'Default: %s', 'ku-sticky-video-for-youtube' ), '<code>no-sticky</code>' );
+							?>
 						</p>
 					</div>
 
@@ -279,7 +273,12 @@ class KU_Sticky_Video_For_YouTube {
 						<ol>
 							<li><?php esc_html_e( 'Open the post editor and select the YouTube block you want to exclude.', 'ku-sticky-video-for-youtube' ); ?></li>
 							<li><?php esc_html_e( 'In the block settings sidebar, expand the "Advanced" (高度な設定) panel.', 'ku-sticky-video-for-youtube' ); ?></li>
-							<li><?php printf( esc_html__( 'Add the configured class name %s to the "Additional CSS class(es)" (追加 CSS クラス) input field.', 'ku-sticky-video-for-youtube' ), '<code>' . esc_html( $exclude_class ) . '</code>' ); ?></li>
+							<li>
+								<?php
+								/* translators: %s: CSS class name */
+								printf( esc_html__( 'Add the configured class name %s to the "Additional CSS class(es)" (追加 CSS クラス) input field.', 'ku-sticky-video-for-youtube' ), '<code>' . esc_html( $exclude_class ) . '</code>' );
+								?>
+							</li>
 						</ol>
 					</div>
 				</div>

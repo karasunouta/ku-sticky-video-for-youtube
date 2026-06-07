@@ -4,6 +4,7 @@
 .github
 .gitignore
 .wordpress-org
+.vscode
 node_modules
 package.json
 package-lock.json
