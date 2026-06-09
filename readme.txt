@@ -5,7 +5,7 @@ Tags: youtube, video, sticky, scroll, floating
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,14 @@ KU Sticky Video for YouTube is a lightweight WordPress plugin that automatically
 
 This plugin contains minified JavaScript for performance. The complete, unminified source code is publicly available on GitHub:
 https://github.com/karasunouta/ku-sticky-video-for-youtube
+
+The source code corresponding to the submitted version is now available on the `wp-org-review` branch:
+https://github.com/karasunouta/ku-sticky-video-for-youtube/tree/wp-org-review
+
+=== Build Instructions ===
+To rebuild the minified assets, run the following commands in the plugin directory:
+1. `npm install` (to install build dependencies)
+2. `npm run build` (to compile the source files using `@wordpress/scripts`)
 
 === Features ===
 * Float YouTube video when scrolled out of view.
