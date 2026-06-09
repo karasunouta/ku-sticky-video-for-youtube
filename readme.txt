@@ -5,7 +5,7 @@ Tags: youtube, video, sticky, scroll, floating
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,6 +14,9 @@ Make YouTube video player in posts follow the scroll position, showing in the co
 == Description ==
 
 KU Sticky Video for YouTube is a lightweight WordPress plugin that automatically makes YouTube video players inside post content follow the scroll position, showing in the corner of the page when the original video scrolls out of view.
+
+This plugin contains minified JavaScript for performance. The complete, unminified source code is publicly available on GitHub:
+https://github.com/karasunouta/ku-sticky-video-for-youtube
 
 === Features ===
 * Float YouTube video when scrolled out of view.
