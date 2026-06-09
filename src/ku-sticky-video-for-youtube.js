@@ -30,6 +30,8 @@
 		useFade: true, // フェード効果の使用
 		showAbove: false, // 動画プレイヤーより上で縮小表示するかどうか（デフォルトはfalse）
 		excludeClass: 'no-sticky', // デフォルト除外クラス
+		targetingMode: 'exclude', // デフォルトの指定方法
+		includeClass: '', // デフォルト対象クラス
 	};
 
 	// PHP側から設定が渡されている場合はマージする
@@ -45,25 +47,48 @@
 	let originalStyles = {};
 
 	function init() {
-		// すべてのYouTube iframeを取得し、除外設定を適用する
+		// すべてのYouTube iframeを取得し、判定処理を適用する
 		const iframes = document.querySelectorAll(
 			'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
 		);
 
-		// 除外クラスをクリーニング（先頭のドットを除去）してセレクターを構築
-		const cleanClass = config.excludeClass
-			? config.excludeClass.trim().replace( /^\.+/, '' )
-			: '';
-		const selector = cleanClass ? '.' + cleanClass : '';
+		const targetingMode = config.targetingMode || 'exclude';
 
-		for ( let i = 0; i < iframes.length; i++ ) {
-			const iframe = iframes[ i ];
-			// 自分自身、または親要素に除外クラスが含まれている場合はスキップ
-			if ( selector && iframe.closest( selector ) ) {
-				continue;
+		if ( targetingMode === 'include' ) {
+			// ホワイトリスト（指定）方式
+			const cleanClass = config.includeClass
+				? config.includeClass.trim().replace( /^\.+/, '' )
+				: '';
+			const selector = cleanClass ? '.' + cleanClass : '';
+
+			if ( ! selector ) {
+				return;
 			}
-			$originalVideo = iframe;
-			break;
+
+			for ( let i = 0; i < iframes.length; i++ ) {
+				const iframe = iframes[ i ];
+				// 自分自身、または親要素に指定クラスが含まれている場合に対象とする
+				if ( iframe.closest( selector ) ) {
+					$originalVideo = iframe;
+					break;
+				}
+			}
+		} else {
+			// ブラックリスト（除外）方式（デフォルト）
+			const cleanClass = config.excludeClass
+				? config.excludeClass.trim().replace( /^\.+/, '' )
+				: '';
+			const selector = cleanClass ? '.' + cleanClass : '';
+
+			for ( let i = 0; i < iframes.length; i++ ) {
+				const iframe = iframes[ i ];
+				// 自分自身、または親要素に除外クラスが含まれている場合はスキップ
+				if ( selector && iframe.closest( selector ) ) {
+					continue;
+				}
+				$originalVideo = iframe;
+				break;
+			}
 		}
 
 		if ( ! $originalVideo ) {
