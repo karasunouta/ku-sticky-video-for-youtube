@@ -18,9 +18,6 @@ KU Sticky Video for YouTube is a lightweight WordPress plugin that automatically
 This plugin contains minified JavaScript for performance. The complete, unminified source code is publicly available on GitHub:
 https://github.com/karasunouta/ku-sticky-video-for-youtube
 
-The source code corresponding to the submitted version is now available on the `wp-org-review` branch:
-https://github.com/karasunouta/ku-sticky-video-for-youtube/tree/wp-org-review
-
 === Build Instructions ===
 To rebuild the minified assets, run the following commands in the plugin directory:
 1. `npm install` (to install build dependencies)
