@@ -24,7 +24,7 @@
 	border-radius: 50%;
 	pointer-events: none;
 }
-.ku-sticky-video-for-youtube-header h1 {
+.ku-sticky-video-for-youtube-header .ku-sticky-video-for-youtube-title {
 	color: #ffffff;
 	font-size: 28px;
 	font-weight: 700;
@@ -35,7 +35,7 @@
 	align-items: center;
 	gap: 10px;
 }
-.ku-sticky-video-for-youtube-header h1 span {
+.ku-sticky-video-for-youtube-header .ku-sticky-video-for-youtube-title span {
 	background: rgba(255, 255, 255, 0.2);
 	font-size: 12px;
 	padding: 3px 8px;

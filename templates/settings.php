@@ -10,9 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="wrap ku-sticky-video-for-youtube-admin-wrap">
+	<h1 class="screen-reader-text"><?php esc_html_e( 'KU Sticky Video for YouTube Settings', 'ku-sticky-video-for-youtube' ); ?></h1>
 
 	<div class="ku-sticky-video-for-youtube-header">
-		<h1>KU Sticky Video for YouTube <span><?php echo esc_html( KU_Sticky_Video_For_YouTube::VERSION ); ?></span></h1>
+		<div class="ku-sticky-video-for-youtube-title">KU Sticky Video for YouTube <span><?php echo esc_html( KU_Sticky_Video_For_YouTube::VERSION ); ?></span></div>
 		<p><?php esc_html_e( 'Configure options for your floating YouTube video player.', 'ku-sticky-video-for-youtube' ); ?></p>
 	</div>
 
