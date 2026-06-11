@@ -94,6 +94,7 @@ class KU_Sticky_Video_For_YouTube {
 			'showAbove'    => $show_above,
 			'excludeClass' => $exclude_class,
 			'width'        => 400,
+			'position'     => isset( $options['position'] ) ? $options['position'] : 'bottom-right',
 		);
 
 		if ( isset( $options['targeting_mode'] ) ) {
@@ -120,6 +121,7 @@ class KU_Sticky_Video_For_YouTube {
 	private function get_options() {
 		$defaults = array(
 			'exclude_class' => 'no-sticky',
+			'position'      => 'bottom-right',
 		);
 		$defaults = apply_filters( 'ku_sticky_video_for_youtube_default_options', $defaults );
 
@@ -134,7 +136,13 @@ class KU_Sticky_Video_For_YouTube {
 				$filtered_options[ $key ] = $default_value;
 			}
 		}
-		return $filtered_options;
+
+		// 無料版での位置（値レベル）の制限
+		if ( isset( $filtered_options['position'] ) && ! in_array( $filtered_options['position'], array( 'bottom-right', 'bottom-left' ), true ) ) {
+			$filtered_options['position'] = 'bottom-right';
+		}
+
+		return apply_filters( 'ku_sticky_video_for_youtube_get_options', $filtered_options );
 	}
 
 	/**
@@ -182,6 +190,12 @@ class KU_Sticky_Video_For_YouTube {
 			$output['exclude_class'] = $class_name;
 		} else {
 			$output['exclude_class'] = 'no-sticky';
+		}
+
+		if ( isset( $input['position'] ) && in_array( $input['position'], array( 'bottom-right', 'bottom-left' ), true ) ) {
+			$output['position'] = $input['position'];
+		} else {
+			$output['position'] = 'bottom-right';
 		}
 
 		return apply_filters( 'ku_sticky_video_for_youtube_sanitize_options', $output, $input );
@@ -251,6 +265,7 @@ class KU_Sticky_Video_For_YouTube {
 		}
 		$options       = $this->get_options();
 		$exclude_class = $options['exclude_class'];
+		$position      = isset( $options['position'] ) ? $options['position'] : 'bottom-right';
 
 		$template_path = plugin_dir_path( __FILE__ ) . 'templates/settings.php';
 		$template_path = apply_filters( 'ku_sticky_video_for_youtube_settings_template', $template_path );

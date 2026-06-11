@@ -43,6 +43,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</p>
 			</div>
 
+			<div class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+				<label for="position" style="font-weight: bold;"><?php esc_html_e( 'Display Position', 'ku-sticky-video-for-youtube' ); ?></label>
+				<div style="margin-top: 8px;">
+					<select id="position" name="ku-sticky-video-for-youtube-options[position]" class="select-field" style="padding: 0 8px; height: 35px; border-radius: 6px; border: 1px solid #ddd; background-color: #fff; min-width: 150px;">
+						<option value="bottom-right" <?php selected( $position, 'bottom-right' ); ?>><?php esc_html_e( 'Bottom Right', 'ku-sticky-video-for-youtube' ); ?></option>
+						<option value="bottom-left" <?php selected( $position, 'bottom-left' ); ?>><?php esc_html_e( 'Bottom Left', 'ku-sticky-video-for-youtube' ); ?></option>
+					</select>
+				</div>
+				<p class="field-description">
+					<?php esc_html_e( 'Choose which corner the floating video player should stick to.', 'ku-sticky-video-for-youtube' ); ?>
+				</p>
+			</div>
+
 			<div class="instruction-box">
 				<h3><?php esc_html_e( 'How to Exclude a YouTube Block', 'ku-sticky-video-for-youtube' ); ?></h3>
 				<ol>
