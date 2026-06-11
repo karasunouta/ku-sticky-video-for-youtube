@@ -5,7 +5,7 @@ Tags: youtube, video, sticky, scroll, floating
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.5.6
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,7 +39,18 @@ To rebuild the minified assets, run the following commands in the plugin directo
 === How can I prevent a specific YouTube video from floating? ===
 You can add the excluded CSS class (configured in the settings page, default: `no-sticky`) to the YouTube block or its parent container in the WordPress editor under "Advanced" -> "Additional CSS class(es)".
 
+== Screenshots ==
+
+1. The plugin settings page in the WordPress admin dashboard.
+2. A YouTube video player loaded in a WordPress post on the frontend.
+3. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
+
 == Changelog ==
+
+=== 1.6.0 ===
+* Add: Option to select display position (Bottom Right or Bottom Left).
+* Add: Option to automatically disable sticky video on narrow (mobile) viewports.
+* Improve: Enhance internal hooks and architecture to support future extensions.
 
 === 1.5.0 ===
 * Rename: Renamed plugin from "Sticky YouTube" to "KU Sticky Video for YouTube".
@@ -52,3 +63,4 @@ You can add the excluded CSS class (configured in the settings page, default: `n
 
 === 1.0.0 ===
 * Initial release.
+

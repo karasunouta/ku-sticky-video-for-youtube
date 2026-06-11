@@ -1,11 +1,11 @@
 # Copyright (C) 2026 karasunouta
-# This file is distributed under the Commercial.
+# This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: KU Sticky Video for YouTube 1.4.3\n"
+"Project-Id-Version: KU Sticky Video for YouTube 1.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ku-sticky-video-for-youtube\n"
-"POT-Creation-Date: 2026-02-12T09:50:52+01:00\n"
-"PO-Revision-Date: 2026-02-12 18:11+0900\n"
+"POT-Creation-Date: 2026-06-11T11:46:25+02:00\n"
+"PO-Revision-Date: 2026-06-11 18:55+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -18,23 +18,96 @@ msgstr ""
 #. Plugin Name of the plugin
 #: ku-sticky-video-for-youtube.php
 msgid "KU Sticky Video for YouTube"
-msgstr ""
-
-#. Plugin URI of the plugin
-#. Author URI of the plugin
-#: ku-sticky-video-for-youtube.php
-msgid "https://www.karasunouta.com/"
-msgstr ""
+msgstr "KU Sticky Video for YouTube"
 
 #. Description of the plugin
 #: ku-sticky-video-for-youtube.php
-msgid ""
-"Make YouTube video player in posts follow the scroll position, showing in "
-"the corner of the page."
-msgstr ""
-"投稿内のYouTube動画プレイヤーをスクロール状態に応じてページ隅に追従表示します。"
+msgid "Make YouTube video player in posts follow the scroll position, showing in the corner of the page."
+msgstr "投稿内のYouTube動画プレイヤーをスクロール状態に応じてページ隅に追従表示します。"
 
 #. Author of the plugin
 #: ku-sticky-video-for-youtube.php
 msgid "karasunouta"
-msgstr ""
+msgstr "karasunouta"
+
+#. Author URI of the plugin
+#: ku-sticky-video-for-youtube.php
+msgid "https://karasunouta.com/"
+msgstr "https://karasunouta.com/"
+
+#: ku-sticky-video-for-youtube.php:155
+#: templates/settings.php:13
+msgid "KU Sticky Video for YouTube Settings"
+msgstr "KU Sticky Video for YouTube 設定"
+
+#: templates/settings.php:17
+msgid "Configure options for your floating YouTube video player."
+msgstr "追従表示するYouTube動画プレイヤーのオプションを設定します。"
+
+#: templates/settings.php:28
+msgid "General Settings"
+msgstr "全般設定"
+
+#: templates/settings.php:32
+msgid "Exclude CSS Class Name"
+msgstr "除外対象のCSSクラス名"
+
+#: templates/settings.php:38
+msgid "If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position."
+msgstr "このクラスがYouTubeブロックまたはその親コンテナーに割り当てられている場合、その動画はスクロールに追従しなくなります。"
+
+#. translators: %s: default class name
+#: templates/settings.php:41
+#, php-format
+msgid "Default: %s"
+msgstr "デフォルト: %s"
+
+#: templates/settings.php:47
+msgid "Display Position"
+msgstr "表示位置"
+
+#: templates/settings.php:50
+msgid "Bottom Right"
+msgstr "右下"
+
+#: templates/settings.php:51
+msgid "Bottom Left"
+msgstr "左下"
+
+#: templates/settings.php:55
+msgid "Choose which corner the floating video player should stick to."
+msgstr "追従する動画プレイヤーを表示する画面の隅を選択します。"
+
+#: templates/settings.php:60
+msgid "Mobile User Experience"
+msgstr "モバイルユーザーエクスペリエンス"
+
+#: templates/settings.php:64
+msgid "Disable on narrow viewports"
+msgstr "幅の狭いビューポートでは無効にする"
+
+#: templates/settings.php:68
+msgid "If enabled, the sticky video player is automatically disabled when the browser width is narrower than the sticky video width + double margins (e.g., 400px + 20px×2 = 440px). This protects the mobile user experience."
+msgstr "有効にすると、ブラウザの幅が「追従動画の幅 ＋ 余白の2倍」（例: 400px ＋ 20px×2 ＝ 440px）より狭くなった場合に、自動的に追従表示を無効化します。これにより、モバイル表示におけるユーザー体験を保護します。"
+
+#: templates/settings.php:73
+msgid "How to Exclude a YouTube Block"
+msgstr "YouTubeブロックを追従対象から除外する方法"
+
+#: templates/settings.php:75
+msgid "Open the post editor and select the YouTube block you want to exclude."
+msgstr "投稿エディターを開き、除外したいYouTubeブロックを選択します。"
+
+#: templates/settings.php:76
+msgid "In the block settings sidebar, expand the \"Advanced\" panel."
+msgstr "ブロック設定のサイドバーで「高度な設定」パネルを展開します。"
+
+#. translators: %s: CSS class name
+#: templates/settings.php:80
+#, php-format
+msgid "Add the configured class name %s to the \"Additional CSS class(es)\" input field."
+msgstr "設定したクラス名 %s を「追加 CSS クラス」入力フィールドに追加します。"
+
+#: templates/settings.php:91
+msgid "Save Changes"
+msgstr "変更を保存"
