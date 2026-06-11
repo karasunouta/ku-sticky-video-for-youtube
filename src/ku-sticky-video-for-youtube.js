@@ -34,6 +34,10 @@
 		excludeClass: 'no-sticky', // デフォルト除外クラス
 		targetingMode: 'exclude', // デフォルトの指定方法
 		includeClass: '', // デフォルト対象クラス
+		limitTopActive: false,
+		limitTopVal: 0,
+		limitBottomActive: false,
+		limitBottomVal: 0,
 	};
 
 	// PHP側から設定が渡されている場合はマージする
@@ -211,6 +215,23 @@
 				rect.top >= windowHeight - threshold;
 		} else {
 			isOutOfView = rect.bottom <= threshold;
+		}
+
+		// 禁止領域に入っているかの判定
+		let inExclusionZone = false;
+		const scrollTop = window.scrollY || document.documentElement.scrollTop;
+		const documentHeight = document.documentElement.scrollHeight;
+		const distanceFromBottom = documentHeight - windowHeight - scrollTop;
+
+		if ( config.limitTopActive && scrollTop < parseFloat( config.limitTopVal ) ) {
+			inExclusionZone = true;
+		}
+		if ( config.limitBottomActive && distanceFromBottom < parseFloat( config.limitBottomVal ) ) {
+			inExclusionZone = true;
+		}
+
+		if ( inExclusionZone ) {
+			isOutOfView = false;
 		}
 
 		if ( isOutOfView && ! isSticky ) {

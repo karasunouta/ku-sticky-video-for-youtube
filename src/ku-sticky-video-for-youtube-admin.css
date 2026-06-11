@@ -195,3 +195,12 @@
 	font-weight: 500;
 	margin-bottom: 12px;
 }
+
+/* Disabled state for input fields */
+.input-field:disabled {
+	background-color: #e5e7eb !important;
+	color: #9ca3af !important;
+	border-color: #d1d5db !important;
+	cursor: not-allowed !important;
+	box-shadow: none !important;
+}

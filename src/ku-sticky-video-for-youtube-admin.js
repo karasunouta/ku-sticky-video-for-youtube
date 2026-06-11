@@ -99,4 +99,30 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		// Run initially
 		updateMaxCustomInput();
 	}
+
+	// Top exclusion zone active checkbox toggle disabled state
+	const limitTopActiveCheckbox = document.getElementById( 'sticky_limit_top_active' );
+	const limitTopValInput = document.getElementById( 'sticky_limit_top_val' );
+	if ( limitTopActiveCheckbox && limitTopValInput ) {
+		const updateLimitTopInput = function () {
+			limitTopValInput.disabled = ! limitTopActiveCheckbox.checked;
+		};
+		limitTopActiveCheckbox.addEventListener( 'change', updateLimitTopInput );
+
+		// Run initially
+		updateLimitTopInput();
+	}
+
+	// Bottom exclusion zone active checkbox toggle disabled state
+	const limitBottomActiveCheckbox = document.getElementById( 'sticky_limit_bottom_active' );
+	const limitBottomValInput = document.getElementById( 'sticky_limit_bottom_val' );
+	if ( limitBottomActiveCheckbox && limitBottomValInput ) {
+		const updateLimitBottomInput = function () {
+			limitBottomValInput.disabled = ! limitBottomActiveCheckbox.checked;
+		};
+		limitBottomActiveCheckbox.addEventListener( 'change', updateLimitBottomInput );
+
+		// Run initially
+		updateLimitBottomInput();
+	}
 } );
