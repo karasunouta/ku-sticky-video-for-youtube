@@ -93,6 +93,7 @@ class KU_Sticky_Video_For_YouTube {
 		$localize_data = array(
 			'showAbove'    => $show_above,
 			'excludeClass' => $exclude_class,
+			'width'        => 400,
 		);
 
 		if ( isset( $options['targeting_mode'] ) ) {
@@ -101,6 +102,8 @@ class KU_Sticky_Video_For_YouTube {
 		if ( isset( $options['include_class'] ) ) {
 			$localize_data['includeClass'] = $options['include_class'];
 		}
+
+		$localize_data = apply_filters( 'ku_sticky_video_for_youtube_localize_data', $localize_data, $options );
 
 		wp_localize_script(
 			$entry_point,

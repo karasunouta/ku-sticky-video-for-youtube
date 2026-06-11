@@ -1,53 +1,102 @@
 import './ku-sticky-video-for-youtube-admin.css';
 
 document.addEventListener( 'DOMContentLoaded', function () {
+	// Targeting mode radios
 	const radios = document.querySelectorAll( '.targeting-mode-radio' );
-	if ( ! radios.length ) {
-		return;
+	if ( radios.length ) {
+		const updateTargetingFields = function () {
+			const checkedRadio = document.querySelector( '.targeting-mode-radio:checked' );
+			const selectedMode = checkedRadio ? checkedRadio.value : 'exclude';
+
+			const excludeFields = document.querySelectorAll( '.exclude-fields' );
+			const includeFields = document.querySelectorAll( '.include-fields' );
+			const excludeInstructions = document.querySelectorAll( '.exclude-instruction' );
+			const includeInstructions = document.querySelectorAll( '.include-instruction' );
+
+			if ( selectedMode === 'exclude' ) {
+				excludeFields.forEach( function ( el ) {
+					el.style.display = '';
+				} );
+				excludeInstructions.forEach( function ( el ) {
+					el.style.display = '';
+				} );
+				includeFields.forEach( function ( el ) {
+					el.style.display = 'none';
+				} );
+				includeInstructions.forEach( function ( el ) {
+					el.style.display = 'none';
+				} );
+			} else {
+				excludeFields.forEach( function ( el ) {
+					el.style.display = 'none';
+				} );
+				excludeInstructions.forEach( function ( el ) {
+					el.style.display = 'none';
+				} );
+				includeFields.forEach( function ( el ) {
+					el.style.display = '';
+				} );
+				includeInstructions.forEach( function ( el ) {
+					el.style.display = '';
+				} );
+			}
+		};
+
+		radios.forEach( function ( radio ) {
+			radio.addEventListener( 'change', updateTargetingFields );
+		} );
+
+		// Run initially
+		updateTargetingFields();
 	}
 
-	function updateTargetingFields() {
-		const checkedRadio = document.querySelector( '.targeting-mode-radio:checked' );
-		const selectedMode = checkedRadio ? checkedRadio.value : 'exclude';
+	// Width settings unit selection toggle
+	const widthUnitSelect = document.getElementById( 'sticky_width_unit' );
+	if ( widthUnitSelect ) {
+		const pxContainer = document.getElementById( 'width_input_px_container' );
+		const pctContainer = document.getElementById( 'width_input_pct_container' );
+		const maxSettingsContainer = document.getElementById( 'width_max_settings_container' );
 
-		const excludeFields = document.querySelectorAll( '.exclude-fields' );
-		const includeFields = document.querySelectorAll( '.include-fields' );
-		const excludeInstructions = document.querySelectorAll( '.exclude-instruction' );
-		const includeInstructions = document.querySelectorAll( '.include-instruction' );
+		const updateWidthFields = function () {
+			if ( widthUnitSelect.value === 'px' ) {
+				if ( pxContainer ) {
+					pxContainer.style.display = 'inline-flex';
+				}
+				if ( pctContainer ) {
+					pctContainer.style.display = 'none';
+				}
+				if ( maxSettingsContainer ) {
+					maxSettingsContainer.style.display = 'none';
+				}
+			} else {
+				if ( pxContainer ) {
+					pxContainer.style.display = 'none';
+				}
+				if ( pctContainer ) {
+					pctContainer.style.display = 'inline-flex';
+				}
+				if ( maxSettingsContainer ) {
+					maxSettingsContainer.style.display = 'block';
+				}
+			}
+		};
 
-		if ( selectedMode === 'exclude' ) {
-			excludeFields.forEach( function ( el ) {
-				el.style.display = '';
-			} );
-			excludeInstructions.forEach( function ( el ) {
-				el.style.display = '';
-			} );
-			includeFields.forEach( function ( el ) {
-				el.style.display = 'none';
-			} );
-			includeInstructions.forEach( function ( el ) {
-				el.style.display = 'none';
-			} );
-		} else {
-			excludeFields.forEach( function ( el ) {
-				el.style.display = 'none';
-			} );
-			excludeInstructions.forEach( function ( el ) {
-				el.style.display = 'none';
-			} );
-			includeFields.forEach( function ( el ) {
-				el.style.display = '';
-			} );
-			includeInstructions.forEach( function ( el ) {
-				el.style.display = '';
-			} );
-		}
+		widthUnitSelect.addEventListener( 'change', updateWidthFields );
+
+		// Run initially
+		updateWidthFields();
 	}
 
-	radios.forEach( function ( radio ) {
-		radio.addEventListener( 'change', updateTargetingFields );
-	} );
+	// Custom max width checkbox toggle disabled input state
+	const maxCustomActiveCheckbox = document.getElementById( 'sticky_width_max_custom_active' );
+	const maxCustomValInput = document.getElementById( 'sticky_width_max_custom_val' );
+	if ( maxCustomActiveCheckbox && maxCustomValInput ) {
+		const updateMaxCustomInput = function () {
+			maxCustomValInput.disabled = ! maxCustomActiveCheckbox.checked;
+		};
+		maxCustomActiveCheckbox.addEventListener( 'change', updateMaxCustomInput );
 
-	// Run initially
-	updateTargetingFields();
+		// Run initially
+		updateMaxCustomInput();
+	}
 } );

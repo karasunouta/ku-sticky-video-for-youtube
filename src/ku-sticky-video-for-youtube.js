@@ -23,7 +23,7 @@
 	// 設定
 	const config = {
 		position: 'bottom-right', // 'bottom-right', 'bottom-left', 'top-right', 'top-left'
-		width: 300, // Sticky時の幅（px）
+		width: 400, // Sticky時の幅（pxまたはvw）
 		offset: 20, // 画面端からの距離（px）
 		zIndex: 9999,
 		closeButton: true,
@@ -253,13 +253,45 @@
 		const originalWidth = parseFloat( originalStyles.width );
 		const originalHeight = parseFloat( originalStyles.height );
 		const aspectRatio = originalHeight / originalWidth;
-		const stickyHeight = config.width * aspectRatio;
+
+		let widthVal = parseFloat( config.width );
+		let widthUnit = 'px';
+		if ( typeof config.width === 'string' && config.width.endsWith( 'vw' ) ) {
+			widthUnit = 'vw';
+		}
+
+		let finalWidthVal = widthVal;
+		let finalWidthUnit = widthUnit;
+
+		// % (vw) 指定の場合のみ、上限値オプションの判定を行う
+		if ( widthUnit === 'vw' && ( config.widthMaxOriginal || config.widthMaxCustomActive ) ) {
+			const viewportWidth = window.innerWidth;
+			let pxWidth = ( widthVal / 100 ) * viewportWidth;
+
+			// 元動画プレイヤーの幅を超過しない
+			if ( config.widthMaxOriginal && pxWidth > originalWidth ) {
+				pxWidth = originalWidth;
+			}
+
+			// カスタム最大幅以下に制限する
+			if ( config.widthMaxCustomActive && config.widthMaxCustomVal ) {
+				const maxCustom = parseFloat( config.widthMaxCustomVal );
+				if ( pxWidth > maxCustom ) {
+					pxWidth = maxCustom;
+				}
+			}
+
+			finalWidthVal = pxWidth;
+			finalWidthUnit = 'px';
+		}
+
+		const stickyHeightVal = finalWidthVal * aspectRatio;
 
 		// 4. iframeをSticky位置に移動（※DOM構造を変えると再生が維持できない）
 		const newStyles = {
 			position: 'fixed',
-			width: config.width + 'px',
-			height: stickyHeight + 'px',
+			width: finalWidthVal + finalWidthUnit,
+			height: stickyHeightVal + finalWidthUnit,
 			zIndex: config.zIndex,
 			boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
 			borderRadius: '8px',
@@ -289,23 +321,32 @@
 		// 5. 閉じるボタンを表示
 		if ( $closeButton ) {
 			const btnOffset = 5;
+			let btnLeft = 'auto';
+			let btnBottom = 'auto';
+
+			if ( targetPos.left !== undefined ) {
+				if ( finalWidthUnit === 'vw' ) {
+					btnLeft = `calc(${targetPos.left}px + ${finalWidthVal}vw - ${btnOffset + 30}px)`;
+				} else {
+					btnLeft = targetPos.left + finalWidthVal - btnOffset - 30 + 'px';
+				}
+			}
+
+			if ( targetPos.bottom !== undefined ) {
+				if ( finalWidthUnit === 'vw' ) {
+					btnBottom = `calc(${targetPos.bottom}px + ${stickyHeightVal}vw - ${btnOffset + 30}px)`;
+				} else {
+					btnBottom = targetPos.bottom + stickyHeightVal - btnOffset - 30 + 'px';
+				}
+			}
+
 			Object.assign( $closeButton.style, {
 				top:
 					targetPos.top !== undefined
 						? targetPos.top + btnOffset + 'px'
 						: 'auto',
-				bottom:
-					targetPos.bottom !== undefined
-						? targetPos.bottom +
-						  stickyHeight -
-						  btnOffset -
-						  30 +
-						  'px'
-						: 'auto',
-				left:
-					targetPos.left !== undefined
-						? targetPos.left + config.width - btnOffset - 30 + 'px'
-						: 'auto',
+				bottom: btnBottom,
+				left: btnLeft,
 				right:
 					targetPos.right !== undefined
 						? targetPos.right + btnOffset + 'px'
