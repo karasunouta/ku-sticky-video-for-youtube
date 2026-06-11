@@ -25,6 +25,8 @@
 		position: 'bottom-right', // 'bottom-right', 'bottom-left', 'top-right', 'top-left'
 		width: 400, // Sticky時の幅（pxまたはvw）
 		offset: 20, // 画面端からの距離（px）
+		offsetX: 20, // 横方向の余白
+		offsetY: 20, // 縦方向の余白
 		zIndex: 9999,
 		closeButton: true,
 		useFade: true, // フェード効果の使用
@@ -240,11 +242,14 @@
 		$originalVideo.style.opacity = '0';
 
 		// 2. 目的の位置を計算
+		const offsetX = config.offsetX !== undefined ? parseFloat( config.offsetX ) : ( config.offset || 20 );
+		const offsetY = config.offsetY !== undefined ? parseFloat( config.offsetY ) : ( config.offset || 20 );
+
 		const positions = {
-			'bottom-right': { bottom: config.offset, right: config.offset },
-			'bottom-left': { bottom: config.offset, left: config.offset },
-			'top-right': { top: config.offset, right: config.offset },
-			'top-left': { top: config.offset, left: config.offset },
+			'bottom-right': { bottom: offsetY, right: offsetX },
+			'bottom-left': { bottom: offsetY, left: offsetX },
+			'top-right': { top: offsetY, right: offsetX },
+			'top-left': { top: offsetY, left: offsetX },
 		};
 		const targetPos =
 			positions[ config.position ] || positions[ 'bottom-right' ];
