@@ -38,6 +38,9 @@
 		limitTopVal: 0,
 		limitBottomActive: false,
 		limitBottomVal: 0,
+		disableNarrowViewport: true,
+		mobileBreakpointActive: false,
+		mobileBreakpointVal: 768,
 	};
 
 	// PHP側から設定が渡されている場合はマージする
@@ -231,6 +234,32 @@
 		}
 
 		if ( inExclusionZone ) {
+			isOutOfView = false;
+		}
+
+		let isMobileOrNarrow = false;
+
+		// 1. 無料版の自動判定
+		if ( config.disableNarrowViewport ) {
+			let targetWidthPx = parseFloat( config.width );
+			if ( typeof config.width === 'string' && config.width.endsWith( 'vw' ) ) {
+				targetWidthPx = ( targetWidthPx / 100 ) * window.innerWidth;
+			}
+			const marginX = config.offsetX !== undefined ? parseFloat( config.offsetX ) : ( config.offset || 20 );
+			const narrowThreshold = targetWidthPx + ( marginX * 2 );
+			if ( window.innerWidth <= narrowThreshold ) {
+				isMobileOrNarrow = true;
+			}
+		}
+
+		// 2. Pro版のカスタムブレイクポイント判定
+		if ( config.mobileBreakpointActive && config.mobileBreakpointVal ) {
+			if ( window.innerWidth <= parseFloat( config.mobileBreakpointVal ) ) {
+				isMobileOrNarrow = true;
+			}
+		}
+
+		if ( isMobileOrNarrow ) {
 			isOutOfView = false;
 		}
 

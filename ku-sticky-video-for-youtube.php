@@ -91,10 +91,11 @@ class KU_Sticky_Video_For_YouTube {
 		$show_above = false;
 
 		$localize_data = array(
-			'showAbove'    => $show_above,
-			'excludeClass' => $exclude_class,
-			'width'        => 400,
-			'position'     => isset( $options['position'] ) ? $options['position'] : 'bottom-right',
+			'showAbove'             => $show_above,
+			'excludeClass'          => $exclude_class,
+			'width'                 => 400,
+			'position'              => isset( $options['position'] ) ? $options['position'] : 'bottom-right',
+			'disableNarrowViewport' => ! empty( $options['disable_narrow_viewport'] ) ? true : false,
 		);
 
 		if ( isset( $options['targeting_mode'] ) ) {
@@ -120,8 +121,9 @@ class KU_Sticky_Video_For_YouTube {
 	 */
 	private function get_options() {
 		$defaults = array(
-			'exclude_class' => 'no-sticky',
-			'position'      => 'bottom-right',
+			'exclude_class'           => 'no-sticky',
+			'position'                => 'bottom-right',
+			'disable_narrow_viewport' => '1',
 		);
 		$defaults = apply_filters( 'ku_sticky_video_for_youtube_default_options', $defaults );
 
@@ -198,6 +200,8 @@ class KU_Sticky_Video_For_YouTube {
 			$output['position'] = 'bottom-right';
 		}
 
+		$output['disable_narrow_viewport'] = ! empty( $input['disable_narrow_viewport'] ) ? '1' : '0';
+
 		return apply_filters( 'ku_sticky_video_for_youtube_sanitize_options', $output, $input );
 	}
 
@@ -263,9 +267,10 @@ class KU_Sticky_Video_For_YouTube {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$options       = $this->get_options();
-		$exclude_class = $options['exclude_class'];
-		$position      = isset( $options['position'] ) ? $options['position'] : 'bottom-right';
+		$options                 = $this->get_options();
+		$exclude_class           = $options['exclude_class'];
+		$position                = isset( $options['position'] ) ? $options['position'] : 'bottom-right';
+		$disable_narrow_viewport = isset( $options['disable_narrow_viewport'] ) ? $options['disable_narrow_viewport'] : '1';
 
 		$template_path = plugin_dir_path( __FILE__ ) . 'templates/settings.php';
 		$template_path = apply_filters( 'ku_sticky_video_for_youtube_settings_template', $template_path );

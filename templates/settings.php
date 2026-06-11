@@ -56,6 +56,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</p>
 			</div>
 
+			<div class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+				<label style="font-weight: bold;"><?php esc_html_e( 'Mobile User Experience', 'ku-sticky-video-for-youtube' ); ?></label>
+				<div style="margin-top: 8px;">
+					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+						<input type="checkbox" name="ku-sticky-video-for-youtube-options[disable_narrow_viewport]" value="1" <?php checked( $disable_narrow_viewport, '1' ); ?> />
+						<?php esc_html_e( 'Disable on narrow viewports', 'ku-sticky-video-for-youtube' ); ?>
+					</label>
+				</div>
+				<p class="field-description">
+					<?php esc_html_e( 'If enabled, the sticky video player is automatically disabled when the browser width is narrower than the sticky video width + double margins (e.g., 400px + 20px×2 = 440px). This protects the mobile user experience.', 'ku-sticky-video-for-youtube' ); ?>
+				</p>
+			</div>
+
 			<div class="instruction-box">
 				<h3><?php esc_html_e( 'How to Exclude a YouTube Block', 'ku-sticky-video-for-youtube' ); ?></h3>
 				<ol>

@@ -125,4 +125,17 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		// Run initially
 		updateLimitBottomInput();
 	}
+
+	// Mobile breakpoint active checkbox toggle disabled state
+	const mobileBreakpointActiveCheckbox = document.getElementById( 'sticky_mobile_breakpoint_active' );
+	const mobileBreakpointValInput = document.getElementById( 'sticky_mobile_breakpoint_val' );
+	if ( mobileBreakpointActiveCheckbox && mobileBreakpointValInput ) {
+		const updateMobileBreakpointInput = function () {
+			mobileBreakpointValInput.disabled = ! mobileBreakpointActiveCheckbox.checked;
+		};
+		mobileBreakpointActiveCheckbox.addEventListener( 'change', updateMobileBreakpointInput );
+
+		// Run initially
+		updateMobileBreakpointInput();
+	}
 } );
