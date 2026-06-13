@@ -5,7 +5,7 @@ Tags: youtube, video, sticky, scroll, floating
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,9 @@ You can add the excluded CSS class (configured in the settings page, default: `n
 3. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
 
 == Changelog ==
+
+=== 1.6.1 ===
+* Fix: Adjusted Japanese translation spacing and punctuation to align with the WordPress translation style guide.
 
 === 1.6.0 ===
 * Add: Option to select display position (Bottom Right or Bottom Left).
