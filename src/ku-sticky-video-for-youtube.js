@@ -54,58 +54,15 @@
 	let isSticky = false;
 	let isForceClosed = false;
 	let originalStyles = {};
+	const ytPlayers = [];
 
-	function init() {
-		// すべてのYouTube iframeを取得し、判定処理を適用する
-		const iframes = document.querySelectorAll(
-			'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
-		);
-
-		const targetingMode = config.targetingMode || 'exclude';
-
-		if ( targetingMode === 'include' ) {
-			// ホワイトリスト（指定）方式
-			const cleanClass = config.includeClass
-				? config.includeClass.trim().replace( /^\.+/, '' )
-				: '';
-			const selector = cleanClass ? '.' + cleanClass : '';
-
-			if ( ! selector ) {
-				return;
-			}
-
-			for ( let i = 0; i < iframes.length; i++ ) {
-				const iframe = iframes[ i ];
-				// 自分自身、または親要素に指定クラスが含まれている場合に対象とする
-				if ( iframe.closest( selector ) ) {
-					$originalVideo = iframe;
-					break;
-				}
-			}
-		} else {
-			// ブラックリスト（除外）方式（デフォルト）
-			const cleanClass = config.excludeClass
-				? config.excludeClass.trim().replace( /^\.+/, '' )
-				: '';
-			const selector = cleanClass ? '.' + cleanClass : '';
-
-			for ( let i = 0; i < iframes.length; i++ ) {
-				const iframe = iframes[ i ];
-				// 自分自身、または親要素に除外クラスが含まれている場合はスキップ
-				if ( selector && iframe.closest( selector ) ) {
-					continue;
-				}
-				$originalVideo = iframe;
-				break;
-			}
-		}
-
-		if ( ! $originalVideo ) {
+	function setupVideoElements( $video ) {
+		if ( ! $video ) {
 			return;
 		}
 
 		// 元のスタイルを保存
-		const computedStyle = window.getComputedStyle( $originalVideo );
+		const computedStyle = window.getComputedStyle( $video );
 		originalStyles = {
 			position: computedStyle.position,
 			top: computedStyle.top,
@@ -126,9 +83,11 @@
 		};
 
 		// プレースホルダーを作成
-		$placeholder = document.createElement( 'div' );
-		$placeholder.className = 'youtube-placeholder';
-		const rect = $originalVideo.getBoundingClientRect();
+		if ( ! $placeholder ) {
+			$placeholder = document.createElement( 'div' );
+			$placeholder.className = 'youtube-placeholder';
+		}
+		const rect = $video.getBoundingClientRect();
 		Object.assign( $placeholder.style, {
 			width: rect.width + 'px',
 			height: rect.height + 'px',
@@ -145,7 +104,7 @@
 		} );
 
 		// 閉じるボタンを作成
-		if ( config.closeButton ) {
+		if ( config.closeButton && ! $closeButton ) {
 			$closeButton = document.createElement( 'button' );
 			$closeButton.className = 'sticky-video-close';
 			$closeButton.innerHTML = '✕';
@@ -180,9 +139,330 @@
 
 			document.body.appendChild( $closeButton );
 		}
+	}
 
-		window.addEventListener( 'scroll', checkScroll );
-		window.addEventListener( 'resize', handleResize );
+	function resetVideoElements() {
+		if ( isSticky ) {
+			hideSticky( true ); // 即時復帰
+		}
+		if ( $originalVideo ) {
+			// スタイルの復元
+			Object.assign( $originalVideo.style, originalStyles );
+			$originalVideo = null;
+		}
+		if ( $placeholder && $placeholder.parentNode ) {
+			$placeholder.parentNode.removeChild( $placeholder );
+		}
+		originalStyles = {};
+	}
+
+	function updatePlayerInstance( currentPlayer, iframeElement ) {
+		let currentIframe = null;
+		try {
+			currentIframe = currentPlayer.getIframe();
+		} catch ( e ) {
+			currentIframe = iframeElement;
+		}
+
+		if ( ! currentIframe ) {
+			return null;
+		}
+
+		for ( let i = 0; i < ytPlayers.length; i++ ) {
+			const item = ytPlayers[ i ];
+			let itemIframe = null;
+			try {
+				itemIframe = item.player.getIframe();
+			} catch ( e ) {}
+
+			if (
+				itemIframe === currentIframe ||
+				item.iframe === currentIframe ||
+				item.iframe === iframeElement
+			) {
+				item.player = currentPlayer;
+				item.iframe = currentIframe;
+				return currentIframe;
+			}
+		}
+		return currentIframe;
+	}
+
+	function handlePlayerStateChange( event, isEligible, iframeElement ) {
+		const state = event.data;
+		const currentPlayer = event.target;
+		const currentIframe = updatePlayerInstance(
+			currentPlayer,
+			iframeElement
+		);
+
+		if ( ! currentIframe ) {
+			return;
+		}
+
+		if ( state === window.YT.PlayerState.PLAYING ) {
+			// 他のすべてのプレイヤーを一時停止
+			for ( let i = 0; i < ytPlayers.length; i++ ) {
+				const item = ytPlayers[ i ];
+				let itemIframe = null;
+
+				try {
+					itemIframe = item.player.getIframe();
+				} catch ( e ) {}
+
+				if ( itemIframe && itemIframe !== currentIframe ) {
+					try {
+						item.player.pauseVideo();
+					} catch ( e ) {
+						// 一時停止に失敗した場合は無視
+					}
+				}
+			}
+
+			if ( isEligible ) {
+				// 別動画が再生開始された場合、元の位置に戻し新ターゲットを登録
+				if ( $originalVideo !== currentIframe ) {
+					resetVideoElements();
+					$originalVideo = currentIframe;
+					setupVideoElements( $originalVideo );
+					isForceClosed = false;
+				}
+				setTimeout( checkScroll, 100 );
+			} else {
+				// 除外対象の動画が再生されたら、現在Sticky表示中のものを解除する
+				resetVideoElements();
+			}
+		}
+
+		if (
+			state === window.YT.PlayerState.PAUSED ||
+			state === window.YT.PlayerState.ENDED
+		) {
+			if ( $originalVideo === currentIframe ) {
+				resetVideoElements();
+			}
+		}
+	}
+
+	function setupPlayers( iframes ) {
+		const targetingMode = config.targetingMode || 'exclude';
+		const excludeSelector = config.excludeClass
+			? '.' + config.excludeClass.trim().replace( /^\.+/, '' )
+			: '';
+		const includeSelector = config.includeClass
+			? '.' + config.includeClass.trim().replace( /^\.+/, '' )
+			: '';
+
+		for ( let i = 0; i < iframes.length; i++ ) {
+			const iframe = iframes[ i ];
+			let isEligible = false;
+
+			if ( targetingMode === 'include' ) {
+				if ( includeSelector && iframe.closest( includeSelector ) ) {
+					isEligible = true;
+				}
+			} else if (
+				! excludeSelector ||
+				! iframe.closest( excludeSelector )
+			) {
+				isEligible = true;
+			}
+
+			// 競合回避: すでに他プラグインが作成したプレイヤーオブジェクトがあれば再利用してイベントを相乗りする
+			let existingPlayer = null;
+			if ( window.YT && typeof window.YT.get === 'function' ) {
+				const id = iframe.id || iframe.getAttribute( 'id' );
+				existingPlayer =
+					( id ? window.YT.get( id ) : null ) ||
+					window.YT.get( iframe );
+			}
+
+			if ( existingPlayer ) {
+				try {
+					existingPlayer.addEventListener(
+						'onStateChange',
+						function ( event ) {
+							handlePlayerStateChange(
+								event,
+								isEligible,
+								iframe
+							);
+						}
+					);
+
+					ytPlayers.push( {
+						player: existingPlayer,
+						iframe,
+						isEligible,
+					} );
+
+					continue;
+				} catch ( e ) {
+					// addEventListenerに失敗した場合はフォールバックして新規作成へ
+				}
+			}
+
+			let src = iframe.getAttribute( 'src' );
+			if ( src && src.indexOf( 'enablejsapi=1' ) === -1 ) {
+				const separator = src.indexOf( '?' ) === -1 ? '?' : '&';
+				const origin = window.location.origin;
+				src +=
+					separator +
+					'enablejsapi=1&origin=' +
+					encodeURIComponent( origin );
+				iframe.setAttribute( 'src', src );
+			}
+
+			// YT.Player インスタンスの生成（srcにenablejsapi=1がない場合は自動で追加ロードされる）
+			const player = new window.YT.Player( iframe, {
+				events: {
+					onReady( event ) {
+						updatePlayerInstance( event.target, iframe );
+					},
+					onStateChange( event ) {
+						handlePlayerStateChange( event, isEligible, iframe );
+					},
+				},
+			} );
+
+			ytPlayers.push( {
+				player,
+				iframe,
+				isEligible,
+			} );
+		}
+	}
+
+	function initPlayingMode( iframes ) {
+		if ( iframes.length === 0 ) {
+			return;
+		}
+
+		// 1. window.YT が存在しない場合のみ、自ら API をロードする
+		if ( ! window.YT ) {
+			const tag = document.createElement( 'script' );
+			tag.src = 'https://www.youtube.com/iframe_api';
+			const firstScriptTag =
+				document.getElementsByTagName( 'script' )[ 0 ];
+			firstScriptTag.parentNode.insertBefore( tag, firstScriptTag );
+		}
+
+		// 2. 他プラグインによる onYouTubeIframeAPIReady の上書きを考慮し、
+		//    一応 previousOnReady をラップする処理も残しておくが、それに依存しない。
+		const previousOnReady = window.onYouTubeIframeAPIReady;
+		window.onYouTubeIframeAPIReady = function () {
+			if ( typeof previousOnReady === 'function' ) {
+				previousOnReady();
+			}
+		};
+
+		// 3. APIのロードと他プラグインの初期化を自律的にポーリング監視する（一元化）
+		let attempts = 0;
+		let apiReadyAttempts = 0;
+		let setupCompleted = false;
+
+		const checkInterval = setInterval( () => {
+			attempts++;
+
+			const isApiReady =
+				window.YT && typeof window.YT.Player === 'function';
+			if ( isApiReady ) {
+				apiReadyAttempts++;
+			}
+
+			// すべての iframe に既存プレイヤーが登録されたかチェック（相乗り確認）
+			let allFound = false;
+			if ( isApiReady && typeof window.YT.get === 'function' ) {
+				allFound = true;
+				for ( let j = 0; j < iframes.length; j++ ) {
+					const id =
+						iframes[ j ].id || iframes[ j ].getAttribute( 'id' );
+					if (
+						! (
+							( id ? window.YT.get( id ) : null ) ||
+							window.YT.get( iframes[ j ] )
+						)
+					) {
+						allFound = false;
+						break;
+					}
+				}
+			}
+
+			// 終了条件:
+			// - すべてのプレイヤーが他プラグインによってバインド完了した (allFound)
+			// - または、APIがロード完了しており、かつ他プラグインの初期化完了を待つマージン（300ms）を経過した
+			// - または、最大タイムアウト（3秒）に達した
+			const shouldStop =
+				allFound || apiReadyAttempts >= 3 || attempts >= 30;
+
+			if ( shouldStop ) {
+				clearInterval( checkInterval );
+				if ( ! setupCompleted ) {
+					setupCompleted = true;
+
+					setupPlayers( iframes );
+				}
+			}
+		}, 100 );
+	}
+
+	function init() {
+		const iframes = document.querySelectorAll(
+			'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
+		);
+
+		if ( config.triggerMode === 'playing' ) {
+			initPlayingMode( iframes );
+			window.addEventListener( 'scroll', checkScroll );
+			window.addEventListener( 'resize', handleResize );
+		} else {
+			const targetingMode = config.targetingMode || 'exclude';
+			let targetIframe = null;
+
+			if ( targetingMode === 'include' ) {
+				const cleanClass = config.includeClass
+					? config.includeClass.trim().replace( /^\.+/, '' )
+					: '';
+				const selector = cleanClass ? '.' + cleanClass : '';
+
+				if ( ! selector ) {
+					return;
+				}
+
+				for ( let i = 0; i < iframes.length; i++ ) {
+					const iframe = iframes[ i ];
+					if ( iframe.closest( selector ) ) {
+						targetIframe = iframe;
+						break;
+					}
+				}
+			} else {
+				const cleanClass = config.excludeClass
+					? config.excludeClass.trim().replace( /^\.+/, '' )
+					: '';
+				const selector = cleanClass ? '.' + cleanClass : '';
+
+				for ( let i = 0; i < iframes.length; i++ ) {
+					const iframe = iframes[ i ];
+					if ( selector && iframe.closest( selector ) ) {
+						continue;
+					}
+					targetIframe = iframe;
+					break;
+				}
+			}
+
+			if ( ! targetIframe ) {
+				return;
+			}
+
+			$originalVideo = targetIframe;
+			setupVideoElements( $originalVideo );
+
+			window.addEventListener( 'scroll', checkScroll );
+			window.addEventListener( 'resize', handleResize );
+		}
 	}
 
 	function checkScroll() {
@@ -226,10 +506,16 @@
 		const documentHeight = document.documentElement.scrollHeight;
 		const distanceFromBottom = documentHeight - windowHeight - scrollTop;
 
-		if ( config.limitTopActive && scrollTop < parseFloat( config.limitTopVal ) ) {
+		if (
+			config.limitTopActive &&
+			scrollTop < parseFloat( config.limitTopVal )
+		) {
 			inExclusionZone = true;
 		}
-		if ( config.limitBottomActive && distanceFromBottom < parseFloat( config.limitBottomVal ) ) {
+		if (
+			config.limitBottomActive &&
+			distanceFromBottom < parseFloat( config.limitBottomVal )
+		) {
 			inExclusionZone = true;
 		}
 
@@ -242,11 +528,17 @@
 		// 1. 無料版の自動判定
 		if ( config.disableNarrowViewport ) {
 			let targetWidthPx = parseFloat( config.width );
-			if ( typeof config.width === 'string' && config.width.endsWith( 'vw' ) ) {
+			if (
+				typeof config.width === 'string' &&
+				config.width.endsWith( 'vw' )
+			) {
 				targetWidthPx = ( targetWidthPx / 100 ) * window.innerWidth;
 			}
-			const marginX = config.offsetX !== undefined ? parseFloat( config.offsetX ) : ( config.offset || 20 );
-			const narrowThreshold = targetWidthPx + ( marginX * 2 );
+			const marginX =
+				config.offsetX !== undefined
+					? parseFloat( config.offsetX )
+					: config.offset || 20;
+			const narrowThreshold = targetWidthPx + marginX * 2;
 			if ( window.innerWidth <= narrowThreshold ) {
 				isMobileOrNarrow = true;
 			}
@@ -254,7 +546,9 @@
 
 		// 2. Pro版のカスタムブレイクポイント判定
 		if ( config.mobileBreakpointActive && config.mobileBreakpointVal ) {
-			if ( window.innerWidth <= parseFloat( config.mobileBreakpointVal ) ) {
+			if (
+				window.innerWidth <= parseFloat( config.mobileBreakpointVal )
+			) {
 				isMobileOrNarrow = true;
 			}
 		}
@@ -292,8 +586,14 @@
 		$originalVideo.style.opacity = '0';
 
 		// 2. 目的の位置を計算
-		const offsetX = config.offsetX !== undefined ? parseFloat( config.offsetX ) : ( config.offset || 20 );
-		const offsetY = config.offsetY !== undefined ? parseFloat( config.offsetY ) : ( config.offset || 20 );
+		const offsetX =
+			config.offsetX !== undefined
+				? parseFloat( config.offsetX )
+				: config.offset || 20;
+		const offsetY =
+			config.offsetY !== undefined
+				? parseFloat( config.offsetY )
+				: config.offset || 20;
 
 		const positions = {
 			'bottom-right': { bottom: offsetY, right: offsetX },
@@ -309,9 +609,12 @@
 		const originalHeight = parseFloat( originalStyles.height );
 		const aspectRatio = originalHeight / originalWidth;
 
-		let widthVal = parseFloat( config.width );
+		const widthVal = parseFloat( config.width );
 		let widthUnit = 'px';
-		if ( typeof config.width === 'string' && config.width.endsWith( 'vw' ) ) {
+		if (
+			typeof config.width === 'string' &&
+			config.width.endsWith( 'vw' )
+		) {
 			widthUnit = 'vw';
 		}
 
@@ -319,7 +622,10 @@
 		let finalWidthUnit = widthUnit;
 
 		// % (vw) 指定の場合のみ、上限値オプションの判定を行う
-		if ( widthUnit === 'vw' && ( config.widthMaxOriginal || config.widthMaxCustomActive ) ) {
+		if (
+			widthUnit === 'vw' &&
+			( config.widthMaxOriginal || config.widthMaxCustomActive )
+		) {
 			const viewportWidth = window.innerWidth;
 			let pxWidth = ( widthVal / 100 ) * viewportWidth;
 
@@ -381,17 +687,27 @@
 
 			if ( targetPos.left !== undefined ) {
 				if ( finalWidthUnit === 'vw' ) {
-					btnLeft = `calc(${targetPos.left}px + ${finalWidthVal}vw - ${btnOffset + 30}px)`;
+					btnLeft = `calc(${
+						targetPos.left
+					}px + ${ finalWidthVal }vw - ${ btnOffset + 30 }px)`;
 				} else {
-					btnLeft = targetPos.left + finalWidthVal - btnOffset - 30 + 'px';
+					btnLeft =
+						targetPos.left + finalWidthVal - btnOffset - 30 + 'px';
 				}
 			}
 
 			if ( targetPos.bottom !== undefined ) {
 				if ( finalWidthUnit === 'vw' ) {
-					btnBottom = `calc(${targetPos.bottom}px + ${stickyHeightVal}vw - ${btnOffset + 30}px)`;
+					btnBottom = `calc(${
+						targetPos.bottom
+					}px + ${ stickyHeightVal }vw - ${ btnOffset + 30 }px)`;
 				} else {
-					btnBottom = targetPos.bottom + stickyHeightVal - btnOffset - 30 + 'px';
+					btnBottom =
+						targetPos.bottom +
+						stickyHeightVal -
+						btnOffset -
+						30 +
+						'px';
 				}
 			}
 
@@ -413,28 +729,35 @@
 		isSticky = true;
 	}
 
-	function hideSticky() {
+	function hideSticky( immediate ) {
 		if ( ! isSticky ) {
 			return;
 		}
 
 		const complete = function () {
+			if ( ! $originalVideo ) {
+				return;
+			}
 			// 1. 元のスタイルを復元
 			Object.assign( $originalVideo.style, originalStyles );
 
-			// フェードあり
-			if ( config.useFade ) {
+			// フェードあり（即時解除でない場合のみフェードイン）
+			if ( config.useFade && ! immediate ) {
 				$originalVideo.animate( [ { opacity: 0 }, { opacity: 1 } ], {
 					duration: 200,
 					fill: 'forwards',
 				} );
+			} else {
+				$originalVideo.style.opacity = originalStyles.opacity || '1';
 			}
 
 			// 2. プレースホルダーを非表示
-			$placeholder.style.display = 'none';
+			if ( $placeholder ) {
+				$placeholder.style.display = 'none';
+			}
 		};
 
-		if ( config.useFade ) {
+		if ( config.useFade && ! immediate ) {
 			// フェードあり
 			const anim = $originalVideo.animate(
 				[ { opacity: 1 }, { opacity: 0 } ],
