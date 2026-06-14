@@ -229,8 +229,10 @@
 				}
 				setTimeout( checkScroll, 100 );
 			} else {
-				// 除外対象の動画が再生されたら、現在Sticky表示中のものを解除する
-				resetVideoElements();
+				// 除外対象の動画が再生されたら、現在Sticky表示中のものを解除する (playingモードの場合のみ)
+				if ( config.triggerMode === 'playing' ) {
+					resetVideoElements();
+				}
 			}
 		}
 
@@ -310,27 +312,36 @@
 					separator +
 					'enablejsapi=1&origin=' +
 					encodeURIComponent( origin );
+
+				iframe.addEventListener( 'load', function () {
+					createPlayer( iframe, isEligible );
+				}, { once: true } );
+
 				iframe.setAttribute( 'src', src );
+			} else {
+				createPlayer( iframe, isEligible );
 			}
-
-			// YT.Player インスタンスの生成（srcにenablejsapi=1がない場合は自動で追加ロードされる）
-			const player = new window.YT.Player( iframe, {
-				events: {
-					onReady( event ) {
-						updatePlayerInstance( event.target, iframe );
-					},
-					onStateChange( event ) {
-						handlePlayerStateChange( event, isEligible, iframe );
-					},
-				},
-			} );
-
-			ytPlayers.push( {
-				player,
-				iframe,
-				isEligible,
-			} );
 		}
+	}
+
+	function createPlayer( iframe, isEligible ) {
+		// YT.Player インスタンスの生成
+		const player = new window.YT.Player( iframe, {
+			events: {
+				onReady( event ) {
+					updatePlayerInstance( event.target, iframe );
+				},
+				onStateChange( event ) {
+					handlePlayerStateChange( event, isEligible, iframe );
+				},
+			},
+		} );
+
+		ytPlayers.push( {
+			player,
+			iframe,
+			isEligible,
+		} );
 	}
 
 	function initPlayingMode( iframes ) {
@@ -412,8 +423,12 @@
 			'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
 		);
 
-		if ( config.triggerMode === 'playing' ) {
+		// Pro版が有効か、またはトリガー設定が「再生中のみ」の場合はYouTube APIを初期化する
+		if ( config.triggerMode === 'playing' || config.isProActive ) {
 			initPlayingMode( iframes );
+		}
+
+		if ( config.triggerMode === 'playing' ) {
 			window.addEventListener( 'scroll', checkScroll );
 			window.addEventListener( 'resize', handleResize );
 		} else {

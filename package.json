@@ -2,6 +2,13 @@
 	"name": "ku-sticky-video-for-youtube",
 	"version": "1.7.0",
 	"description": "",
+	"files": [
+		"ku-sticky-video-for-youtube.php",
+		"readme.txt",
+		"build",
+		"languages",
+		"templates"
+	],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "wp-scripts build src/ku-sticky-video-for-youtube.js src/ku-sticky-video-for-youtube-admin.js",
