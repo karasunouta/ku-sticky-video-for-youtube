@@ -41,6 +41,7 @@
 		disableNarrowViewport: true,
 		mobileBreakpointActive: false,
 		mobileBreakpointVal: 768,
+		keepEnded: false,
 	};
 
 	// PHP側から設定が渡されている場合はマージする
@@ -237,7 +238,7 @@
 		}
 
 		if ( state === window.YT.PlayerState.ENDED ) {
-			if ( $originalVideo === currentIframe ) {
+			if ( ! config.keepEnded && $originalVideo === currentIframe ) {
 				resetVideoElements();
 			}
 		}
