@@ -113,8 +113,8 @@
 				position: 'fixed',
 				width: '30px',
 				height: '30px',
-				background: 'rgba(0,0,0,0.7)',
-				color: '#fff',
+				background: config.closeBtnBg || 'rgba(0,0,0,0.7)',
+				color: config.closeBtnIcon || '#fff',
 				border: 'none',
 				borderRadius: '50%',
 				cursor: 'pointer',
@@ -131,11 +131,11 @@
 			} );
 
 			$closeButton.addEventListener( 'mouseenter', function () {
-				this.style.background = 'rgba(255,0,0,0.8)';
+				this.style.background = config.closeBtnHover || 'rgba(255,0,0,0.8)';
 			} );
 
 			$closeButton.addEventListener( 'mouseleave', function () {
-				this.style.background = 'rgba(0,0,0,0.7)';
+				this.style.background = config.closeBtnBg || 'rgba(0,0,0,0.7)';
 			} );
 
 			document.body.appendChild( $closeButton );
@@ -220,20 +220,19 @@
 				}
 			}
 
+			// 別の動画が再生開始された場合、まずは現在のStickyを無条件で解除する
+			if ( $originalVideo && $originalVideo !== currentIframe ) {
+				resetVideoElements();
+			}
+
 			if ( isEligible ) {
-				// 別動画が再生開始された場合、元の位置に戻し新ターゲットを登録
+				// 新ターゲットを登録
 				if ( $originalVideo !== currentIframe ) {
-					resetVideoElements();
 					$originalVideo = currentIframe;
 					setupVideoElements( $originalVideo );
 					isForceClosed = false;
 				}
 				setTimeout( checkScroll, 100 );
-			} else {
-				// 除外対象の動画が再生されたら、現在Sticky表示中のものを解除する (playingモードの場合のみ)
-				if ( config.triggerMode === 'playing' ) {
-					resetVideoElements();
-				}
 			}
 		}
 
@@ -701,13 +700,31 @@
 		}
 
 		// 4. iframeをSticky位置に移動（※DOM構造を変えると再生が維持できない）
+		let boxShadowOpacity = 0.3;
+		if ( config.boxShadowOpacity !== undefined ) {
+			boxShadowOpacity = parseFloat( config.boxShadowOpacity ) / 100;
+		}
+
+		let borderRadiusPx = 8;
+		if ( config.borderRadius !== undefined ) {
+			borderRadiusPx = parseFloat( config.borderRadius );
+		}
+
+		let borderStyle = 'none';
+		if ( config.borderWidth !== undefined && parseFloat( config.borderWidth ) > 0 ) {
+			const bWidth = parseFloat( config.borderWidth );
+			const bColor = config.borderColor || '#000000';
+			borderStyle = bWidth + 'px solid ' + bColor;
+		}
+
 		const newStyles = {
 			position: 'fixed',
 			width: finalWidthVal + finalWidthUnit,
 			height: stickyHeightVal + finalWidthUnit,
 			zIndex: config.zIndex,
-			boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-			borderRadius: '8px',
+			boxShadow: '0 4px 12px rgba(0,0,0,' + boxShadowOpacity + ')',
+			borderRadius: borderRadiusPx + 'px',
+			border: borderStyle,
 			top: targetPos.top !== undefined ? targetPos.top + 'px' : 'auto',
 			bottom:
 				targetPos.bottom !== undefined
