@@ -109,6 +109,7 @@ class KU_Sticky_Video_For_YouTube {
 			'triggerMode'           => isset( $options['sticky_trigger_mode'] ) ? $options['sticky_trigger_mode'] : 'always',
 			'position'              => isset( $options['position'] ) ? $options['position'] : 'bottom-right',
 			'disableNarrowViewport' => ! empty( $options['disable_narrow_viewport'] ) ? true : false,
+			'zIndex'                => isset( $options['sticky_z_index'] ) ? intval( $options['sticky_z_index'] ) : 9999,
 		);
 
 		if ( isset( $options['targeting_mode'] ) ) {
@@ -145,6 +146,7 @@ class KU_Sticky_Video_For_YouTube {
 			'sticky_width_max_original'      => '1',
 			'sticky_width_max_custom_active' => '0',
 			'sticky_width_max_custom_val'    => 450,
+			'sticky_z_index'                 => 9999,
 		);
 		$defaults = apply_filters( 'ku_sticky_video_for_youtube_default_options', $defaults );
 
@@ -200,6 +202,7 @@ class KU_Sticky_Video_For_YouTube {
 					'sticky_width_max_original'      => '1',
 					'sticky_width_max_custom_active' => '0',
 					'sticky_width_max_custom_val'    => 450,
+					'sticky_z_index'                 => 9999,
 				),
 			)
 		);
@@ -264,6 +267,18 @@ class KU_Sticky_Video_For_YouTube {
 			$output['sticky_width_max_custom_val'] = max( 100, intval( $input['sticky_width_max_custom_val'] ) );
 		} else {
 			$output['sticky_width_max_custom_val'] = 450;
+		}
+
+		if ( isset( $input['sticky_z_index'] ) ) {
+			$z_index = intval( $input['sticky_z_index'] );
+			if ( $z_index < 1 ) {
+				$z_index = 1;
+			} elseif ( $z_index > 2147483647 ) {
+				$z_index = 2147483647;
+			}
+			$output['sticky_z_index'] = $z_index;
+		} else {
+			$output['sticky_z_index'] = 9999;
 		}
 
 		return apply_filters( 'ku_sticky_video_for_youtube_sanitize_options', $output, $input );

@@ -236,10 +236,7 @@
 			}
 		}
 
-		if (
-			state === window.YT.PlayerState.PAUSED ||
-			state === window.YT.PlayerState.ENDED
-		) {
+		if ( state === window.YT.PlayerState.ENDED ) {
 			if ( $originalVideo === currentIframe ) {
 				resetVideoElements();
 			}

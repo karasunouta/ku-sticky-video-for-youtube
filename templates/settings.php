@@ -24,6 +24,7 @@ $sticky_width_val_pct           = isset( $options['sticky_width_val_pct'] ) ? $o
 $sticky_width_max_original      = isset( $options['sticky_width_max_original'] ) ? $options['sticky_width_max_original'] : '1';
 $sticky_width_max_custom_active = isset( $options['sticky_width_max_custom_active'] ) ? $options['sticky_width_max_custom_active'] : '0';
 $sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val'] ) ? $options['sticky_width_max_custom_val'] : 450;
+$sticky_z_index                 = isset( $options['sticky_z_index'] ) ? $options['sticky_z_index'] : 9999;
 ?>
 <div class="wrap ku-sticky-video-for-youtube-admin-wrap">
 	<h1 class="screen-reader-text"><?php esc_html_e( 'KU Sticky Video for YouTube Settings', 'ku-sticky-video-for-youtube' ); ?></h1>
@@ -110,6 +111,16 @@ $sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val']
 				</div>
 				<p class="field-description">
 					<?php esc_html_e( 'Choose which corner the floating video player should stick to.', 'ku-sticky-video-for-youtube' ); ?>
+				</p>
+			</div>
+
+			<div class="form-group" style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+				<label for="sticky_z_index" style="font-weight: bold;"><?php esc_html_e( 'Z-index (Stack Order)', 'ku-sticky-video-for-youtube' ); ?></label>
+				<div style="margin-top: 8px;">
+					<input type="number" id="sticky_z_index" name="ku-sticky-video-for-youtube-options[sticky_z_index]" value="<?php echo esc_attr( $sticky_z_index ); ?>" class="input-field" min="1" max="2147483647" style="width: 150px;" />
+				</div>
+				<p class="field-description">
+					<?php esc_html_e( 'Adjust the Z-index value to prevent the sticky video player from overlapping with theme elements like header menus or chat widgets. Default is 9999.', 'ku-sticky-video-for-youtube' ); ?>
 				</p>
 			</div>
 

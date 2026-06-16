@@ -100,11 +100,19 @@ msgstr "右下"
 msgid "Bottom Left"
 msgstr "左下"
 
-#: templates/settings.php:108
+#: templates/settings.php:112
 msgid "Choose which corner the floating video player should stick to."
 msgstr "追従する動画プレイヤーを表示する画面の隅を選択します。"
 
-#: templates/settings.php:113
+#: templates/settings.php:116
+msgid "Z-index (Stack Order)"
+msgstr "Z-index（重なり順）"
+
+#: templates/settings.php:121
+msgid "Adjust the Z-index value to prevent the sticky video player from overlapping with theme elements like header menus or chat widgets. Default is 9999."
+msgstr "Sticky 動画プレイヤーが、ヘッダーメニューやチャットウィジェットなどのテーマ要素と重なるのを防ぐために、Z-index の値を調整します。デフォルトは9999です。"
+
+#: templates/settings.php:125
 msgid "Sticky Video Width"
 msgstr "Sticky 動画の幅"
 
