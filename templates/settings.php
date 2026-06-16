@@ -139,6 +139,13 @@ $sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val']
 				</p>
 			</div>
 
+			<div class="form-group">
+				<label><?php esc_html_e( 'Sticky Video Height', 'ku-sticky-video-for-youtube' ); ?></label>
+				<p class="field-description" style="margin-top: 8px;">
+					<?php esc_html_e( 'Automatically limited to 50% of the viewport height.', 'ku-sticky-video-for-youtube' ); ?>
+				</p>
+			</div>
+
 			<!-- Max Width Settings (Only for % unit) -->
 			<?php
 			$is_px_unit          = ( 'px' === $sticky_width_unit );

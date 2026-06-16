@@ -674,7 +674,33 @@
 			finalWidthUnit = 'px';
 		}
 
-		const stickyHeightVal = finalWidthVal * aspectRatio;
+		let stickyHeightVal = finalWidthVal * aspectRatio;
+
+		// 3.5 高さの上限制限（縦長動画などの画面占有を防ぐ）
+		const heightMaxVh =
+			config.heightMaxVh !== undefined
+				? parseFloat( config.heightMaxVh )
+				: 50;
+
+		let currentHeightPx = stickyHeightVal;
+		if ( finalWidthUnit === 'vw' ) {
+			currentHeightPx = ( stickyHeightVal / 100 ) * window.innerWidth;
+		}
+
+		const viewportHeight = window.innerHeight;
+		const maxAllowedHeightPx = viewportHeight * ( heightMaxVh / 100 );
+
+		if ( currentHeightPx > maxAllowedHeightPx ) {
+			// 高さを上限値に制限
+			currentHeightPx = maxAllowedHeightPx;
+
+			// アスペクト比を維持して幅を再計算（縮小）
+			const newWidthPx = currentHeightPx / aspectRatio;
+
+			finalWidthVal = newWidthPx;
+			finalWidthUnit = 'px';
+			stickyHeightVal = currentHeightPx;
+		}
 
 		// 4. iframeをSticky位置に移動（※DOM構造を変えると再生が維持できない）
 		const newStyles = {

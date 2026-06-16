@@ -112,7 +112,15 @@ msgstr "Sticky 動画の幅"
 msgid "Configure the width of the video player when it is in sticky mode. Switching units will preserve both pixel and percentage settings."
 msgstr "Sticky モード時の動画プレイヤーの幅を設定します。単位を切り替えても、ピクセルとパーセンテージの両方の設定が保持されます。"
 
-#: templates/settings.php:144
+#: templates/settings.php:143
+msgid "Sticky Video Height"
+msgstr "Sticky 動画の高さ"
+
+#: templates/settings.php:145
+msgid "Automatically limited to 50% of the viewport height."
+msgstr "自動で表示領域の高さの50%までに制限されます。"
+
+#: templates/settings.php:151
 msgid "Maximum Width Settings"
 msgstr "最大幅設定"
 
