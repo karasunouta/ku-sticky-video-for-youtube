@@ -42,6 +42,8 @@
 		mobileBreakpointActive: false,
 		mobileBreakpointVal: 768,
 		keepEnded: false,
+		closeBtnPos: 'top-right',
+		closeBtnOnlyPaused: false,
 	};
 
 	// PHP側から設定が渡されている場合はマージする
@@ -56,6 +58,22 @@
 	let isForceClosed = false;
 	let originalStyles = {};
 	const ytPlayers = [];
+
+	function getCurrentPlayerState() {
+		if ( ! $originalVideo || ! window.YT ) {
+			return null;
+		}
+		for ( let i = 0; i < ytPlayers.length; i++ ) {
+			if ( ytPlayers[ i ].iframe === $originalVideo ) {
+				try {
+					return ytPlayers[ i ].player.getPlayerState();
+				} catch ( e ) {
+					return null;
+				}
+			}
+		}
+		return null;
+	}
 
 	function setupVideoElements( $video ) {
 		if ( ! $video ) {
@@ -240,6 +258,12 @@
 			if ( ! config.keepEnded && $originalVideo === currentIframe ) {
 				resetVideoElements();
 			}
+		}
+
+		// 一時停止時のみ表示オプションの動的制御
+		if ( isSticky && $originalVideo === currentIframe && config.closeBtnOnlyPaused && $closeButton ) {
+			const isPlaying = ( state === window.YT.PlayerState.PLAYING || state === window.YT.PlayerState.BUFFERING );
+			$closeButton.style.display = isPlaying ? 'none' : 'flex';
 		}
 	}
 
@@ -583,6 +607,13 @@
 		}
 
 		if ( isOutOfView && ! isSticky ) {
+			if ( config.triggerMode === 'playing' ) {
+				const state = getCurrentPlayerState();
+				const isPlaying = ( state === 1 || state === 3 ); // 1: PLAYING, 3: BUFFERING
+				if ( ! isPlaying ) {
+					return;
+				}
+			}
 			showSticky();
 		} else if ( ! isOutOfView && isSticky ) {
 			hideSticky();
@@ -671,7 +702,17 @@
 			finalWidthUnit = 'px';
 		}
 
-		let stickyHeightVal = finalWidthVal * aspectRatio;
+		let pxWidth = finalWidthVal;
+		if ( finalWidthUnit === 'vw' ) {
+			pxWidth = ( finalWidthVal / 100 ) * window.innerWidth;
+		}
+
+		let borderVal = parseFloat( config.borderWidth ) || 0;
+
+		// Calculate inner dimensions to maintain original aspect ratio inside the borders
+		let pxInnerWidth = Math.max( 50, pxWidth - borderVal * 2 );
+		let pxInnerHeight = pxInnerWidth * aspectRatio;
+		let pxHeight = pxInnerHeight + borderVal * 2;
 
 		// 3.5 高さの上限制限（縦長動画などの画面占有を防ぐ）
 		const heightMaxVh =
@@ -679,24 +720,30 @@
 				? parseFloat( config.heightMaxVh )
 				: 50;
 
-		let currentHeightPx = stickyHeightVal;
-		if ( finalWidthUnit === 'vw' ) {
-			currentHeightPx = ( stickyHeightVal / 100 ) * window.innerWidth;
-		}
-
 		const viewportHeight = window.innerHeight;
 		const maxAllowedHeightPx = viewportHeight * ( heightMaxVh / 100 );
 
-		if ( currentHeightPx > maxAllowedHeightPx ) {
-			// 高さを上限値に制限
-			currentHeightPx = maxAllowedHeightPx;
+		if ( pxHeight > maxAllowedHeightPx ) {
+			pxHeight = maxAllowedHeightPx;
 
-			// アスペクト比を維持して幅を再計算（縮小）
-			const newWidthPx = currentHeightPx / aspectRatio;
+			// Re-calculate width based on inner height to preserve aspect ratio
+			let pxInnerHeight = Math.max( 10, pxHeight - borderVal * 2 );
+			let pxInnerWidth = pxInnerHeight / aspectRatio;
+			pxWidth = pxInnerWidth + borderVal * 2;
 
-			finalWidthVal = newWidthPx;
+			finalWidthVal = pxWidth;
 			finalWidthUnit = 'px';
-			stickyHeightVal = currentHeightPx;
+		}
+
+		let finalWidthStyle;
+		let finalHeightStyle;
+
+		if ( finalWidthUnit === 'vw' ) {
+			finalWidthStyle = finalWidthVal + 'vw';
+			finalHeightStyle = `calc((${ finalWidthVal }vw - ${ borderVal * 2 }px) * ${ aspectRatio } + ${ borderVal * 2 }px)`;
+		} else {
+			finalWidthStyle = pxWidth + 'px';
+			finalHeightStyle = pxHeight + 'px';
 		}
 
 		// 4. iframeをSticky位置に移動（※DOM構造を変えると再生が維持できない）
@@ -719,8 +766,9 @@
 
 		const newStyles = {
 			position: 'fixed',
-			width: finalWidthVal + finalWidthUnit,
-			height: stickyHeightVal + finalWidthUnit,
+			boxSizing: 'border-box',
+			width: finalWidthStyle,
+			height: finalHeightStyle,
 			zIndex: config.zIndex,
 			boxShadow: '0 4px 12px rgba(0,0,0,' + boxShadowOpacity + ')',
 			borderRadius: borderRadiusPx + 'px',
@@ -751,48 +799,62 @@
 		// 5. 閉じるボタンを表示
 		if ( $closeButton ) {
 			const btnOffset = 5;
+			const closeBtnPos = config.closeBtnPos || 'top-right';
+
 			let btnLeft = 'auto';
+			let btnRight = 'auto';
+			let btnTop = 'auto';
 			let btnBottom = 'auto';
 
-			if ( targetPos.left !== undefined ) {
-				if ( finalWidthUnit === 'vw' ) {
-					btnLeft = `calc(${
-						targetPos.left
-					}px + ${ finalWidthVal }vw - ${ btnOffset + 30 }px)`;
+			// X-axis positioning
+			if ( closeBtnPos.indexOf( 'left' ) !== -1 ) {
+				if ( targetPos.left !== undefined ) {
+					btnLeft = ( targetPos.left + btnOffset ) + 'px';
 				} else {
-					btnLeft =
-						targetPos.left + finalWidthVal - btnOffset - 30 + 'px';
+					btnRight = `calc(${ targetPos.right }px + ${ finalWidthStyle } - ${ btnOffset + 30 }px)`;
+				}
+			} else { // right
+				if ( targetPos.left !== undefined ) {
+					btnLeft = `calc(${ targetPos.left }px + ${ finalWidthStyle } - ${ btnOffset + 30 }px)`;
+				} else {
+					btnRight = ( targetPos.right + btnOffset ) + 'px';
 				}
 			}
 
-			if ( targetPos.bottom !== undefined ) {
-				if ( finalWidthUnit === 'vw' ) {
-					btnBottom = `calc(${
-						targetPos.bottom
-					}px + ${ stickyHeightVal }vw - ${ btnOffset + 30 }px)`;
+			// Y-axis positioning
+			if ( closeBtnPos.indexOf( 'bottom' ) !== -1 ) {
+				if ( targetPos.top !== undefined ) {
+					btnTop = `calc(${ targetPos.top }px + ${ finalHeightStyle } - ${ btnOffset + 30 }px)`;
 				} else {
-					btnBottom =
-						targetPos.bottom +
-						stickyHeightVal -
-						btnOffset -
-						30 +
-						'px';
+					btnBottom = ( targetPos.bottom + btnOffset ) + 'px';
+				}
+			} else { // top
+				if ( targetPos.top !== undefined ) {
+					btnTop = ( targetPos.top + btnOffset ) + 'px';
+				} else {
+					btnBottom = `calc(${ targetPos.bottom }px + ${ finalHeightStyle } - ${ btnOffset + 30 }px)`;
 				}
 			}
 
 			Object.assign( $closeButton.style, {
-				top:
-					targetPos.top !== undefined
-						? targetPos.top + btnOffset + 'px'
-						: 'auto',
+				top: btnTop,
 				bottom: btnBottom,
 				left: btnLeft,
-				right:
-					targetPos.right !== undefined
-						? targetPos.right + btnOffset + 'px'
-						: 'auto',
-				display: 'flex',
+				right: btnRight,
+				margin: '0',
+				padding: '0',
+				boxSizing: 'border-box',
+				transform: 'none',
 			} );
+
+			// 一時停止状態のみ表示するオプションの処理
+			if ( config.closeBtnOnlyPaused ) {
+				const state = getCurrentPlayerState();
+				const isPlaying = ( state === 1 || state === 3 ); // 1: PLAYING, 3: BUFFERING
+				$closeButton.style.display = isPlaying ? 'none' : 'flex';
+			} else {
+				$closeButton.style.display = 'flex';
+			}
 		}
 
 		isSticky = true;
