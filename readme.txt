@@ -49,9 +49,10 @@ You can add the excluded CSS class (configured in the settings page, default: `n
 
 == Screenshots ==
 
-1. The plugin settings page in the WordPress admin dashboard.
-2. A YouTube video player loaded in a WordPress post on the frontend.
-3. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
+1. The upper part of the plugin settings page (General Settings and Trigger options).
+2. The lower part of the plugin settings page (Layout, Width, Z-index, and Mobile settings).
+3. A YouTube video player loaded in a WordPress post on the frontend.
+4. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
 
 == Changelog ==
 
