@@ -90,10 +90,23 @@ class KU_Sticky_Video_For_YouTube {
 		// true: 動画埋め込み位置より上でも追従表示する / false: 表示しない（デフォルト）
 		$show_above = false;
 
+		$width = 400;
+		if ( isset( $options['sticky_width_unit'] ) ) {
+			if ( '%' === $options['sticky_width_unit'] && isset( $options['sticky_width_val_pct'] ) ) {
+				$width = intval( $options['sticky_width_val_pct'] ) . 'vw';
+			} elseif ( 'px' === $options['sticky_width_unit'] && isset( $options['sticky_width_val_px'] ) ) {
+				$width = intval( $options['sticky_width_val_px'] );
+			}
+		}
+
 		$localize_data = array(
 			'showAbove'             => $show_above,
 			'excludeClass'          => $exclude_class,
-			'width'                 => 400,
+			'width'                 => $width,
+			'widthMaxOriginal'      => ! empty( $options['sticky_width_max_original'] ) ? true : false,
+			'widthMaxCustomActive'  => ! empty( $options['sticky_width_max_custom_active'] ) ? true : false,
+			'widthMaxCustomVal'     => isset( $options['sticky_width_max_custom_val'] ) ? intval( $options['sticky_width_max_custom_val'] ) : 450,
+			'triggerMode'           => isset( $options['sticky_trigger_mode'] ) ? $options['sticky_trigger_mode'] : 'always',
 			'position'              => isset( $options['position'] ) ? $options['position'] : 'bottom-right',
 			'disableNarrowViewport' => ! empty( $options['disable_narrow_viewport'] ) ? true : false,
 		);
@@ -121,9 +134,16 @@ class KU_Sticky_Video_For_YouTube {
 	 */
 	private function get_options() {
 		$defaults = array(
-			'exclude_class'           => 'no-sticky',
-			'position'                => 'bottom-right',
-			'disable_narrow_viewport' => '1',
+			'exclude_class'                  => 'no-sticky',
+			'position'                       => 'bottom-right',
+			'disable_narrow_viewport'        => '1',
+			'sticky_trigger_mode'            => 'playing',
+			'sticky_width_unit'              => '%',
+			'sticky_width_val_px'            => 400,
+			'sticky_width_val_pct'           => 25,
+			'sticky_width_max_original'      => '1',
+			'sticky_width_max_custom_active' => '0',
+			'sticky_width_max_custom_val'    => 450,
 		);
 		$defaults = apply_filters( 'ku_sticky_video_for_youtube_default_options', $defaults );
 
@@ -170,7 +190,14 @@ class KU_Sticky_Video_For_YouTube {
 			array(
 				'sanitize_callback' => array( $this, 'sanitize_options' ),
 				'default'           => array(
-					'exclude_class' => 'no-sticky',
+					'exclude_class'                  => 'no-sticky',
+					'sticky_trigger_mode'            => 'playing',
+					'sticky_width_unit'              => '%',
+					'sticky_width_val_px'            => 400,
+					'sticky_width_val_pct'           => 25,
+					'sticky_width_max_original'      => '1',
+					'sticky_width_max_custom_active' => '0',
+					'sticky_width_max_custom_val'    => 450,
 				),
 			)
 		);
@@ -201,6 +228,39 @@ class KU_Sticky_Video_For_YouTube {
 		}
 
 		$output['disable_narrow_viewport'] = ! empty( $input['disable_narrow_viewport'] ) ? '1' : '0';
+
+		if ( isset( $input['sticky_trigger_mode'] ) && in_array( $input['sticky_trigger_mode'], array( 'always', 'playing' ), true ) ) {
+			$output['sticky_trigger_mode'] = $input['sticky_trigger_mode'];
+		} else {
+			$output['sticky_trigger_mode'] = 'playing';
+		}
+
+		if ( isset( $input['sticky_width_unit'] ) && in_array( $input['sticky_width_unit'], array( 'px', '%' ), true ) ) {
+			$output['sticky_width_unit'] = $input['sticky_width_unit'];
+		} else {
+			$output['sticky_width_unit'] = 'px';
+		}
+
+		if ( isset( $input['sticky_width_val_px'] ) ) {
+			$output['sticky_width_val_px'] = max( 100, intval( $input['sticky_width_val_px'] ) );
+		} else {
+			$output['sticky_width_val_px'] = 400;
+		}
+
+		if ( isset( $input['sticky_width_val_pct'] ) ) {
+			$output['sticky_width_val_pct'] = max( 5, min( 100, intval( $input['sticky_width_val_pct'] ) ) );
+		} else {
+			$output['sticky_width_val_pct'] = 25;
+		}
+
+		$output['sticky_width_max_original']      = ! empty( $input['sticky_width_max_original'] ) ? '1' : '0';
+		$output['sticky_width_max_custom_active'] = ! empty( $input['sticky_width_max_custom_active'] ) ? '1' : '0';
+
+		if ( isset( $input['sticky_width_max_custom_val'] ) ) {
+			$output['sticky_width_max_custom_val'] = max( 100, intval( $input['sticky_width_max_custom_val'] ) );
+		} else {
+			$output['sticky_width_max_custom_val'] = 450;
+		}
 
 		return apply_filters( 'ku_sticky_video_for_youtube_sanitize_options', $output, $input );
 	}

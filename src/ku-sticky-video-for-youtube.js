@@ -255,6 +255,8 @@
 			? '.' + config.includeClass.trim().replace( /^\.+/, '' )
 			: '';
 
+		let foundFirstEligible = false;
+
 		for ( let i = 0; i < iframes.length; i++ ) {
 			const iframe = iframes[ i ];
 			let isEligible = false;
@@ -268,6 +270,15 @@
 				! iframe.closest( excludeSelector )
 			) {
 				isEligible = true;
+			}
+
+			// 無料版の場合、条件に合致する最初の1つのみをSticky対象(isEligible)とする
+			if ( ! config.isProActive && isEligible ) {
+				if ( foundFirstEligible ) {
+					isEligible = false;
+				} else {
+					foundFirstEligible = true;
+				}
 			}
 
 			// 競合回避: すでに他プラグインが作成したプレイヤーオブジェクトがあれば再利用してイベントを相乗りする

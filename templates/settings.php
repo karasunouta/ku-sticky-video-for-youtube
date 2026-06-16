@@ -8,6 +8,21 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+if ( ! isset( $options ) ) {
+	$options = get_option( 'ku-sticky-video-for-youtube-options', array() );
+}
+
+$exclude_class                  = isset( $options['exclude_class'] ) ? $options['exclude_class'] : 'no-sticky';
+$position                       = isset( $options['position'] ) ? $options['position'] : 'bottom-right';
+$disable_narrow_viewport        = isset( $options['disable_narrow_viewport'] ) ? $options['disable_narrow_viewport'] : '1';
+$sticky_trigger_mode            = isset( $options['sticky_trigger_mode'] ) ? $options['sticky_trigger_mode'] : 'playing';
+$sticky_width_unit              = isset( $options['sticky_width_unit'] ) ? $options['sticky_width_unit'] : '%';
+$sticky_width_val_px            = isset( $options['sticky_width_val_px'] ) ? $options['sticky_width_val_px'] : 400;
+$sticky_width_val_pct           = isset( $options['sticky_width_val_pct'] ) ? $options['sticky_width_val_pct'] : 25;
+$sticky_width_max_original      = isset( $options['sticky_width_max_original'] ) ? $options['sticky_width_max_original'] : '1';
+$sticky_width_max_custom_active = isset( $options['sticky_width_max_custom_active'] ) ? $options['sticky_width_max_custom_active'] : '0';
+$sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val'] ) ? $options['sticky_width_max_custom_val'] : 450;
 ?>
 <div class="wrap ku-sticky-video-for-youtube-admin-wrap">
 	<h1 class="screen-reader-text"><?php esc_html_e( 'KU Sticky Video for YouTube Settings', 'ku-sticky-video-for-youtube' ); ?></h1>
@@ -44,6 +59,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 
 			<div class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+				<label><?php esc_html_e( 'Trigger Settings', 'ku-sticky-video-for-youtube' ); ?></label>
+				<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+						<input type="radio" name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]" value="playing" <?php checked( $sticky_trigger_mode, 'playing' ); ?> />
+						<?php esc_html_e( 'Only when playing', 'ku-sticky-video-for-youtube' ); ?>
+					</label>
+					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+						<input type="radio" name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]" value="always" <?php checked( $sticky_trigger_mode, 'always' ); ?> />
+						<?php esc_html_e( 'Always (Scroll Follow)', 'ku-sticky-video-for-youtube' ); ?>
+					</label>
+				</div>
+				<p class="field-description">
+					<?php esc_html_e( 'Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state.', 'ku-sticky-video-for-youtube' ); ?>
+				</p>
+			</div>
+		</div>
+
+		<!-- Layout Settings Card -->
+		<div class="ku-sticky-video-for-youtube-card">
+			<h2 class="ku-sticky-video-for-youtube-card-title">
+				<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+				</svg>
+				<?php esc_html_e( 'Layout Settings', 'ku-sticky-video-for-youtube' ); ?>
+			</h2>
+
+			<div class="form-group" style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
 				<label for="position" style="font-weight: bold;"><?php esc_html_e( 'Display Position', 'ku-sticky-video-for-youtube' ); ?></label>
 				<div style="margin-top: 8px;">
 					<select id="position" name="ku-sticky-video-for-youtube-options[position]" class="select-field" style="padding: 0 8px; height: 35px; border-radius: 6px; border: 1px solid #ddd; background-color: #fff; min-width: 150px;">
@@ -54,6 +96,54 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<p class="field-description">
 					<?php esc_html_e( 'Choose which corner the floating video player should stick to.', 'ku-sticky-video-for-youtube' ); ?>
 				</p>
+			</div>
+
+			<div class="form-group">
+				<label><?php esc_html_e( 'Sticky Video Width', 'ku-sticky-video-for-youtube' ); ?></label>
+				<div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+					<!-- Unit selector -->
+					<select name="ku-sticky-video-for-youtube-options[sticky_width_unit]" id="sticky_width_unit" class="select-field" style="padding: 0 8px; height: 35px; border-radius: 6px; border: 1px solid #ddd; background-color: #fff; min-width: 95px;">
+						<option value="%" <?php selected( $sticky_width_unit, '%' ); ?>>% (vw)</option>
+						<option value="px" <?php selected( $sticky_width_unit, 'px' ); ?>>px</option>
+					</select>
+
+					<!-- % input wrapper -->
+					<div id="width_input_pct_container" class="input-wrapper" style="align-items: center; gap: 5px; <?php echo '%' === $sticky_width_unit ? 'display: inline-flex;' : 'display: none;'; ?>">
+						<input type="number" id="sticky_width_val_pct" name="ku-sticky-video-for-youtube-options[sticky_width_val_pct]" value="<?php echo esc_attr( $sticky_width_val_pct ); ?>" class="input-field" min="5" max="100" style="width: 100px;" />
+						<span style="font-weight: bold; color: #666;">%</span>
+					</div>
+
+					<!-- px input wrapper -->
+					<div id="width_input_px_container" class="input-wrapper" style="align-items: center; gap: 5px; <?php echo 'px' === $sticky_width_unit ? 'display: inline-flex;' : 'display: none;'; ?>">
+						<input type="number" id="sticky_width_val_px" name="ku-sticky-video-for-youtube-options[sticky_width_val_px]" value="<?php echo esc_attr( $sticky_width_val_px ); ?>" class="input-field" min="100" max="2000" style="width: 100px;" />
+						<span style="font-weight: bold; color: #666;">px</span>
+					</div>
+				</div>
+				<p class="field-description">
+					<?php esc_html_e( 'Configure the width of the video player when it is in sticky mode. Switching units will preserve both pixel and percentage settings.', 'ku-sticky-video-for-youtube' ); ?>
+				</p>
+			</div>
+
+			<!-- Max Width Settings (Only for % unit) -->
+			<div id="width_max_settings_container" class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; <?php echo '%' === $sticky_width_unit ? 'display: block;' : 'display: none;'; ?>">
+				<label><?php esc_html_e( 'Maximum Width Settings', 'ku-sticky-video-for-youtube' ); ?></label>
+				<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+						<input type="checkbox" id="sticky_width_max_original" name="ku-sticky-video-for-youtube-options[sticky_width_max_original]" value="1" <?php checked( $sticky_width_max_original, '1' ); ?> />
+						<?php esc_html_e( 'Sticky video player does not exceed the width of the original video player', 'ku-sticky-video-for-youtube' ); ?>
+					</label>
+
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+							<input type="checkbox" id="sticky_width_max_custom_active" name="ku-sticky-video-for-youtube-options[sticky_width_max_custom_active]" value="1" <?php checked( $sticky_width_max_custom_active, '1' ); ?> />
+							<?php esc_html_e( 'Limit the maximum width to:', 'ku-sticky-video-for-youtube' ); ?>
+						</label>
+						<div class="input-wrapper" style="align-items: center; gap: 5px; display: inline-flex;">
+							<input type="number" id="sticky_width_max_custom_val" name="ku-sticky-video-for-youtube-options[sticky_width_max_custom_val]" value="<?php echo esc_attr( $sticky_width_max_custom_val ); ?>" class="input-field" min="100" max="2000" style="width: 80px;" <?php disabled( $sticky_width_max_custom_active !== '1', true ); ?> />
+							<span style="font-weight: bold; color: #666;">px</span>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
