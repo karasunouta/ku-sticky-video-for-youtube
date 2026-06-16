@@ -75,9 +75,13 @@ $sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val']
 					<?php esc_html_e( 'Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state.', 'ku-sticky-video-for-youtube' ); ?>
 				</p>
 
-				<div style="margin-top: 12px; padding-left: 24px;">
+				<?php
+				$is_playing_mode = ( 'playing' === $sticky_trigger_mode );
+				$hide_above_container_style = $is_playing_mode ? 'opacity: 0.5; pointer-events: none;' : 'opacity: 1; transition: opacity 0.3s ease;';
+				?>
+				<div id="hide_above_settings_container" style="margin-top: 12px; padding-left: 24px; <?php echo esc_attr( $hide_above_container_style ); ?>">
 					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-						<input type="checkbox" id="sticky_hide_above" name="ku-sticky-video-for-youtube-options[sticky_hide_above]" value="1" <?php checked( $sticky_hide_above, '1' ); ?> />
+						<input type="checkbox" id="sticky_hide_above" name="ku-sticky-video-for-youtube-options[sticky_hide_above]" value="1" <?php checked( $sticky_hide_above, '1' ); ?> <?php disabled( $is_playing_mode, true ); ?> />
 						<?php esc_html_e( 'Hide when scrolling above', 'ku-sticky-video-for-youtube' ); ?>
 					</label>
 					<p class="field-description" style="margin-top: 4px;">
@@ -136,21 +140,25 @@ $sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val']
 			</div>
 
 			<!-- Max Width Settings (Only for % unit) -->
-			<div id="width_max_settings_container" class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; <?php echo '%' === $sticky_width_unit ? 'display: block;' : 'display: none;'; ?>">
+			<?php
+			$is_px_unit          = ( 'px' === $sticky_width_unit );
+			$max_container_style = $is_px_unit ? 'opacity: 0.5; pointer-events: none;' : 'opacity: 1; transition: opacity 0.3s ease;';
+			?>
+			<div id="width_max_settings_container" class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; <?php echo esc_attr( $max_container_style ); ?>">
 				<label><?php esc_html_e( 'Maximum Width Settings', 'ku-sticky-video-for-youtube' ); ?></label>
 				<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
 					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-						<input type="checkbox" id="sticky_width_max_original" name="ku-sticky-video-for-youtube-options[sticky_width_max_original]" value="1" <?php checked( $sticky_width_max_original, '1' ); ?> />
+						<input type="checkbox" id="sticky_width_max_original" name="ku-sticky-video-for-youtube-options[sticky_width_max_original]" value="1" <?php checked( $sticky_width_max_original, '1' ); ?> <?php disabled( $is_px_unit, true ); ?> />
 						<?php esc_html_e( 'Sticky video player does not exceed the width of the original video player', 'ku-sticky-video-for-youtube' ); ?>
 					</label>
 
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-							<input type="checkbox" id="sticky_width_max_custom_active" name="ku-sticky-video-for-youtube-options[sticky_width_max_custom_active]" value="1" <?php checked( $sticky_width_max_custom_active, '1' ); ?> />
+							<input type="checkbox" id="sticky_width_max_custom_active" name="ku-sticky-video-for-youtube-options[sticky_width_max_custom_active]" value="1" <?php checked( $sticky_width_max_custom_active, '1' ); ?> <?php disabled( $is_px_unit, true ); ?> />
 							<?php esc_html_e( 'Limit the maximum width to:', 'ku-sticky-video-for-youtube' ); ?>
 						</label>
 						<div class="input-wrapper" style="align-items: center; gap: 5px; display: inline-flex;">
-							<input type="number" id="sticky_width_max_custom_val" name="ku-sticky-video-for-youtube-options[sticky_width_max_custom_val]" value="<?php echo esc_attr( $sticky_width_max_custom_val ); ?>" class="input-field" min="100" max="2000" style="width: 80px;" <?php disabled( $sticky_width_max_custom_active !== '1', true ); ?> />
+							<input type="number" id="sticky_width_max_custom_val" name="ku-sticky-video-for-youtube-options[sticky_width_max_custom_val]" value="<?php echo esc_attr( $sticky_width_max_custom_val ); ?>" class="input-field" min="100" max="2000" style="width: 80px;" <?php disabled( $is_px_unit || $sticky_width_max_custom_active !== '1', true ); ?> />
 							<span style="font-weight: bold; color: #666;">px</span>
 						</div>
 					</div>
@@ -198,13 +206,22 @@ $sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val']
 document.addEventListener('DOMContentLoaded', function() {
 	var triggerRadios = document.querySelectorAll('input[name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]"]');
 	var hideAboveCheckbox = document.getElementById('sticky_hide_above');
+	var hideAboveContainer = document.getElementById('hide_above_settings_container');
 
 	function toggleHideAbove() {
 		var selectedRadio = document.querySelector('input[name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]"]:checked');
 		if (selectedRadio && selectedRadio.value === 'playing') {
-			hideAboveCheckbox.disabled = true;
+			if (hideAboveCheckbox) hideAboveCheckbox.disabled = true;
+			if (hideAboveContainer) {
+				hideAboveContainer.style.opacity = '0.5';
+				hideAboveContainer.style.pointerEvents = 'none';
+			}
 		} else {
-			hideAboveCheckbox.disabled = false;
+			if (hideAboveCheckbox) hideAboveCheckbox.disabled = false;
+			if (hideAboveContainer) {
+				hideAboveContainer.style.opacity = '1';
+				hideAboveContainer.style.pointerEvents = 'auto';
+			}
 		}
 	}
 

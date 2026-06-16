@@ -70,27 +70,42 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		const maxSettingsContainer = document.getElementById(
 			'width_max_settings_container'
 		);
+		const maxOriginalCheckbox = document.getElementById(
+			'sticky_width_max_original'
+		);
+		const maxCustomActiveCheckbox = document.getElementById(
+			'sticky_width_max_custom_active'
+		);
+		const maxCustomValInput = document.getElementById(
+			'sticky_width_max_custom_val'
+		);
 
 		const updateWidthFields = function () {
-			if ( widthUnitSelect.value === 'px' ) {
-				if ( pxContainer ) {
-					pxContainer.style.display = 'inline-flex';
-				}
-				if ( pctContainer ) {
-					pctContainer.style.display = 'none';
-				}
+			const isPx = widthUnitSelect.value === 'px';
+
+			if ( isPx ) {
+				if ( pxContainer ) pxContainer.style.display = 'inline-flex';
+				if ( pctContainer ) pctContainer.style.display = 'none';
+
 				if ( maxSettingsContainer ) {
-					maxSettingsContainer.style.display = 'none';
+					maxSettingsContainer.style.opacity = '0.5';
+					maxSettingsContainer.style.pointerEvents = 'none';
 				}
+				if ( maxOriginalCheckbox ) maxOriginalCheckbox.disabled = true;
+				if ( maxCustomActiveCheckbox ) maxCustomActiveCheckbox.disabled = true;
+				if ( maxCustomValInput ) maxCustomValInput.disabled = true;
 			} else {
-				if ( pxContainer ) {
-					pxContainer.style.display = 'none';
-				}
-				if ( pctContainer ) {
-					pctContainer.style.display = 'inline-flex';
-				}
+				if ( pxContainer ) pxContainer.style.display = 'none';
+				if ( pctContainer ) pctContainer.style.display = 'inline-flex';
+
 				if ( maxSettingsContainer ) {
-					maxSettingsContainer.style.display = 'block';
+					maxSettingsContainer.style.opacity = '1';
+					maxSettingsContainer.style.pointerEvents = 'auto';
+				}
+				if ( maxOriginalCheckbox ) maxOriginalCheckbox.disabled = false;
+				if ( maxCustomActiveCheckbox ) maxCustomActiveCheckbox.disabled = false;
+				if ( maxCustomValInput ) {
+					maxCustomValInput.disabled = ! ( maxCustomActiveCheckbox && maxCustomActiveCheckbox.checked );
 				}
 			}
 		};
@@ -108,9 +123,14 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const maxCustomValInput = document.getElementById(
 		'sticky_width_max_custom_val'
 	);
+	const widthUnitSelectForCustom = document.getElementById( 'sticky_width_unit' );
 	if ( maxCustomActiveCheckbox && maxCustomValInput ) {
 		const updateMaxCustomInput = function () {
-			maxCustomValInput.disabled = ! maxCustomActiveCheckbox.checked;
+			if ( widthUnitSelectForCustom && widthUnitSelectForCustom.value === 'px' ) {
+				maxCustomValInput.disabled = true;
+			} else {
+				maxCustomValInput.disabled = ! maxCustomActiveCheckbox.checked;
+			}
 		};
 		maxCustomActiveCheckbox.addEventListener(
 			'change',
