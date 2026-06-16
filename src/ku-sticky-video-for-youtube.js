@@ -30,7 +30,7 @@
 		zIndex: 9999,
 		closeButton: true,
 		useFade: true, // フェード効果の使用
-		showAbove: false, // 動画プレイヤーより上で縮小表示するかどうか（デフォルトはfalse）
+		hideAbove: true, // 動画より上にスクロールした場合は隠す（デフォルトはtrue）
 		excludeClass: 'no-sticky', // デフォルト除外クラス
 		targetingMode: 'exclude', // デフォルトの指定方法
 		includeClass: '', // デフォルト対象クラス
@@ -505,19 +505,21 @@
 		const rect = $reference.getBoundingClientRect();
 		const windowHeight = window.innerHeight;
 
+		const effectiveHideAbove = config.triggerMode === 'playing' ? false : config.hideAbove;
+
 		// 境界付近でのフリッカー（点滅）を防ぐための閾値（ヒステリシス）
 		const threshold = 10;
 		let isOutOfView;
 		if ( ! isSticky ) {
 			// 画面外に threshold ピクセル以上出た場合に Sticky 化する
-			if ( config.showAbove ) {
+			if ( ! effectiveHideAbove ) {
 				isOutOfView =
 					rect.bottom < -threshold ||
 					rect.top > windowHeight + threshold;
 			} else {
 				isOutOfView = rect.bottom < -threshold;
 			}
-		} else if ( config.showAbove ) {
+		} else if ( ! effectiveHideAbove ) {
 			// 画面内に threshold ピクセル以上戻ってきた場合に Sticky を解除する
 			isOutOfView =
 				rect.bottom <= threshold ||

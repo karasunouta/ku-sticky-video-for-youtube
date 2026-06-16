@@ -100,7 +100,7 @@ class KU_Sticky_Video_For_YouTube {
 		}
 
 		$localize_data = array(
-			'showAbove'             => $show_above,
+			'hideAbove'             => $options['sticky_hide_above'] === '1',
 			'excludeClass'          => $exclude_class,
 			'width'                 => $width,
 			'widthMaxOriginal'      => ! empty( $options['sticky_width_max_original'] ) ? true : false,
@@ -138,6 +138,7 @@ class KU_Sticky_Video_For_YouTube {
 			'position'                       => 'bottom-right',
 			'disable_narrow_viewport'        => '1',
 			'sticky_trigger_mode'            => 'playing',
+			'sticky_hide_above'              => '1',
 			'sticky_width_unit'              => '%',
 			'sticky_width_val_px'            => 400,
 			'sticky_width_val_pct'           => 25,
@@ -192,6 +193,7 @@ class KU_Sticky_Video_For_YouTube {
 				'default'           => array(
 					'exclude_class'                  => 'no-sticky',
 					'sticky_trigger_mode'            => 'playing',
+					'sticky_hide_above'              => '1',
 					'sticky_width_unit'              => '%',
 					'sticky_width_val_px'            => 400,
 					'sticky_width_val_pct'           => 25,
@@ -234,6 +236,8 @@ class KU_Sticky_Video_For_YouTube {
 		} else {
 			$output['sticky_trigger_mode'] = 'playing';
 		}
+
+		$output['sticky_hide_above'] = ! empty( $input['sticky_hide_above'] ) ? '1' : '0';
 
 		if ( isset( $input['sticky_width_unit'] ) && in_array( $input['sticky_width_unit'], array( 'px', '%' ), true ) ) {
 			$output['sticky_width_unit'] = $input['sticky_width_unit'];

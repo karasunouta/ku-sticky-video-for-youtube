@@ -17,6 +17,7 @@ $exclude_class                  = isset( $options['exclude_class'] ) ? $options[
 $position                       = isset( $options['position'] ) ? $options['position'] : 'bottom-right';
 $disable_narrow_viewport        = isset( $options['disable_narrow_viewport'] ) ? $options['disable_narrow_viewport'] : '1';
 $sticky_trigger_mode            = isset( $options['sticky_trigger_mode'] ) ? $options['sticky_trigger_mode'] : 'playing';
+$sticky_hide_above              = isset( $options['sticky_hide_above'] ) ? $options['sticky_hide_above'] : '1';
 $sticky_width_unit              = isset( $options['sticky_width_unit'] ) ? $options['sticky_width_unit'] : '%';
 $sticky_width_val_px            = isset( $options['sticky_width_val_px'] ) ? $options['sticky_width_val_px'] : 400;
 $sticky_width_val_pct           = isset( $options['sticky_width_val_pct'] ) ? $options['sticky_width_val_pct'] : 25;
@@ -73,6 +74,16 @@ $sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val']
 				<p class="field-description">
 					<?php esc_html_e( 'Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state.', 'ku-sticky-video-for-youtube' ); ?>
 				</p>
+
+				<div style="margin-top: 12px; padding-left: 24px;">
+					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+						<input type="checkbox" id="sticky_hide_above" name="ku-sticky-video-for-youtube-options[sticky_hide_above]" value="1" <?php checked( $sticky_hide_above, '1' ); ?> />
+						<?php esc_html_e( 'Hide when scrolling above', 'ku-sticky-video-for-youtube' ); ?>
+					</label>
+					<p class="field-description" style="margin-top: 4px;">
+						<?php esc_html_e( 'Prevents the sticky video from appearing when scrolling above the original video position. This only applies to the "Always" trigger mode.', 'ku-sticky-video-for-youtube' ); ?>
+					</p>
+				</div>
 			</div>
 		</div>
 
@@ -182,3 +193,26 @@ $sticky_width_max_custom_val    = isset( $options['sticky_width_max_custom_val']
 		</button>
 	</form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	var triggerRadios = document.querySelectorAll('input[name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]"]');
+	var hideAboveCheckbox = document.getElementById('sticky_hide_above');
+
+	function toggleHideAbove() {
+		var selectedRadio = document.querySelector('input[name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]"]:checked');
+		if (selectedRadio && selectedRadio.value === 'playing') {
+			hideAboveCheckbox.disabled = true;
+		} else {
+			hideAboveCheckbox.disabled = false;
+		}
+	}
+
+	triggerRadios.forEach(function(radio) {
+		radio.addEventListener('change', toggleHideAbove);
+	});
+
+	// Initialize on load
+	toggleHideAbove();
+});
+</script>
