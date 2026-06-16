@@ -18,6 +18,7 @@
 		"lint:js": "wp-scripts lint-js",
 		"make-json": "wp i18n make-json languages/ --no-purge && bash scripts/make-json-rename.sh ku-sticky-video-for-youtube",
 		"make-pot": "wp i18n make-pot . languages/ku-sticky-video-for-youtube.pot --exclude=\"src\"",
+		"compile-mo": "python scripts/po2mo.py",
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
 		"plugin-export": "npm run build && npm run plugin-zip",

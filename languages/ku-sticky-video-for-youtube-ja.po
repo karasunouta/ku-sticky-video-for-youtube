@@ -51,8 +51,8 @@ msgid "Exclude CSS Class Name"
 msgstr "除外対象の CSS クラス名"
 
 #: templates/settings.php:54
-msgid "If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position."
-msgstr "このクラスが YouTube ブロックまたはその親コンテナに割り当てられている場合、その動画はスクロールに追従しなくなります。"
+msgid "If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position. In this free version, only the first (topmost) video on the page that does not have this class will be targeted for the sticky effect."
+msgstr "このクラスが YouTube ブロックまたはその親コンテナに割り当てられている場合、その動画はスクロールに追従しなくなります。本プラグイン（無料版）では、このクラスが割り当てられていない動画のうち、ページ最上部にある最初の動画のみが追従表示の対象となります。"
 
 #. translators: %s: default class name
 #: templates/settings.php:57

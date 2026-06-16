@@ -52,7 +52,7 @@ $sticky_z_index                 = isset( $options['sticky_z_index'] ) ? $options
 					<input type="text" id="exclude_class" name="ku-sticky-video-for-youtube-options[exclude_class]" value="<?php echo esc_attr( $exclude_class ); ?>" class="input-field" placeholder="no-sticky" />
 				</div>
 				<p class="field-description">
-					<?php esc_html_e( 'If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position.', 'ku-sticky-video-for-youtube' ); ?><br>
+					<?php esc_html_e( 'If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position. In this free version, only the first (topmost) video on the page that does not have this class will be targeted for the sticky effect.', 'ku-sticky-video-for-youtube' ); ?><br>
 					<?php
 					/* translators: %s: default class name */
 					printf( esc_html__( 'Default: %s', 'ku-sticky-video-for-youtube' ), '<code>no-sticky</code>' );
