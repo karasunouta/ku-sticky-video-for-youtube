@@ -88,7 +88,7 @@ for po_file_path in po_files:
         if space_inside:
             print(f"  Spaces inside parentheses: msgid='{msgid}' msgstr='{val}'")
             
-        missing_paren_sp_1 = re.findall(r"([^ \n「『（、。])\(", val)
+        missing_paren_sp_1 = re.findall(r"([^ \n「『（、。』」])\(", val)
         missing_paren_sp_1 = [x for x in missing_paren_sp_1 if x not in ['(', ')']]
         if missing_paren_sp_1:
             print(f"  Missing space before '(': msgid='{msgid}' msgstr='{val}'")

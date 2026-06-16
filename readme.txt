@@ -24,9 +24,17 @@ To rebuild the minified assets, run the following commands in the plugin directo
 2. `npm run build` (to compile the source files using `@wordpress/scripts`)
 
 === Features ===
-* Float YouTube video when scrolled out of view.
-* Customizable exclude CSS class to prevent specific videos from floating.
-* Beautiful and clean admin settings page to configure options.
+* Float YouTube video player automatically when it scrolls out of view.
+* Choose display position: Bottom Right or Bottom Left.
+* Flexible trigger options: float only when playing or float always (scroll follow).
+* Hide the floating player when scrolling above the original video position.
+* Customize video width using either pixel (px) or percentage (%) units.
+* Set maximum width limits for percentage-based sizing (keep within original video width or set custom pixel threshold).
+* Adjust Z-index to prevent overlapping with theme header menus, widgets, or popups.
+* Automatically limits sticky video height to 50% of viewport to prevent blocking screen space.
+* Protect mobile user experience by disabling the sticky video player on narrow viewports automatically.
+* Exclude specific videos using a customizable CSS class.
+* Beautiful and clean admin settings page.
 
 == Installation ==
 
@@ -46,6 +54,15 @@ You can add the excluded CSS class (configured in the settings page, default: `n
 3. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
 
 == Changelog ==
+
+=== 1.7.0 ===
+* Add: Support for percentage (%) and pixel (px) width units for the floating player.
+* Add: Max-width constraints for percentage-based sizes to prevent exceeding original video width or a custom pixel limit.
+* Add: Configurable Z-index option to resolve overlapping with sticky header menus and chat widgets.
+* Add: Option to hide the floating player when scrolling above the original video's position.
+* Improve: Auto-limit the floating player's height to 50% of the viewport.
+* Fix: Resolved issue where the sticky player was not dismissed when playing another video while a sticky video is paused.
+* Fix: Refined YouTube API iframe loading and initialization timing.
 
 === 1.6.1 ===
 * Fix: Adjusted Japanese translation spacing and punctuation to align with the WordPress translation style guide.

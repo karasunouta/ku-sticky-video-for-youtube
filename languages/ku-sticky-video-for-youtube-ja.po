@@ -52,7 +52,7 @@ msgstr "除外対象の CSS クラス名"
 
 #: templates/settings.php:54
 msgid "If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position. In this free version, only the first (topmost) video on the page that does not have this class will be targeted for the sticky effect."
-msgstr "このクラスが YouTube ブロックまたはその親コンテナに割り当てられている場合、その動画はスクロールに追従しなくなります。本プラグイン（無料版）では、このクラスが割り当てられていない動画のうち、ページ最上部にある最初の動画のみが追従表示の対象となります。"
+msgstr "このクラスが YouTube ブロックまたはその親コンテナに割り当てられている場合、その動画はスクロールに追従しなくなります。本プラグイン (無料版) では、このクラスが割り当てられていない動画のうち、ページ最上部にある最初の動画のみが追従表示の対象となります。"
 
 #. translators: %s: default class name
 #: templates/settings.php:57
@@ -70,7 +70,7 @@ msgstr "再生中のみ"
 
 #: templates/settings.php:71
 msgid "Always (Scroll Follow)"
-msgstr "常に（スクロール追従）"
+msgstr "常に (スクロール追従)"
 
 #: templates/settings.php:75
 msgid "Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state."
@@ -106,7 +106,7 @@ msgstr "追従する動画プレイヤーを表示する画面の隅を選択し
 
 #: templates/settings.php:116
 msgid "Z-index (Stack Order)"
-msgstr "Z-index（重なり順）"
+msgstr "Z-index (重なり順)"
 
 #: templates/settings.php:121
 msgid "Adjust the Z-index value to prevent the sticky video player from overlapping with theme elements like header menus or chat widgets. Default is 9999."
@@ -150,7 +150,7 @@ msgstr "幅の狭いビューポートでは無効にする"
 
 #: templates/settings.php:173
 msgid "If enabled, the sticky video player is automatically disabled when the browser width is narrower than the sticky video width + double margins (e.g., 400px + 20px×2 = 440px). This protects the mobile user experience."
-msgstr "有効にすると、ブラウザの幅が「追従動画の幅 + 余白の2倍」（例: 400px + 20px×2 = 440px）より狭くなった場合に、自動的に追従表示を無効化します。これにより、モバイル表示におけるユーザー体験を保護します。"
+msgstr "有効にすると、ブラウザの幅が「追従動画の幅 + 余白の2倍」(例:400px+20px×2=440px) より狭くなった場合に、自動的に追従表示を無効化します。これにより、モバイル表示におけるユーザー体験を保護します。"
 
 #: templates/settings.php:178
 msgid "How to Exclude a YouTube Block"
