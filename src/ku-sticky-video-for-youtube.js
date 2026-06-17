@@ -455,6 +455,10 @@
 			'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
 		);
 
+		if ( iframes.length === 0 ) {
+			return;
+		}
+
 		// Pro版が有効か、またはトリガー設定が「再生中のみ」の場合はYouTube APIを初期化する
 		if ( config.triggerMode === 'playing' || config.isProActive ) {
 			initPlayingMode( iframes );

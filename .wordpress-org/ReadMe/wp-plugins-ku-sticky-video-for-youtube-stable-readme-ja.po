@@ -1,0 +1,224 @@
+# Translation of Plugins - KU Sticky Video for YouTube - Stable Readme (latest release) in Japanese
+# This file is distributed under the same license as the Plugins - KU Sticky Video for YouTube - Stable Readme (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: +0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: GlotPress/4.0.3\n"
+"Language: ja_JP\n"
+"Project-Id-Version: Plugins - KU Sticky Video for YouTube - Stable Readme (latest release)\n"
+
+#. Short description.
+#, gp-priority: high
+msgid "Make YouTube video player in posts follow the scroll position, showing in the corner of the page."
+msgstr "投稿内の YouTube 動画プレイヤーをスクロール状態に応じてページ隅に追従表示します。"
+
+#. Plugin name.
+#, gp-priority: high
+msgid "KU Sticky Video for YouTube"
+msgstr "KU Sticky Video for YouTube"
+
+#. Found in description list item.
+msgid "Fix: Refined YouTube API iframe loading and initialization timing."
+msgstr "修正: YouTube API の iframe 読み込みおよび初期化タイミングを調整しました。"
+
+#. Found in description list item.
+msgid "Fix: Resolved issue where the sticky player was not dismissed when playing another video while a sticky video is paused."
+msgstr "修正: 追従動画の一時停止中に別の動画を再生した際、追従プレイヤーが閉じられない問題を解決しました。"
+
+#. Found in description list item.
+msgid "Improve: Auto-limit the floating player's height to 50% of the viewport."
+msgstr "改善: 追従プレイヤーの高さを表示領域の50%までに自動制限しました。"
+
+#. Found in description list item.
+msgid "Add: Option to hide the floating player when scrolling above the original video's position."
+msgstr "追加: 元の動画の位置より上にスクロールした際、追従プレイヤーを非表示にするオプションを追加しました。"
+
+#. Found in description list item.
+msgid "Add: Configurable Z-index option to resolve overlapping with sticky header menus and chat widgets."
+msgstr "追加: 固定ヘッダーメニューやチャットウィジェットとの重なりを解消するため、Z-index を設定できるオプションを追加しました。"
+
+#. Found in description list item.
+msgid "Add: Max-width constraints for percentage-based sizes to prevent exceeding original video width or a custom pixel limit."
+msgstr "追加: パーセンテージ基準のサイズ指定において、元の動画の幅やカスタムピクセル制限を超えないようにするための最大幅制限を追加しました。"
+
+#. Found in description list item.
+msgid "Add: Support for percentage (%) and pixel (px) width units for the floating player."
+msgstr "追加: 追従プレイヤーの幅の単位として、パーセンテージ (%) およびピクセル (px) に対応しました。"
+
+#. Found in description list item.
+msgid "Beautiful and clean admin settings page."
+msgstr "美しくクリーンな管理設定ページ。"
+
+#. Found in description list item.
+msgid "Exclude specific videos using a customizable CSS class."
+msgstr "カスタマイズ可能な除外 CSS クラスを使用して、特定の動画の追従表示を防ぎます。"
+
+#. Found in description list item.
+msgid "Protect mobile user experience by disabling the sticky video player on narrow viewports automatically."
+msgstr "幅の狭いビューポートでは自動的に追従動画プレイヤーを無効化し、モバイルのユーザー体験を保護します。"
+
+#. Found in description list item.
+msgid "Automatically limits sticky video height to 50% of viewport to prevent blocking screen space."
+msgstr "画面を塞がないよう、追従動画の高さを表示領域の50%までに自動で制限。"
+
+#. Found in description list item.
+msgid "Adjust Z-index to prevent overlapping with theme header menus, widgets, or popups."
+msgstr "テーマのヘッダーメニュー、ウィジェット、ポップアップとの重なりを防ぐために Z-index を調整可能。"
+
+#. Found in description list item.
+msgid "Set maximum width limits for percentage-based sizing (keep within original video width or set custom pixel threshold)."
+msgstr "パーセンテージ基準のサイズ指定における最大幅の制限 (元の動画の幅に収めるか、カスタムピクセル値を設定)。"
+
+#. Found in description list item.
+msgid "Customize video width using either pixel (px) or percentage (%) units."
+msgstr "ピクセル (px) またはパーセンテージ (%) の単位を使用して、動画の幅をカスタマイズ。"
+
+#. Found in description list item.
+msgid "Hide the floating player when scrolling above the original video position."
+msgstr "元の動画の位置より上にスクロールした際、追従プレイヤーを非表示にします。"
+
+#. Found in description list item.
+msgid "Flexible trigger options: float only when playing or float always (scroll follow)."
+msgstr "柔軟なトリガーオプション: 再生中のみ追従表示、または常に追従表示 (スクロール追従)。"
+
+#. Found in description list item.
+msgid "Choose display position: Bottom Right or Bottom Left."
+msgstr "表示位置の選択: 右下または左下。"
+
+#. Found in description list item.
+msgid "Float YouTube video player automatically when it scrolls out of view."
+msgstr "画面外にスクロールされた際に YouTube 動画プレイヤーを自動的に追従表示。"
+
+#. Found in description header.
+msgid "1.7.0"
+msgstr "1.7.0"
+
+#. Screenshot description.
+msgid "The lower part of the plugin settings page (Layout, Width, Z-index, and Mobile settings)."
+msgstr "プラグイン設定ページの下部 (レイアウト、幅、Z-index、モバイル設定)。"
+
+#. Screenshot description.
+msgid "The upper part of the plugin settings page (General Settings and Trigger options)."
+msgstr "プラグイン設定ページの上部 (全般設定とトリガーオプション)。"
+
+#. Found in description list item.
+msgid "Fix: Adjusted Japanese translation spacing and punctuation to align with the WordPress translation style guide."
+msgstr "修正: WordPress 翻訳スタイルガイドに合わせるため、日本語翻訳のスペースと句読点を調整しました。"
+
+#. Found in description header.
+msgid "1.6.1"
+msgstr "1.6.1"
+
+#. Found in description list item.
+msgid "Improve: Enhance internal hooks and architecture to support future extensions."
+msgstr "改善: 将来の拡張に対応するため、内部フックとアーキテクチャを強化しました。"
+
+#. Found in description list item.
+msgid "Add: Option to automatically disable sticky video on narrow (mobile) viewports."
+msgstr "追加: 幅の狭い (モバイル) ビューポートで追従動画を自動的に無効にするオプション。"
+
+#. Found in description list item.
+msgid "Add: Option to select display position (Bottom Right or Bottom Left)."
+msgstr "追加: 表示位置 (右下または左下) を選択するオプション。"
+
+#. Found in description header.
+msgid "1.6.0"
+msgstr "1.6.0"
+
+#. Screenshot description.
+msgid "The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post."
+msgstr "WordPress 投稿を下にスクロールした際、右下に追従 (固定表示) 状態で表示される YouTube 動画プレイヤー。"
+
+#. Screenshot description.
+msgid "A YouTube video player loaded in a WordPress post on the frontend."
+msgstr "フロントエンドの WordPress 投稿内に読み込まれた YouTube 動画プレイヤー。"
+
+#. Found in installation list item.
+msgid "Configure the settings under Settings -&gt; KU Sticky Video for YouTube."
+msgstr "設定 -&gt; KU Sticky Video for YouTube で設定を行います。"
+
+#. Found in installation list item.
+msgid "Activate the plugin through the 'Plugins' screen in WordPress."
+msgstr "WordPress の「プラグイン」画面でプラグインを有効化します。"
+
+#. Found in installation list item.
+msgid "Upload the plugin files to the <code>/wp-content/plugins/ku-sticky-video-for-youtube</code> directory, or install the plugin through the WordPress plugins screen directly."
+msgstr "プラグインのファイルを <code>/wp-content/plugins/ku-sticky-video-for-youtube</code> ディレクトリにアップロードするか、WordPress のプラグイン画面から直接インストールします。"
+
+#. Found in description paragraph.
+msgid "You can add the excluded CSS class (configured in the settings page, default: <code>no-sticky</code>) to the YouTube block or its parent container in the WordPress editor under \"Advanced\" -&gt; \"Additional CSS class(es)\"."
+msgstr "WordPress エディターの「高度な設定」 -&gt;「追加 CSS クラス」で、除外対象の CSS クラス (設定ページで設定可能、デフォルト: <code>no-sticky</code>) を YouTube ブロックまたはその親コンテナに追加できます。"
+
+#. Found in description paragraph.
+msgid ""
+"To rebuild the minified assets, run the following commands in the plugin directory:\n"
+"1. <code>npm install</code> (to install build dependencies)\n"
+"2. <code>npm run build</code> (to compile the source files using <code>@wordpress/scripts</code>)"
+msgstr ""
+"圧縮されたアセットを再ビルドするには、プラグインディレクトリで次のコマンドを実行します:\n"
+"1. <code>npm install</code> (ビルド用の依存関係をインストール)\n"
+"2. <code>npm run build</code> (<code>@wordpress/scripts</code> を使用してソースファイルをコンパイル)"
+
+#. Found in description paragraph.
+msgid ""
+"This plugin contains minified JavaScript for performance. The complete, unminified source code is publicly available on GitHub:\n"
+"https://github.com/karasunouta/ku-sticky-video-for-youtube"
+msgstr ""
+"このプラグインには、パフォーマンス向上のために圧縮された JavaScript が含まれています。圧縮されていない完全なソースコードは、GitHub で公開されています:\n"
+"https://github.com/karasunouta/ku-sticky-video-for-youtube"
+
+#. Found in description paragraph.
+msgid "KU Sticky Video for YouTube is a lightweight WordPress plugin that automatically makes YouTube video players inside post content follow the scroll position, showing in the corner of the page when the original video scrolls out of view."
+msgstr "KU Sticky Video for YouTube は、投稿内の YouTube 動画プレイヤーをスクロール状態に応じて自動的に追従させ、元の動画が画面外にスクロールされた際にページ隅に表示する軽量な WordPress プラグインです。"
+
+#. Found in description list item.
+msgid "Initial release."
+msgstr "初期リリース。"
+
+#. Found in description list item.
+msgid "Add: License declarations for WordPress.org submission."
+msgstr "追加: WordPress.org への申請用ライセンス表記を追加。"
+
+#. Found in description list item.
+msgid "Fix: Settings page security enhancements."
+msgstr "修正: 設定ページのセキュリティを強化。"
+
+#. Found in description list item.
+msgid "Fix: Compatibility headers and PHP version."
+msgstr "修正: 互換性ヘッダーと PHP バージョンを修正。"
+
+#. Found in description list item.
+msgid "Update: Updated version to 1.5.0."
+msgstr "更新: バージョンを1.5.0に更新。"
+
+#. Found in description list item.
+msgid "Rename: Renamed plugin from \"Sticky YouTube\" to \"KU Sticky Video for YouTube\"."
+msgstr "名称変更: プラグイン名を「Sticky YouTube」から「KU Sticky Video for YouTube」に変更。"
+
+#. Found in description header.
+msgid "1.0.0"
+msgstr "1.0.0"
+
+#. Found in description header.
+msgid "1.4.3"
+msgstr "1.4.3"
+
+#. Found in description header.
+msgid "1.5.0"
+msgstr "1.5.0"
+
+#. Found in description header.
+msgid "How can I prevent a specific YouTube video from floating?"
+msgstr "特定の YouTube 動画が追従表示されないようにするにはどうすればよいですか ?"
+
+#. Found in description header.
+msgid "Features"
+msgstr "機能"
+
+#. Found in description header.
+msgid "Build Instructions"
+msgstr "ビルド手順"

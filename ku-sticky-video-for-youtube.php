@@ -62,6 +62,13 @@ class KU_Sticky_Video_For_YouTube {
 			return;
 		}
 
+		$should_enqueue = $this->has_youtube_embeds();
+		$should_enqueue = apply_filters( 'ku_sticky_video_for_youtube_should_enqueue', $should_enqueue );
+
+		if ( ! $should_enqueue ) {
+			return;
+		}
+
 		// パスの整理
 		$entry_point    = 'ku-sticky-video-for-youtube';
 		$asset_path     = plugin_dir_path( __FILE__ ) . "build/{$entry_point}.asset.php";
@@ -126,6 +133,36 @@ class KU_Sticky_Video_For_YouTube {
 			'kuStickyVideoForYouTubeSettings',
 			$localize_data
 		);
+	}
+
+	/**
+	 * ページ内にYouTube動画の埋め込みが存在するか確認
+	 *
+	 * @return bool
+	 */
+	private function has_youtube_embeds() {
+		// アーカイブ、カテゴリー、タグ、検索、フロントのブログ一覧などは読み込まない
+		if ( ! is_singular() ) {
+			return false;
+		}
+
+		global $post;
+		if ( ! isset( $post ) || empty( $post->post_content ) ) {
+			// コンテンツが取得できない、または空の場合はセーフティとしてtrueを返す（ページビルダー等の考慮）
+			return true;
+		}
+
+		$content = $post->post_content;
+
+		if (
+			strpos( $content, 'youtube.com' ) !== false ||
+			strpos( $content, 'youtu.be' ) !== false ||
+			strpos( $content, 'youtube-nocookie.com' ) !== false
+		) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
