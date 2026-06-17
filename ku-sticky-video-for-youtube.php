@@ -141,9 +141,10 @@ class KU_Sticky_Video_For_YouTube {
 	 * @return bool
 	 */
 	private function has_youtube_embeds() {
-		// アーカイブ、カテゴリー、タグ、検索、フロントのブログ一覧などは読み込まない
+		// アーカイブ、カテゴリー、タグ、検索、フロントのブログ一覧などの一覧ページでは
+		// 複数の記事やサイドバー等に動画が含まれる可能性があるため、安全策としてロード（true）にする
 		if ( ! is_singular() ) {
-			return false;
+			return true;
 		}
 
 		global $post;
