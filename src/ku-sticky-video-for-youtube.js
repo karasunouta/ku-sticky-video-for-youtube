@@ -58,6 +58,9 @@
 	let isForceClosed = false;
 	let originalStyles = {};
 	const ytPlayers = [];
+	let observer = null;
+	let isWrapperIntersecting = true;
+	let lastBoundingClientRectTop = 0;
 
 	function getCurrentPlayerState() {
 		if ( ! $originalVideo || ! window.YT ) {
@@ -164,7 +167,10 @@
 		if ( isSticky ) {
 			hideSticky( true ); // 即時復帰
 		}
+		window.removeEventListener( 'scroll', checkScrollExclusionZone );
+
 		if ( $originalVideo ) {
+			stopObserving( $originalVideo );
 			// スタイルの復元
 			Object.assign( $originalVideo.style, originalStyles );
 			$originalVideo = null;
@@ -249,6 +255,12 @@
 					$originalVideo = currentIframe;
 					setupVideoElements( $originalVideo );
 					isForceClosed = false;
+					startObserving( $originalVideo );
+
+					// 除外領域の監視用スクロールイベント（Pro用）
+					if ( config.limitTopActive || config.limitBottomActive ) {
+						window.addEventListener( 'scroll', checkScrollExclusionZone, { passive: true } );
+					}
 				}
 				setTimeout( checkScroll, 100 );
 			}
@@ -450,6 +462,48 @@
 		}, 100 );
 	}
 
+	function initObserver() {
+		if ( observer ) {
+			return;
+		}
+
+		observer = new IntersectionObserver( ( entries ) => {
+			entries.forEach( ( entry ) => {
+				const currentReference = isSticky ? $placeholder : $originalVideo;
+				if ( entry.target !== currentReference ) {
+					return;
+				}
+
+				isWrapperIntersecting = entry.isIntersecting;
+				lastBoundingClientRectTop = entry.boundingClientRect.top;
+
+				checkScroll();
+			} );
+		}, {
+			threshold: 0,
+			rootMargin: '0px',
+		} );
+	}
+
+	function startObserving( element ) {
+		if ( observer && element ) {
+			observer.observe( element );
+		}
+	}
+
+	function stopObserving( element ) {
+		if ( observer && element ) {
+			observer.unobserve( element );
+		}
+	}
+
+	function checkScrollExclusionZone() {
+		if ( ! $originalVideo ) {
+			return;
+		}
+		window.requestAnimationFrame( checkScroll );
+	}
+
 	function init() {
 		const iframes = document.querySelectorAll(
 			'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
@@ -464,10 +518,10 @@
 			initPlayingMode( iframes );
 		}
 
-		if ( config.triggerMode === 'playing' ) {
-			window.addEventListener( 'scroll', checkScroll );
-			window.addEventListener( 'resize', handleResize );
-		} else {
+		// Observerの初期化
+		initObserver();
+
+		if ( config.triggerMode === 'always' ) {
 			const targetingMode = config.targetingMode || 'exclude';
 			let targetIframe = null;
 
@@ -511,7 +565,16 @@
 			$originalVideo = targetIframe;
 			setupVideoElements( $originalVideo );
 
-			window.addEventListener( 'scroll', checkScroll );
+			// 監視開始
+			startObserving( $originalVideo );
+
+			// 除外領域の監視用スクロールイベント（Pro用）
+			if ( config.limitTopActive || config.limitBottomActive ) {
+				window.addEventListener( 'scroll', checkScrollExclusionZone, { passive: true } );
+			}
+
+			window.addEventListener( 'resize', handleResize );
+		} else {
 			window.addEventListener( 'resize', handleResize );
 		}
 	}
@@ -521,59 +584,32 @@
 			return;
 		}
 
-		const $reference = isSticky ? $placeholder : $originalVideo;
-
-		if ( ! $reference ) {
-			return;
-		}
-
-		const rect = $reference.getBoundingClientRect();
-		const windowHeight = window.innerHeight;
-
 		const effectiveHideAbove = config.triggerMode === 'playing' ? false : config.hideAbove;
+		let isOutOfView = ! isWrapperIntersecting;
 
-		// 境界付近でのフリッカー（点滅）を防ぐための閾値（ヒステリシス）
-		const threshold = 10;
-		let isOutOfView;
-		if ( ! isSticky ) {
-			// 画面外に threshold ピクセル以上出た場合に Sticky 化する
-			if ( ! effectiveHideAbove ) {
-				isOutOfView =
-					rect.bottom < -threshold ||
-					rect.top > windowHeight + threshold;
-			} else {
-				isOutOfView = rect.bottom < -threshold;
+		// スクロール位置に応じた除外領域（Pro用機能）の判定
+		if ( isOutOfView ) {
+			const isAboveViewport = lastBoundingClientRectTop < 0;
+
+			// 画面上部にスクロールアウトした場合のみ追従させる（hideAbove === true のとき）
+			if ( effectiveHideAbove && ! isAboveViewport ) {
+				isOutOfView = false;
 			}
-		} else if ( ! effectiveHideAbove ) {
-			// 画面内に threshold ピクセル以上戻ってきた場合に Sticky を解除する
-			isOutOfView =
-				rect.bottom <= threshold ||
-				rect.top >= windowHeight - threshold;
-		} else {
-			isOutOfView = rect.bottom <= threshold;
-		}
 
-		// 禁止領域に入っているかの判定
-		let inExclusionZone = false;
-		const scrollTop = window.scrollY || document.documentElement.scrollTop;
-		const documentHeight = document.documentElement.scrollHeight;
-		const distanceFromBottom = documentHeight - windowHeight - scrollTop;
+			// 除外領域に入っているかの判定
+			if ( isOutOfView && ( config.limitTopActive || config.limitBottomActive ) ) {
+				const scrollTop = window.scrollY || document.documentElement.scrollTop;
+				const documentHeight = document.documentElement.scrollHeight;
+				const windowHeight = window.innerHeight;
+				const distanceFromBottom = documentHeight - windowHeight - scrollTop;
 
-		if (
-			config.limitTopActive &&
-			scrollTop < parseFloat( config.limitTopVal )
-		) {
-			inExclusionZone = true;
-		}
-		if (
-			config.limitBottomActive &&
-			distanceFromBottom < parseFloat( config.limitBottomVal )
-		) {
-			inExclusionZone = true;
-		}
-
-		if ( inExclusionZone ) {
-			isOutOfView = false;
+				if ( config.limitTopActive && scrollTop < parseFloat( config.limitTopVal ) ) {
+					isOutOfView = false;
+				}
+				if ( config.limitBottomActive && distanceFromBottom < parseFloat( config.limitBottomVal ) ) {
+					isOutOfView = false;
+				}
+			}
 		}
 
 		let isMobileOrNarrow = false;
@@ -861,6 +897,10 @@
 			}
 		}
 
+		// 監視対象をプレースホルダーに切り替え
+		stopObserving( $originalVideo );
+		startObserving( $placeholder );
+
 		isSticky = true;
 	}
 
@@ -890,6 +930,10 @@
 			if ( $placeholder ) {
 				$placeholder.style.display = 'none';
 			}
+
+			// 監視対象を動画本体に戻す
+			stopObserving( $placeholder );
+			startObserving( $originalVideo );
 		};
 
 		if ( config.useFade && ! immediate ) {
@@ -929,16 +973,13 @@
 			} );
 		} else {
 			// Sticky状態の場合は一度戻してから再計算
-			isSticky = false;
-			Object.assign( $originalVideo.style, originalStyles );
-			if ( $closeButton ) {
-				$closeButton.style.display = 'none';
-			}
+			hideSticky( true ); // これにより isSticky = false となり、監視が $originalVideo に戻る
 
 			const computed = window.getComputedStyle( $originalVideo );
 			originalStyles.width = computed.width;
 			originalStyles.height = computed.height;
 
+			// 再度チェックを行う
 			setTimeout( checkScroll, 100 );
 		}
 	}
