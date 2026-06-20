@@ -7,7 +7,7 @@
  * Requires at least: 5.6
  * Requires PHP: 7.4
  * Author: karasunouta
- * Author URI: https://karasunouta.com/
+ * Author URI: https://karasunouta.com
  * Text Domain: ku-sticky-video-for-youtube
  * Domain Path: /languages
  * License: GPLv2 or later
