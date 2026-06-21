@@ -102,6 +102,8 @@
 			marginLeft: computedStyle.marginLeft,
 			marginRight: computedStyle.marginRight,
 			display: computedStyle.display,
+			border: $video.style.border,
+			boxSizing: $video.style.boxSizing,
 		};
 
 		// プレースホルダーを作成
