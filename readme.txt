@@ -56,9 +56,6 @@ You can add the excluded CSS class (configured in the settings page, default: `n
 
 == Changelog ==
 
-=== 1.8.1 ===
-* Add: Hidden PHP settings export parameter (`&export_php=1`) for developers.
-
 === 1.8.0 ===
 * Improve: Migrated scroll tracking to IntersectionObserver API to eliminate layout reflows (getBoundingClientRect) for a much smoother scroll experience.
 * Improve: Implemented conditional asset loading on PHP side to skip loading JS/CSS on singular pages that do not contain any YouTube video embeds.
