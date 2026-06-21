@@ -28,148 +28,156 @@ msgstr "投稿内の YouTube 動画プレイヤーをスクロール状態に応
 msgid "karasunouta"
 msgstr "karasunouta"
 
-#. Author URI of the plugin
-#: ku-sticky-video-for-youtube.php
-msgid "https://karasunouta.com/"
-msgstr "https://karasunouta.com/"
-
-#: ku-sticky-video-for-youtube.php:176
-#: templates/settings.php:29
+#: ku-sticky-video-for-youtube.php:234
+#: templates/settings.php:30
 msgid "KU Sticky Video for YouTube Settings"
 msgstr "KU Sticky Video for YouTube 設定"
 
-#: templates/settings.php:33
+#: templates/settings.php:34
 msgid "Configure options for your floating YouTube video player."
 msgstr "追従表示する YouTube 動画プレイヤーのオプションを設定します。"
 
-#: templates/settings.php:44
+#: templates/settings.php:45
 msgid "General Settings"
 msgstr "全般設定"
 
-#: templates/settings.php:48
+#: templates/settings.php:49
 msgid "Exclude CSS Class Name"
 msgstr "除外対象の CSS クラス名"
 
-#: templates/settings.php:54
+#: templates/settings.php:55
 msgid "If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position. In this free version, only the first (topmost) video on the page that does not have this class will be targeted for the sticky effect."
 msgstr "このクラスが YouTube ブロックまたはその親コンテナに割り当てられている場合、その動画はスクロールに追従しなくなります。本プラグイン (無料版) では、このクラスが割り当てられていない動画のうち、ページ最上部にある最初の動画のみが追従表示の対象となります。"
 
 #. translators: %s: default class name
-#: templates/settings.php:57
+#: templates/settings.php:58
 #, php-format
 msgid "Default: %s"
 msgstr "デフォルト: %s"
 
-#: templates/settings.php:63
+#: templates/settings.php:64
 msgid "Trigger Settings"
 msgstr "トリガー設定"
 
-#: templates/settings.php:67
+#: templates/settings.php:68
 msgid "Only when playing"
 msgstr "再生中のみ"
 
-#: templates/settings.php:71
+#: templates/settings.php:72
 msgid "Always (Scroll Follow)"
 msgstr "常に (スクロール追従)"
 
-#: templates/settings.php:75
+#: templates/settings.php:76
 msgid "Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state."
 msgstr "再生中のみ: 動画が実際に再生されている場合のみ Sticky 動画を有効にします。常に: 再生状態に関わらず、スクロール時に Sticky 動画を有効にします。"
 
-#: templates/settings.php:81
+#: templates/settings.php:86
 msgid "Hide when scrolling above"
 msgstr "上にスクロールした時は隠す"
 
-#: templates/settings.php:84
+#: templates/settings.php:89
 msgid "Prevents the sticky video from appearing when scrolling above the original video position. This only applies to the \"Always\" trigger mode."
 msgstr "動画の元の位置より上にスクロールした際に Sticky 動画が表示されないようにします。これは「常に」トリガーモードにのみ適用されます。"
 
-#: templates/settings.php:96
+#: templates/settings.php:101
 msgid "Layout Settings"
 msgstr "レイアウト設定"
 
-#: templates/settings.php:100
+#: templates/settings.php:105
 msgid "Display Position"
 msgstr "表示位置"
 
-#: templates/settings.php:103
+#: templates/settings.php:108
 msgid "Bottom Right"
 msgstr "右下"
 
-#: templates/settings.php:104
+#: templates/settings.php:109
 msgid "Bottom Left"
 msgstr "左下"
 
-#: templates/settings.php:112
+#: templates/settings.php:113
 msgid "Choose which corner the floating video player should stick to."
 msgstr "追従する動画プレイヤーを表示する画面の隅を選択します。"
 
-#: templates/settings.php:116
+#: templates/settings.php:118
 msgid "Z-index (Stack Order)"
 msgstr "Z-index (重なり順)"
 
-#: templates/settings.php:121
+#: templates/settings.php:123
 msgid "Adjust the Z-index value to prevent the sticky video player from overlapping with theme elements like header menus or chat widgets. Default is 9999."
 msgstr "Sticky 動画プレイヤーが、ヘッダーメニューやチャットウィジェットなどのテーマ要素と重なるのを防ぐために、Z-index の値を調整します。デフォルトは9999です。"
 
-#: templates/settings.php:125
+#: templates/settings.php:128
 msgid "Sticky Video Width"
 msgstr "Sticky 動画の幅"
 
-#: templates/settings.php:134
+#: templates/settings.php:149
 msgid "Configure the width of the video player when it is in sticky mode. Switching units will preserve both pixel and percentage settings."
 msgstr "Sticky モード時の動画プレイヤーの幅を設定します。単位を切り替えても、ピクセルとパーセンテージの両方の設定が保持されます。"
 
-#: templates/settings.php:143
+#: templates/settings.php:181
 msgid "Sticky Video Height"
 msgstr "Sticky 動画の高さ"
 
-#: templates/settings.php:145
+#: templates/settings.php:183
 msgid "Automatically limited to 50% of the viewport height."
 msgstr "自動で表示領域の高さの50%までに制限されます。"
 
-#: templates/settings.php:151
+#: templates/settings.php:159
 msgid "Maximum Width Settings"
 msgstr "最大幅設定"
 
-#: templates/settings.php:148
+#: templates/settings.php:163
 msgid "Sticky video player does not exceed the width of the original video player"
 msgstr "Sticky 動画プレイヤーが元の動画プレイヤーの幅を超えないようにする"
 
-#: templates/settings.php:154
+#: templates/settings.php:169
 msgid "Limit the maximum width to:"
 msgstr "最大幅を以下に制限する:"
 
-#: templates/settings.php:165
+#: templates/settings.php:188
 msgid "Mobile User Experience"
 msgstr "モバイルユーザーエクスペリエンス"
 
-#: templates/settings.php:169
+#: templates/settings.php:192
 msgid "Disable on narrow viewports"
 msgstr "幅の狭いビューポートでは無効にする"
 
-#: templates/settings.php:173
+#: templates/settings.php:196
 msgid "If enabled, the sticky video player is automatically disabled when the browser width is narrower than the sticky video width + double margins (e.g., 400px + 20px×2 = 440px). This protects the mobile user experience."
 msgstr "有効にすると、ブラウザの幅が「追従動画の幅 + 余白の2倍」(例:400px+20px×2=440px) より狭くなった場合に、自動的に追従表示を無効化します。これにより、モバイル表示におけるユーザー体験を保護します。"
 
-#: templates/settings.php:178
+#: templates/settings.php:201
 msgid "How to Exclude a YouTube Block"
 msgstr "YouTube ブロックを追従対象から除外する方法"
 
-#: templates/settings.php:180
+#: templates/settings.php:203
 msgid "Open the post editor and select the YouTube block you want to exclude."
 msgstr "投稿エディターを開き、除外したい YouTube ブロックを選択します。"
 
-#: templates/settings.php:181
+#: templates/settings.php:204
 msgid "In the block settings sidebar, expand the \"Advanced\" panel."
 msgstr "ブロック設定のサイドバーで「高度な設定」パネルを展開します。"
 
 #. translators: %s: CSS class name
-#: templates/settings.php:185
+#: templates/settings.php:208
 #, php-format
 msgid "Add the configured class name %s to the \"Additional CSS class(es)\" input field."
 msgstr "設定したクラス名 %s を「追加 CSS クラス」入力フィールドに追加します。"
 
-#: templates/settings.php:196
+#: templates/settings.php:219
 msgid "Save Changes"
 msgstr "変更を保存"
+
+#. Author URI of the plugin
+#: ku-sticky-video-for-youtube.php
+msgid "https://karasunouta.com"
+msgstr ""
+
+#: ku-sticky-video-for-youtube.php:223
+msgid "Settings"
+msgstr "設定"
+
+#: ku-sticky-video-for-youtube.php:404
+msgid "Unauthorized access."
+msgstr ""

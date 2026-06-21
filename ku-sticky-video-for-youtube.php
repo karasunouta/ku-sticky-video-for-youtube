@@ -3,7 +3,7 @@
 /**
  * Plugin Name: KU Sticky Video for YouTube
  * Description: Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
- * Version: 1.8.2
+ * Version: 1.8.3
  * Requires at least: 5.6
  * Requires PHP: 7.4
  * Author: karasunouta
@@ -29,7 +29,7 @@ class KU_Sticky_Video_For_YouTube {
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.8.2';
+	const VERSION = '1.8.3';
 
 	/**
 	 * スラッグ
@@ -51,6 +51,7 @@ class KU_Sticky_Video_For_YouTube {
 			add_action( 'admin_init', array( $this, 'register_settings' ) );
 			add_action( 'admin_init', array( $this, 'maybe_export_settings_as_php' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_action_links' ) );
 		}
 	}
 
@@ -207,6 +208,22 @@ class KU_Sticky_Video_For_YouTube {
 		}
 
 		return apply_filters( 'ku_sticky_video_for_youtube_get_options', $filtered_options );
+	}
+
+	/**
+	 * プラグイン一覧に設定リンクを追加
+	 *
+	 * @param array $links アクションリンクの配列.
+	 * @return array
+	 */
+	public function add_action_links( $links ) {
+		$settings_link = sprintf(
+			'<a href="%s">%s</a>',
+			admin_url( 'options-general.php?page=' . $this->slug ),
+			esc_html__( 'Settings', 'ku-sticky-video-for-youtube' )
+		);
+		array_unshift( $links, $settings_link );
+		return $links;
 	}
 
 	/**
