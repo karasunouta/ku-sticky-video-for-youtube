@@ -3,7 +3,7 @@
 /**
  * Plugin Name: KU Sticky Video for YouTube
  * Description: Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
- * Version: 1.8.0
+ * Version: 1.8.1
  * Requires at least: 5.6
  * Requires PHP: 7.4
  * Author: karasunouta
@@ -29,7 +29,7 @@ class KU_Sticky_Video_For_YouTube {
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.8.0';
+	const VERSION = '1.8.1';
 
 	/**
 	 * スラッグ
@@ -49,6 +49,7 @@ class KU_Sticky_Video_For_YouTube {
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 			add_action( 'admin_init', array( $this, 'register_settings' ) );
+			add_action( 'admin_init', array( $this, 'maybe_export_settings_as_php' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		}
 	}
@@ -375,6 +376,69 @@ class KU_Sticky_Video_For_YouTube {
 			array(),
 			$assets['version'] // スクリプトと同じバージョン管理を適用
 		);
+	}
+
+	/**
+	 * URLパラメータを検知して設定値をPHP配列としてエクスポートする
+	 */
+	public function maybe_export_settings_as_php() {
+		if ( isset( $_GET['page'] ) && 'ku-sticky-video-for-youtube' === $_GET['page'] && isset( $_GET['export_php'] ) ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( esc_html__( 'Unauthorized access.', 'ku-sticky-video-for-youtube' ) );
+			}
+
+			$options       = $this->get_options();
+			$exclude_class = isset( $options['exclude_class'] ) ? $options['exclude_class'] : 'no-sticky';
+
+			$width = 400;
+			if ( isset( $options['sticky_width_unit'] ) ) {
+				if ( '%' === $options['sticky_width_unit'] && isset( $options['sticky_width_val_pct'] ) ) {
+					$width = intval( $options['sticky_width_val_pct'] ) . 'vw';
+				} elseif ( 'px' === $options['sticky_width_unit'] && isset( $options['sticky_width_val_px'] ) ) {
+					$width = intval( $options['sticky_width_val_px'] );
+				}
+			}
+
+			$localize_data = array(
+				'hideAbove'             => $options['sticky_hide_above'] === '1',
+				'excludeClass'          => $exclude_class,
+				'width'                 => $width,
+				'widthMaxOriginal'      => ! empty( $options['sticky_width_max_original'] ) ? true : false,
+				'widthMaxCustomActive'  => ! empty( $options['sticky_width_max_custom_active'] ) ? true : false,
+				'widthMaxCustomVal'     => isset( $options['sticky_width_max_custom_val'] ) ? intval( $options['sticky_width_max_custom_val'] ) : 450,
+				'triggerMode'           => isset( $options['sticky_trigger_mode'] ) ? $options['sticky_trigger_mode'] : 'always',
+				'position'              => isset( $options['position'] ) ? $options['position'] : 'bottom-right',
+				'disableNarrowViewport' => ! empty( $options['disable_narrow_viewport'] ) ? true : false,
+				'zIndex'                => isset( $options['sticky_z_index'] ) ? intval( $options['sticky_z_index'] ) : 9999,
+			);
+
+			if ( isset( $options['targeting_mode'] ) ) {
+				$localize_data['targetingMode'] = $options['targeting_mode'];
+			}
+			if ( isset( $options['include_class'] ) ) {
+				$localize_data['includeClass'] = $options['include_class'];
+			}
+
+			// Pro版プラグインなどが有効であれば、このフックを通じてPro版設定値がマージされる
+			$settings = apply_filters( 'ku_sticky_video_for_youtube_localize_data', $localize_data, $options );
+
+			// プレーンテキストとしてPHPコード形式で出力
+			header( 'Content-Type: text/plain; charset=utf-8' );
+			echo "// Copy and paste this array into your functions.php hook callback:\n\n";
+			echo "array(\n";
+			foreach ( $settings as $key => $val ) {
+				if ( is_bool( $val ) ) {
+					$val_str = $val ? 'true' : 'false';
+				} elseif ( is_numeric( $val ) ) {
+					$val_str = $val;
+				} else {
+					$val_str = "'" . esc_sql( $val ) . "'";
+				}
+				echo "    '" . esc_html( $key ) . "' => " . $val_str . ",\n";
+			}
+			echo ");\n";
+			exit;
+		}
 	}
 
 	/**
