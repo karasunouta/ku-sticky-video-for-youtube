@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - KU Sticky Video for YouTube - Stable Readme (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: +0000\n"
+"PO-Revision-Date: 2026-06-17 14:15:31+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,13 +13,85 @@ msgstr ""
 
 #. Short description.
 #, gp-priority: high
-msgid "Make YouTube video player in posts follow the scroll position, showing in the corner of the page."
-msgstr "投稿内の YouTube 動画プレイヤーをスクロール状態に応じてページ隅に追従表示します。"
+msgid "Automatically float YouTube videos on scroll as a sticky video. Features picture in picture floating video and smooth youtube scroll follow."
+msgstr "YouTube 動画をスクロール時に自動で追従表示 (ピクチャーインピクチャー風) します。スムーズなスクロール追従機能を搭載しています。"
 
 #. Plugin name.
 #, gp-priority: high
 msgid "KU Sticky Video for YouTube"
 msgstr "KU Sticky Video for YouTube"
+
+#. Found in description paragraph.
+msgid "Yes, it works out of the box with the default WordPress YouTube Embed blocks, as well as classic editor embeds and raw iframe codes within post content."
+msgstr "はい、インストールするだけで WordPress 標準の YouTube 埋め込みブロックで動作します。また、クラシックエディターでの埋め込みや、投稿コンテンツ内の生の iframe コードにも対応しています。"
+
+#. Found in description paragraph.
+msgid "Yes. There is a setting to automatically disable the sticky player on narrow viewports (mobile devices). This ensures a clean and user-friendly experience on smaller screens where screen space is limited."
+msgstr "はい。幅の狭いビューポート (モバイル端末) で自動的に追従プレイヤーを無効化する設定があります。これにより、表示スペースが限られた小さな画面でも、すっきりと使いやすいユーザー体験を維持できます。"
+
+#. Found in description paragraph.
+msgid "You can adjust the Z-index setting in the plugin options (Settings -&gt; KU Sticky Video for YouTube). Increasing the Z-index will bring the player forward, while decreasing it can place it behind sticky menus. You can also switch the display position between Bottom Right and Bottom Left."
+msgstr "プラグインのオプション設定 (設定 -&gt; KU Sticky Video for YouTube) で Z-index の設定を調整できます。Z-index の値を大きくするとプレイヤーが手前に表示され、小さくすると固定メニューの背後に配置できます。また、表示位置を「右下」と「左下」の間で切り替えることも可能です。"
+
+#. Found in description paragraph.
+msgid "No, it is built with performance in mind. The plugin is extremely lightweight (minified vanilla JS, no jQuery) and utilizes conditional loading. This means scripts and styles are only loaded on pages or posts that actually contain YouTube video embeds. Other pages will remain completely untouched."
+msgstr "いいえ、パフォーマンスに配慮して設計されています。プラグインは非常に軽量 (圧縮されたバニラ JS を使用、jQuery 不使用) で、条件付き読み込みを採用しています。これにより、スクリプトやスタイルは実際に YouTube 動画の埋め込みが含まれるページや投稿でのみ読み込まれます。その他のページには一切影響を与えません。"
+
+#. Found in description paragraph.
+msgid "Whether you want to implement <strong>youtube scroll</strong> tracking or a simple <strong>floating video</strong> widget, this plugin delivers high performance with zero configuration needed."
+msgstr "<strong>YouTube スクロール</strong>追従機能を実装したい場合でも、シンプルな<strong>フローティング動画</strong>ウィジェットを導入したい場合でも、このプラグインは特別な設定なしで高いパフォーマンスを発揮します。"
+
+#. Found in description paragraph.
+msgid "When a user scrolls past a playing video, the player smoothly glides to the corner of the page so they can keep watching. This prevents interruptions, keeping users engaged with your content while they read. (You can also configure it to float always on scroll.)"
+msgstr "ユーザーが再生中の動画を通り過ぎてスクロールすると、プレイヤーがスムーズにページの隅へとスライドし、そのまま視聴を続けられます。これにより視聴が途切れるのを防ぎ、ユーザーが記事を読み進めている間もコンテンツへのエンゲージメントを維持できます (スクロール時に常に追従表示するように設定することも可能です)。"
+
+#. Found in description paragraph.
+msgid "Create a seamless and engaging viewing experience with <strong>KU Sticky Video for YouTube</strong>. This lightweight plugin automatically turns your YouTube embeds into a <strong>floating video</strong> (a <strong>sticky video</strong> in <strong>picture in picture</strong> style) that follows the reader as they browse your content."
+msgstr "<strong>KU Sticky Video for YouTube</strong> を使用して、シームレスで魅力的な視聴体験を提供しましょう。この軽量プラグインは、埋め込まれた YouTube 動画を自動的に<strong>フローティング動画</strong> (<strong>ピクチャーインピクチャー</strong>スタイルの<strong>追従動画</strong>) に変換し、読者がコンテンツを読み進めるのに合わせて追従表示します。"
+
+#. Found in description list item.
+msgid "Fix: Resolved an issue where sticky borders and box-sizing styles would leak and remain on the original video player after dismissing the sticky state."
+msgstr "修正: 追従状態を解除した後に、追従時のボーダーや box-sizing のスタイルが元の動画プレイヤーに残ってしまう問題を解決しました。"
+
+#. Found in description list item.
+msgid "Add: Settings link on plugins list page."
+msgstr "追加: プラグイン一覧ページに設定リンクを追加しました。"
+
+#. Found in description header.
+msgid "1.8.2"
+msgstr "1.8.2"
+
+#. Found in description header.
+msgid "1.8.3"
+msgstr "1.8.3"
+
+#. Found in description header.
+msgid "Does it work with the default WordPress Gutenberg editor?"
+msgstr "WordPress 標準の Gutenberg (ブロック) エディターに対応していますか ?"
+
+#. Found in description header.
+msgid "Can I disable the sticky effect on mobile devices?"
+msgstr "モバイル端末で追従効果を無効にすることはできますか ?"
+
+#. Found in description header.
+msgid "How do I fix the floating player overlapping with my header menu or chat widget?"
+msgstr "追従プレイヤーがヘッダーメニューやチャットウィジェットと重なってしまう場合はどうすればよいですか ?"
+
+#. Found in description header.
+msgid "Will this plugin slow down my website?"
+msgstr "このプラグインによってウェブサイトの表示速度が低下することはありますか ?"
+
+#. Found in description list item.
+msgid "Improve: Implemented conditional asset loading on PHP side to skip loading JS/CSS on singular pages that do not contain any YouTube video embeds."
+msgstr "改善：PHP 側でアセットの条件付き読み込みを実装し、YouTube 動画の埋め込みが含まれない個別ページにおいて JS および CSS の読み込みをスキップするようにしました。"
+
+#. Found in description list item.
+msgid "Improve: Migrated scroll tracking to IntersectionObserver API to eliminate layout reflows (getBoundingClientRect) for a much smoother scroll experience."
+msgstr "改善：スクロールの追従判定を IntersectionObserver API に移行し、レイアウトのリフロー (getBoundingClientRect の呼び出し) を排除することで、よりスムーズなスクロールを実現しました。"
+
+#. Found in description header.
+msgid "1.8.0"
+msgstr "1.8.0"
 
 #. Found in description list item.
 msgid "Fix: Refined YouTube API iframe loading and initialization timing."
@@ -170,10 +242,6 @@ msgid ""
 msgstr ""
 "このプラグインには、パフォーマンス向上のために圧縮された JavaScript が含まれています。圧縮されていない完全なソースコードは、GitHub で公開されています:\n"
 "https://github.com/karasunouta/ku-sticky-video-for-youtube"
-
-#. Found in description paragraph.
-msgid "KU Sticky Video for YouTube is a lightweight WordPress plugin that automatically makes YouTube video players inside post content follow the scroll position, showing in the corner of the page when the original video scrolls out of view."
-msgstr "KU Sticky Video for YouTube は、投稿内の YouTube 動画プレイヤーをスクロール状態に応じて自動的に追従させ、元の動画が画面外にスクロールされた際にページ隅に表示する軽量な WordPress プラグインです。"
 
 #. Found in description list item.
 msgid "Initial release."
