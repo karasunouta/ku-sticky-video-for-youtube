@@ -61,6 +61,7 @@
 	let observer = null;
 	let isWrapperIntersecting = true;
 	let lastBoundingClientRectTop = 0;
+	let lastWidth = window.innerWidth;
 
 	function getCurrentPlayerState() {
 		if ( ! $originalVideo || ! window.YT ) {
@@ -581,7 +582,7 @@
 		}
 	}
 
-	function checkScroll() {
+	function checkScroll( forceSticky = false ) {
 		if ( ! $originalVideo ) {
 			return;
 		}
@@ -649,7 +650,7 @@
 		}
 
 		if ( isOutOfView && ! isSticky ) {
-			if ( config.triggerMode === 'playing' ) {
+			if ( ! forceSticky && config.triggerMode === 'playing' ) {
 				const state = getCurrentPlayerState();
 				const isPlaying = ( state === 1 || state === 3 ); // 1: PLAYING, 3: BUFFERING
 				if ( ! isPlaying ) {
@@ -963,6 +964,12 @@
 			return;
 		}
 
+		const currentWidth = window.innerWidth;
+		if ( currentWidth === lastWidth ) {
+			return;
+		}
+		lastWidth = currentWidth;
+
 		if ( ! isSticky ) {
 			// 元のサイズを更新
 			const computed = window.getComputedStyle( $originalVideo );
@@ -975,6 +982,7 @@
 			} );
 		} else {
 			// Sticky状態の場合は一度戻してから再計算
+			const wasSticky = isSticky;
 			hideSticky( true ); // これにより isSticky = false となり、監視が $originalVideo に戻る
 
 			const computed = window.getComputedStyle( $originalVideo );
@@ -982,7 +990,9 @@
 			originalStyles.height = computed.height;
 
 			// 再度チェックを行う
-			setTimeout( checkScroll, 100 );
+			setTimeout( () => {
+				checkScroll( wasSticky );
+			}, 100 );
 		}
 	}
 
