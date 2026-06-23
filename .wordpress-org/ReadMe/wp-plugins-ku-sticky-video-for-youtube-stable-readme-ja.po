@@ -298,3 +298,11 @@ msgstr "1.8.4"
 #. Found in description list item.
 msgid "Fix: Resolved an issue where a paused sticky video would be permanently dismissed on mobile scroll (due to height-only resize event from address bar toggling) or screen orientation change."
 msgstr "修正: 一時停止中の追従動画が、モバイル端末でのスクロールや画面の向きの変更によって、完全に非表示になってしまう問題（アドレスバーの開閉に伴う高さ変化のみのリサイズイベントなどに起因）を解決しました。"
+
+#. Found in description header.
+msgid "1.8.5"
+msgstr "1.8.5"
+
+#. Found in description list item.
+msgid "Fix: Resolved an issue where a paused sticky video would unexpectedly reappear when scrolling back to the original position and then scrolling past it."
+msgstr "修正: 一時停止して閉じた追従動画が、元の表示位置に戻った後にさらにスクロールすると、意図せず再出現してしまう問題を解決しました。"

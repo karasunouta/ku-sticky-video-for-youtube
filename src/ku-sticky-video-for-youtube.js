@@ -265,7 +265,7 @@
 						window.addEventListener( 'scroll', checkScrollExclusionZone, { passive: true } );
 					}
 				}
-				setTimeout( checkScroll, 100 );
+				setTimeout( () => checkScroll(), 100 );
 			}
 		}
 
@@ -504,7 +504,7 @@
 		if ( ! $originalVideo ) {
 			return;
 		}
-		window.requestAnimationFrame( checkScroll );
+		window.requestAnimationFrame( () => checkScroll() );
 	}
 
 	function init() {
@@ -650,7 +650,7 @@
 		}
 
 		if ( isOutOfView && ! isSticky ) {
-			if ( ! forceSticky && config.triggerMode === 'playing' ) {
+			if ( forceSticky !== true && config.triggerMode === 'playing' ) {
 				const state = getCurrentPlayerState();
 				const isPlaying = ( state === 1 || state === 3 ); // 1: PLAYING, 3: BUFFERING
 				if ( ! isPlaying ) {
