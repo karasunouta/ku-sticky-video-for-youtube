@@ -180,4 +180,4 @@ msgstr "設定"
 
 #: ku-sticky-video-for-youtube.php:404
 msgid "Unauthorized access."
-msgstr ""
+msgstr "アクセス権限がありません。"
