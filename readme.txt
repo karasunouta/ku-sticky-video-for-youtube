@@ -15,7 +15,7 @@ Automatically float YouTube videos on scroll as a sticky video. Features picture
 
 Create a seamless and engaging viewing experience with **KU Sticky Video for YouTube**. This lightweight plugin automatically turns your YouTube embeds into a **floating video** (a **sticky video** in **picture in picture** style) that follows the reader as they browse your content.
 
-When a user scrolls past the original player, the video smoothly glides to the corner of the page. This prevents interruptions, keeping users engaged with your content while they read.
+When a user scrolls past a playing video, the player smoothly glides to the corner of the page so they can keep watching. This prevents interruptions, keeping users engaged with your content while they read. (You can also configure it to float always on scroll.)
 
 Whether you want to implement **youtube scroll** tracking or a simple **floating video** widget, this plugin delivers high performance with zero configuration needed.
 
