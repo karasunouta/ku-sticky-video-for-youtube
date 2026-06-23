@@ -1,7 +1,7 @@
 === KU Sticky Video for YouTube ===
 Contributors: karasunouta
 Donate link: https://karasunouta.com/
-Tags: youtube, video, sticky, scroll, floating
+Tags: sticky video, floating video, picture in picture, youtube scroll, youtube
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -9,19 +9,18 @@ Stable tag: 1.8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
+Automatically float YouTube videos on scroll as a sticky video. Features picture in picture floating video and smooth youtube scroll follow.
 
 == Description ==
 
-KU Sticky Video for YouTube is a lightweight WordPress plugin that automatically makes YouTube video players inside post content follow the scroll position, showing in the corner of the page when the original video scrolls out of view.
+Create a seamless and engaging viewing experience with **KU Sticky Video for YouTube**. This lightweight plugin automatically turns your YouTube embeds into a **floating video** (a **sticky video** in **picture in picture** style) that follows the reader as they browse your content.
+
+When a user scrolls past the original player, the video smoothly glides to the corner of the page. This prevents interruptions, keeping users engaged with your content while they read.
+
+Whether you want to implement **youtube scroll** tracking or a simple **floating video** widget, this plugin delivers high performance with zero configuration needed.
 
 This plugin contains minified JavaScript for performance. The complete, unminified source code is publicly available on GitHub:
 https://github.com/karasunouta/ku-sticky-video-for-youtube
-
-=== Build Instructions ===
-To rebuild the minified assets, run the following commands in the plugin directory:
-1. `npm install` (to install build dependencies)
-2. `npm run build` (to compile the source files using `@wordpress/scripts`)
 
 === Features ===
 * Float YouTube video player automatically when it scrolls out of view.
@@ -36,16 +35,33 @@ To rebuild the minified assets, run the following commands in the plugin directo
 * Exclude specific videos using a customizable CSS class.
 * Beautiful and clean admin settings page.
 
+== Frequently Asked Questions ==
+
+=== How can I prevent a specific YouTube video from floating? ===
+You can add the excluded CSS class (configured in the settings page, default: `no-sticky`) to the YouTube block or its parent container in the WordPress editor under "Advanced" -> "Additional CSS class(es)".
+
+=== Will this plugin slow down my website? ===
+No, it is built with performance in mind. The plugin is extremely lightweight (minified vanilla JS, no jQuery) and utilizes conditional loading. This means scripts and styles are only loaded on pages or posts that actually contain YouTube video embeds. Other pages will remain completely untouched.
+
+=== How do I fix the floating player overlapping with my header menu or chat widget? ===
+You can adjust the Z-index setting in the plugin options (Settings -> KU Sticky Video for YouTube). Increasing the Z-index will bring the player forward, while decreasing it can place it behind sticky menus. You can also switch the display position between Bottom Right and Bottom Left.
+
+=== Can I disable the sticky effect on mobile devices? ===
+Yes. There is a setting to automatically disable the sticky player on narrow viewports (mobile devices). This ensures a clean and user-friendly experience on smaller screens where screen space is limited.
+
+=== Does it work with the default WordPress Gutenberg editor? ===
+Yes, it works out of the box with the default WordPress YouTube Embed blocks, as well as classic editor embeds and raw iframe codes within post content.
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/ku-sticky-video-for-youtube` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Configure the settings under Settings -> KU Sticky Video for YouTube.
 
-== Frequently Asked Questions ==
-
-=== How can I prevent a specific YouTube video from floating? ===
-You can add the excluded CSS class (configured in the settings page, default: `no-sticky`) to the YouTube block or its parent container in the WordPress editor under "Advanced" -> "Additional CSS class(es)".
+=== Build Instructions ===
+To rebuild the minified assets, run the following commands in the plugin directory:
+1. `npm install` (to install build dependencies)
+2. `npm run build` (to compile the source files using `@wordpress/scripts`)
 
 == Screenshots ==
 
@@ -94,4 +110,3 @@ You can add the excluded CSS class (configured in the settings page, default: `n
 
 === 1.0.0 ===
 * Initial release.
-
