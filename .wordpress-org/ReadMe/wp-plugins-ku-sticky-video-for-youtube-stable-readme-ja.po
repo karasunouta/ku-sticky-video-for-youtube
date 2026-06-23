@@ -290,3 +290,11 @@ msgstr "機能"
 #. Found in description header.
 msgid "Build Instructions"
 msgstr "ビルド手順"
+
+#. Found in description header.
+msgid "1.8.4"
+msgstr "1.8.4"
+
+#. Found in description list item.
+msgid "Fix: Resolved an issue where a paused sticky video would be permanently dismissed on mobile scroll (due to height-only resize event from address bar toggling) or screen orientation change."
+msgstr "修正: 一時停止中の追従動画が、モバイル端末でのスクロールや画面の向きの変更によって、完全に非表示になってしまう問題（アドレスバーの開閉に伴う高さ変化のみのリサイズイベントなどに起因）を解決しました。"
