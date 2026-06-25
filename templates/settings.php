@@ -73,7 +73,7 @@ $sticky_z_index                 = isset( $options['sticky_z_index'] ) ? $options
 					</label>
 				</div>
 				<p class="field-description">
-					<?php esc_html_e( 'Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state.', 'ku-sticky-video-for-youtube' ); ?>
+					<?php esc_html_e( 'Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state. Note: In this free version, only the first (topmost) eligible video is targeted in both modes. If you have multiple videos and want each to become sticky while it is playing, that is available in the Pro version\'s "Only when playing" mode.', 'ku-sticky-video-for-youtube' ); ?>
 				</p>
 
 				<?php

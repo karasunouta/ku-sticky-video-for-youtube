@@ -308,7 +308,7 @@
 				isEligible = true;
 			}
 
-			// 無料版の場合、条件に合致する最初の1つのみをSticky対象(isEligible)とする
+			// 通常版の場合、条件に合致する最初の1つのみをSticky対象(isEligible)とする
 			if ( ! config.isProActive && isEligible ) {
 				if ( foundFirstEligible ) {
 					isEligible = false;
@@ -617,7 +617,7 @@
 
 		let isMobileOrNarrow = false;
 
-		// 1. 無料版の自動判定
+		// 1. 通常版の自動判定
 		if ( config.disableNarrowViewport ) {
 			let targetWidthPx = parseFloat( config.width );
 			if (

@@ -5,7 +5,7 @@ Tags: sticky video, floating video, picture in picture, youtube scroll, youtube
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.8.5
+Stable tag: 1.8.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,9 @@ To rebuild the minified assets, run the following commands in the plugin directo
 4. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
 
 == Changelog ==
+
+=== 1.8.6 ===
+* Maintenance: Version bump.
 
 === 1.8.5 ===
 * Fix: Resolved an issue where a paused sticky video would unexpectedly reappear when scrolling back to the original position and then scrolling past it.
