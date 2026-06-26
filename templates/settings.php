@@ -73,7 +73,9 @@ $sticky_z_index                 = isset( $options['sticky_z_index'] ) ? $options
 					</label>
 				</div>
 				<p class="field-description">
-					<?php esc_html_e( 'Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state. Note: In this free version, only the first (topmost) eligible video is targeted in both modes. If you have multiple videos and want each to become sticky while it is playing, that is available in the Pro version\'s "Only when playing" mode.', 'ku-sticky-video-for-youtube' ); ?>
+					<?php esc_html_e( 'Only when playing: Enable sticky video only when the video is actually playing.', 'ku-sticky-video-for-youtube' ); ?><br>
+					<?php esc_html_e( 'Always: Enable sticky video when scrolling, regardless of playback state.', 'ku-sticky-video-for-youtube' ); ?>
+					<abbr title="<?php echo esc_attr__( 'In this free version, only the first (topmost) eligible video is targeted in both modes. To have multiple videos each become sticky while playing, upgrade to the Pro version\'s "Only when playing" mode.', 'ku-sticky-video-for-youtube' ); ?>" class="ku-sticky-note">*</abbr>
 				</p>
 
 				<?php
@@ -219,6 +221,17 @@ $sticky_z_index                 = isset( $options['sticky_z_index'] ) ? $options
 			<?php esc_html_e( 'Save Changes', 'ku-sticky-video-for-youtube' ); ?>
 		</button>
 	</form>
+
+	<!-- Pro Version Upsell Card -->
+	<div class="ku-sticky-video-for-youtube-card ku-sticky-pro-card">
+		<p class="ku-sticky-pro-card-text">
+			🚀 <?php esc_html_e( 'Want more? The Pro version supports multiple videos, each becoming sticky independently while playing — plus additional display positions and advanced targeting options.', 'ku-sticky-video-for-youtube' ); ?>
+		</p>
+		<a href="<?php echo esc_url( __( 'https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/', 'ku-sticky-video-for-youtube' ) ); ?>"
+		   target="_blank" rel="noopener noreferrer" class="ku-sticky-pro-link">
+			<?php esc_html_e( 'Learn more about the Pro version →', 'ku-sticky-video-for-youtube' ); ?>
+		</a>
+	</div>
 </div>
 
 <script>

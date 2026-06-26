@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: KU Sticky Video for YouTube 1.8.6\n"
+"Project-Id-Version: KU Sticky Video for YouTube 1.8.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ku-sticky-video-for-youtube\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,15 @@ msgid "Always (Scroll Follow)"
 msgstr ""
 
 #: templates/settings.php:76
-msgid "Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state. Note: In this free version, only the first (topmost) eligible video is targeted in both modes. If you have multiple videos and want each to become sticky while it is playing, that is available in the Pro version's \"Only when playing\" mode."
+msgid "Only when playing: Enable sticky video only when the video is actually playing."
+msgstr ""
+
+#: templates/settings.php:77
+msgid "Always: Enable sticky video when scrolling, regardless of playback state."
+msgstr ""
+
+#: templates/settings.php:78
+msgid "In this free version, only the first (topmost) eligible video is targeted in both modes. To have multiple videos each become sticky while playing, upgrade to the Pro version's \"Only when playing\" mode."
 msgstr ""
 
 #: templates/settings.php:86
@@ -181,4 +189,16 @@ msgstr ""
 
 #: templates/settings.php:219
 msgid "Save Changes"
+msgstr ""
+
+#: templates/settings.php
+msgid "https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/"
+msgstr ""
+
+#: templates/settings.php
+msgid "Want more? The Pro version supports multiple videos, each becoming sticky independently while playing — plus additional display positions and advanced targeting options."
+msgstr ""
+
+#: templates/settings.php
+msgid "Learn more about the Pro version →"
 msgstr ""

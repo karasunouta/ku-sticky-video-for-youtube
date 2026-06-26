@@ -204,3 +204,39 @@
 	cursor: not-allowed !important;
 	box-shadow: none !important;
 }
+
+/* Footnote tooltip marker */
+.ku-sticky-note {
+	font-style: normal;
+	text-decoration: underline dotted;
+	cursor: help;
+	font-size: 11px;
+	color: #6b7280;
+	margin-left: 2px;
+	vertical-align: super;
+}
+
+/* Pro version upsell card */
+.ku-sticky-pro-card {
+	background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+	border: 1px solid #c4b5fd;
+	margin-top: 24px;
+}
+.ku-sticky-pro-card-text {
+	margin: 0 0 12px 0;
+	font-size: 14px;
+	color: #3b0764;
+	line-height: 1.6;
+}
+.ku-sticky-pro-link {
+	display: inline-block;
+	color: #4f46e5;
+	font-weight: 600;
+	font-size: 14px;
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+.ku-sticky-pro-link:hover {
+	color: #4338ca;
+	text-decoration: underline;
+}

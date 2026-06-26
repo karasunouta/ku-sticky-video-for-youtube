@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: KU Sticky Video for YouTube 1.8.6\n"
+"Project-Id-Version: KU Sticky Video for YouTube 1.8.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ku-sticky-video-for-youtube\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -68,8 +68,16 @@ msgid "Always (Scroll Follow)"
 msgstr "常に (スクロール追従)"
 
 #: templates/settings.php:76
-msgid "Only when playing: Enable sticky video only when the video is actually playing. Always: Enable sticky video when scrolling, regardless of playback state. Note: In this free version, only the first (topmost) eligible video is targeted in both modes. If you have multiple videos and want each to become sticky while it is playing, that is available in the Pro version's \"Only when playing\" mode."
-msgstr "再生中のみ: 動画が実際に再生されている場合のみ Sticky 動画を有効にします。常に: 再生状態に関わらず、スクロール時に Sticky 動画を有効にします。注: 本プラグイン (通常版) では、どちらのモードでもページ内で最初 (最上位) にある対象動画のみが追従表示の対象となります。複数の動画をそれぞれの再生状態に応じて追従表示させたい場合は、Pro 版の「再生中のみ」モードをご利用いただけます。"
+msgid "Only when playing: Enable sticky video only when the video is actually playing."
+msgstr "再生中のみ: 動画が実際に再生されている場合のみ Sticky 動画を有効にします。"
+
+#: templates/settings.php:77
+msgid "Always: Enable sticky video when scrolling, regardless of playback state."
+msgstr "常に: 再生状態に関わらず、スクロール時に Sticky 動画を有効にします。"
+
+#: templates/settings.php:78
+msgid "In this free version, only the first (topmost) eligible video is targeted in both modes. To have multiple videos each become sticky while playing, upgrade to the Pro version's \"Only when playing\" mode."
+msgstr "本プラグイン (通常版) では、どちらのモードでもページ内で最初 (最上位) にある対象動画のみが追従表示の対象となります。複数の動画をそれぞれの再生状態に応じて追従表示させたい場合は、Pro 版の「再生中のみ」モードをご利用いただけます。"
 
 
 #: templates/settings.php:86
@@ -182,3 +190,15 @@ msgstr "設定"
 #: ku-sticky-video-for-youtube.php:404
 msgid "Unauthorized access."
 msgstr "アクセス権限がありません。"
+
+#: templates/settings.php
+msgid "https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/"
+msgstr "https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/"
+
+#: templates/settings.php
+msgid "Want more? The Pro version supports multiple videos, each becoming sticky independently while playing — plus additional display positions and advanced targeting options."
+msgstr "より高度な設定を活用したい方へ。Pro 版では複数の動画がそれぞれの再生状態に応じて個別に追従表示できます。さらに追加の表示位置や高度なターゲティングオプションも利用可能です。"
+
+#: templates/settings.php
+msgid "Learn more about the Pro version →"
+msgstr "Pro 版の詳細を見る →"
