@@ -288,6 +288,10 @@ msgid "Features"
 msgstr "機能"
 
 #. Found in description header.
+msgid "Build Instructions (for developers)"
+msgstr "ビルド手順 (開発者向け)"
+
+#. Found in description header.
 msgid "Build Instructions"
 msgstr "ビルド手順"
 
