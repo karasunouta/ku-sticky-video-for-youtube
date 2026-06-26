@@ -306,3 +306,99 @@ msgstr "1.8.5"
 #. Found in description list item.
 msgid "Fix: Resolved an issue where a paused sticky video would unexpectedly reappear when scrolling back to the original position and then scrolling past it."
 msgstr "修正: 一時停止して閉じた追従動画が、元の表示位置に戻った後にさらにスクロールすると、意図せず再出現してしまう問題を解決しました。"
+
+#. Found in description header.
+msgid "1.8.6"
+msgstr "1.8.6"
+
+#. Found in description list item.
+msgid "Maintenance: Version bump."
+msgstr "メンテナンス: バージョンを更新しました。"
+
+#. Found in description header.
+msgid "1.8.7"
+msgstr "1.8.7"
+
+#. Found in description list item.
+msgid "Improve: Split the Trigger Settings description into two lines with a tooltip footnote for the free-version limitation note, improving readability and translation granularity."
+msgstr "改善: トリガー設定の説明文を2行に分割し、通常版制限についての注釈をツールチップ形式で表示するよう変更しました。可読性と翻訳単位の粒度が向上しています。"
+
+#. Found in description list item.
+msgid "Add: Pro version upsell card at the bottom of the settings page with a link to the sales page."
+msgstr "追加: 設定ページ末尾に Pro 版の案内カード (販売ページへのリンク付き) を追加しました。"
+
+#. Found in description header.
+msgid "Free vs Pro Feature Comparison"
+msgstr "Free 版 vs Pro 版 機能比較"
+
+#. Found in description paragraph.
+msgid ""
+"Need more control? <strong>KU Sticky Video for YouTube Pro</strong> adds a suite of advanced options for power users and professional sites.\n"
+"👉 <a href=\"https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/\">View Pro details and pricing</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">Try the live demo</a>"
+msgstr ""
+"さらに高度な設定をお求めですか？<strong>KU Sticky Video for YouTube Pro</strong> は、パワーユーザーやプロフェッショナルサイト向けに多彩な高度オプションを追加します。\n"
+"👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
+
+#. Found in description list item.
+msgid "<strong>Target Video Selection</strong>: [Free] Exclusion mode only — add a CSS class to opt videos out. / [Pro] Inclusion mode also available — add a CSS class to opt specific videos in."
+msgstr "<strong>ターゲット動画の選択方法</strong>: [通常版] 除外モードのみ — CSS クラスを追加して特定の動画を対象外にします。/ [Pro] 包含モードも利用可能 — CSS クラスを追加して特定の動画だけを追従対象にできます。"
+
+#. Found in description list item.
+msgid "<strong>Multiple Video Support</strong>: [Free] Only the first matched video becomes sticky. / [Pro] Sticky target auto-switches to whichever video is currently playing."
+msgstr "<strong>複数動画への対応</strong>: [通常版] 対象となる最初の動画のみ追従表示されます。/ [Pro] 再生中の動画に追従対象が自動的に切り替わります。"
+
+#. Found in description list item.
+msgid "<strong>Sticky Positioning</strong>: [Free] Bottom-right and bottom-left. / [Pro] All four corners (top-right and top-left added)."
+msgstr "<strong>追従表示の位置</strong>: [通常版] 右下・左下のみ。/ [Pro] 4 隅すべて (右上・左上が追加)。"
+
+#. Found in description list item.
+msgid "<strong>Screen Margins</strong>: [Free] Fixed at 20px from screen edges. / [Pro] Independently adjustable in pixels for horizontal and vertical offsets."
+msgstr "<strong>画面の余白</strong>: [通常版] 画面端から 20px 固定。/ [Pro] 水平・垂直方向のオフセットをそれぞれピクセル単位で個別に調整可能。"
+
+#. Found in description list item.
+msgid "<strong>Maximum Player Height</strong>: [Free] Fixed at 50% of viewport height. / [Pro] Adjustable from 10% to 100% of viewport height."
+msgstr "<strong>プレイヤーの最大高さ</strong>: [通常版] 表示領域の高さの 50% 固定。/ [Pro] 表示領域の高さの 10% 〜 100% の範囲で調整可能。"
+
+#. Found in description list item.
+msgid "<strong>Exclusion Zones</strong>: [Free] Not available. / [Pro] Suppress sticky within a defined pixel range from the top or bottom of the viewport — useful for avoiding overlap with fixed headers, ads, or cookie banners."
+msgstr "<strong>除外ゾーン</strong>: [通常版] 非対応。/ [Pro] ビューポートの上端または下端から指定のピクセル範囲内で追従表示を抑制 — 固定ヘッダーや広告、クッキーバナーなどとの重なり防止に有効。"
+
+#. Found in description list item.
+msgid "<strong>Mobile Handling</strong>: [Free] Auto-disables when the viewport is too narrow for the player. / [Pro] Also supports a custom viewport-width breakpoint to disable sticky on specific device sizes."
+msgstr "<strong>モバイル対応</strong>: [通常版] プレイヤーを表示できないほどビューポートが狭い場合は自動無効化。/ [Pro] 特定のデバイスサイズで追従を無効にするカスタムブレークポイントの設定にも対応。"
+
+#. Found in description list item.
+msgid "<strong>Keep Sticky on End</strong>: [Free] Not available. / [Pro] Optionally keep the player sticky after playback ends — great for tutorials and course content."
+msgstr "<strong>再生終了後も追従を維持</strong>: [通常版] 非対応。/ [Pro] 再生終了後も追従表示を維持するオプション — チュートリアルやコース動画に最適。"
+
+#. Found in description list item.
+msgid "<strong>Player Styling</strong>: [Free] Fixed design (8px border-radius, default shadow, no border). / [Pro] Fully customizable border-radius, shadow opacity, border width, and border color."
+msgstr "<strong>プレイヤーのスタイル</strong>: [通常版] デザイン固定 (border-radius: 8px、デフォルトのシャドウ、ボーダーなし)。/ [Pro] border-radius・シャドウの透明度・ボーダーの太さ・色を自由にカスタマイズ可能。"
+
+#. Found in description list item.
+msgid "<strong>Close Button</strong>: [Free] Standard design, fixed at top-right. / [Pro] Customizable colors and placement (all 4 corners). Option to show only when the video is paused."
+msgstr "<strong>閉じるボタン</strong>: [通常版] 標準デザイン、右上固定。/ [Pro] 色と配置 (4 隅から選択) をカスタマイズ可能。動画の一時停止中のみ表示するオプションあり。"
+
+#. Found in description list item.
+msgid "<strong>Live Preview</strong>: [Free] Not available. / [Pro] Real-time preview in the settings panel with one-click reset to defaults."
+msgstr "<strong>ライブプレビュー</strong>: [通常版] 非対応。/ [Pro] 設定パネル内でリアルタイムプレビューを表示。ワンクリックでデフォルトにリセット可能。"
+
+#. Found in description list item.
+msgid "<strong>Filter Hooks</strong>: [Free] Not available. / [Pro] Override settings conditionally per page via a filter hook in functions.php."
+msgstr "<strong>フィルターフック</strong>: [通常版] 非対応。/ [Pro] functions.php のフィルターフックを使ってページごとに設定を上書き可能。"
+
+#. Found in description list item.
+msgid "<strong>Updates</strong>: [Free] Auto-updates through WordPress.org. / [Pro] Auto-updates via the WordPress dashboard after license activation in settings."
+msgstr "<strong>アップデート</strong>: [通常版] WordPress.org 経由で自動更新。/ [Pro] 設定でライセンスを有効化後、WordPress ダッシュボードから自動更新。"
+
+#. Found in description header.
+msgid "Is there a Pro version with more features?"
+msgstr "より多くの機能を備えた Pro 版はありますか ?"
+
+#. Found in description paragraph.
+msgid ""
+"Yes! <strong>KU Sticky Video for YouTube Pro</strong> extends the free plugin with advanced targeting, full design customization, exclusion zones, per-page filter hooks, and more.\n"
+"👉 <a href=\"https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/\">View Pro details and pricing</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">Try the live demo</a>"
+msgstr ""
+"はい！<strong>KU Sticky Video for YouTube Pro</strong> は、高度なターゲティング、デザインの完全カスタマイズ、除外ゾーン、ページ単位のフィルターフックなど、多彩な機能で通常版を拡張します。\n"
+"👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
