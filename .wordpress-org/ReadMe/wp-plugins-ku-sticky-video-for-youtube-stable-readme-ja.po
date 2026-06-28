@@ -319,10 +319,6 @@ msgstr "1.8.6"
 msgid "Maintenance: Version bump."
 msgstr "メンテナンス: バージョンを更新しました。"
 
-#. Found in description header.
-msgid "1.8.7"
-msgstr "1.8.7"
-
 #. Found in description list item.
 msgid "Improve: Split the Trigger Settings description into two lines with a tooltip footnote for the free-version limitation note, improving readability and translation granularity."
 msgstr "改善: トリガー設定の説明文を2行に分割し、通常版制限についての注釈をツールチップ形式で表示するよう変更しました。可読性と翻訳単位の粒度が向上しています。"
@@ -406,3 +402,31 @@ msgid ""
 msgstr ""
 "はい！<strong>KU Sticky Video for YouTube Pro</strong> は、高度なターゲティング、デザインの完全カスタマイズ、除外ゾーン、ページ単位のフィルターフックなど、多彩な機能で通常版を拡張します。\n"
 "👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
+
+#. Found in description header.
+msgid "1.8.7.1"
+msgstr "1.8.7.1"
+
+#. Found in description header.
+msgid "Resources"
+msgstr "リソース"
+
+#. Found in description list item.
+msgid "📖 <strong>Interactive Demo & Guide</strong>: To experience the sticky video effect live on a blog post, read the backstory behind the plugin, and see setup screenshots, check out the <a href=\"https://karasunouta.com/en/wp-plugins/ku-sticky-video-for-youtube/\">KU Sticky Video for YouTube Introduction & Live Demo</a>."
+msgstr "📖 <strong>インタラクティブデモ & ガイド</strong>: ブログ記事上で実際に動画の追従効果を体験し、プラグイン開発の背景にあるストーリーを読み、設定手順のスクリーンショットを確認するには、<a href=\"https://karasunouta.com/en/wp-plugins/ku-sticky-video-for-youtube/\">KU Sticky Video for YouTube の紹介 & ライブデモ</a> をご覧ください。"
+
+#. Found in description list item.
+msgid "💻 <strong>Open Source</strong>: This plugin contains minified JavaScript for performance. The complete, unminified source code is available on <a href=\"https://github.com/karasunouta/ku-sticky-video-for-youtube\">GitHub</a>."
+msgstr "💻 <strong>オープンソース</strong>: このプラグインにはパフォーマンス向上のために圧縮された JavaScript が含まれています。圧縮されていない完全なソースコードは <a href=\"https://github.com/karasunouta/ku-sticky-video-for-youtube\">GitHub</a> で公開されています。"
+
+#. Found in description list item.
+msgid "Update: Updated documentation, added a resource link to the setup guide, and optimized the changelog."
+msgstr "更新: ドキュメントを更新し、セットアップガイドへのリソースリンクを追加して、チェンジログを最適化しました。"
+
+#. Found in description list item.
+msgid "Improve: Refine Japanese translation strings for better settings page clarity."
+msgstr "改善: 設定ページの分かりやすさを向上させるため、日本語の翻訳テキストをブラッシュアップしました。"
+
+#. Found in description list item.
+msgid "Fix: Compatibility headers and PHP version compatibility."
+msgstr "修正: 互換性ヘッダーと PHP バージョンの互換性を調整しました。"

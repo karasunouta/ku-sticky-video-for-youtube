@@ -5,7 +5,7 @@ Tags: sticky video, floating video, picture in picture, youtube scroll, youtube
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.8.7
+Stable tag: 1.8.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,8 +19,9 @@ When a user scrolls past a playing video, the player smoothly glides to the corn
 
 Whether you want to implement **youtube scroll** tracking or a simple **floating video** widget, this plugin delivers high performance with zero configuration needed.
 
-This plugin contains minified JavaScript for performance. The complete, unminified source code is publicly available on GitHub:
-https://github.com/karasunouta/ku-sticky-video-for-youtube
+=== Resources ===
+* 📖 **Interactive Demo & Guide**: To experience the sticky video effect live on a blog post, read the backstory behind the plugin, and see setup screenshots, check out the [KU Sticky Video for YouTube Introduction & Live Demo](https://karasunouta.com/en/wp-plugins/ku-sticky-video-for-youtube/).
+* 💻 **Open Source**: This plugin contains minified JavaScript for performance. The complete, unminified source code is available on [GitHub](https://github.com/karasunouta/ku-sticky-video-for-youtube).
 
 === Features ===
 * Float YouTube video player automatically when it scrolls out of view.
@@ -95,12 +96,12 @@ To rebuild the minified assets, run the following commands in the plugin directo
 
 == Changelog ==
 
+=== 1.8.7.1 ===
+* Update: Updated documentation, added a resource link to the setup guide, and optimized the changelog.
+
 === 1.8.7 ===
 * Improve: Split the Trigger Settings description into two lines with a tooltip footnote for the free-version limitation note, improving readability and translation granularity.
 * Add: Pro version upsell card at the bottom of the settings page with a link to the sales page.
-
-=== 1.8.6 ===
-* Maintenance: Version bump.
 
 === 1.8.5 ===
 * Fix: Resolved an issue where a paused sticky video would unexpectedly reappear when scrolling back to the original position and then scrolling past it.
@@ -128,7 +129,7 @@ To rebuild the minified assets, run the following commands in the plugin directo
 * Fix: Refined YouTube API iframe loading and initialization timing.
 
 === 1.6.1 ===
-* Fix: Adjusted Japanese translation spacing and punctuation to align with the WordPress translation style guide.
+* Improve: Refine Japanese translation strings for better settings page clarity.
 
 === 1.6.0 ===
 * Add: Option to select display position (Bottom Right or Bottom Left).
@@ -137,10 +138,9 @@ To rebuild the minified assets, run the following commands in the plugin directo
 
 === 1.5.0 ===
 * Rename: Renamed plugin from "Sticky YouTube" to "KU Sticky Video for YouTube".
-* Update: Updated version to 1.5.0.
 
 === 1.4.3 ===
-* Fix: Compatibility headers and PHP version.
+* Fix: Compatibility headers and PHP version compatibility.
 * Fix: Settings page security enhancements.
 * Add: License declarations for WordPress.org submission.
 
