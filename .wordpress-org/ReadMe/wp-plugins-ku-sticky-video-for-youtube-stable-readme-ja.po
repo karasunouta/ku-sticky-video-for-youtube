@@ -337,7 +337,7 @@ msgid ""
 "👉 <a href=\"https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/\">View Pro details and pricing</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">Try the live demo</a>"
 msgstr ""
 "さらに高度な設定をお求めですか？<strong>KU Sticky Video for YouTube Pro</strong> は、パワーユーザーやプロフェッショナルサイト向けに多彩な高度オプションを追加します。\n"
-"👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
+"👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
 
 #. Found in description list item.
 msgid "<strong>Target Video Selection</strong>: [Free] Exclusion mode only — add a CSS class to opt videos out. / [Pro] Inclusion mode also available — add a CSS class to opt specific videos in."
@@ -401,7 +401,7 @@ msgid ""
 "👉 <a href=\"https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/\">View Pro details and pricing</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">Try the live demo</a>"
 msgstr ""
 "はい！<strong>KU Sticky Video for YouTube Pro</strong> は、高度なターゲティング、デザインの完全カスタマイズ、除外ゾーン、ページ単位のフィルターフックなど、多彩な機能で通常版を拡張します。\n"
-"👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
+"👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
 
 #. Found in description header.
 msgid "1.8.7.1"
@@ -413,7 +413,7 @@ msgstr "リソース"
 
 #. Found in description list item.
 msgid "📖 <strong>Interactive Demo & Guide</strong>: To experience the sticky video effect live on a blog post, read the backstory behind the plugin, and see setup screenshots, check out the <a href=\"https://karasunouta.com/en/wp-plugins/ku-sticky-video-for-youtube/\">KU Sticky Video for YouTube Introduction & Live Demo</a>."
-msgstr "📖 <strong>インタラクティブデモ & ガイド</strong>: ブログ記事上で実際に動画の追従効果を体験し、プラグイン開発の背景にあるストーリーを読み、設定手順のスクリーンショットを確認するには、<a href=\"https://karasunouta.com/en/wp-plugins/ku-sticky-video-for-youtube/\">KU Sticky Video for YouTube の紹介 & ライブデモ</a> をご覧ください。"
+msgstr "📖 <strong>インタラクティブデモ & ガイド</strong>: ブログ記事上で実際に動画の追従効果を体験し、プラグイン開発の背景にあるストーリーを読み、設定手順のスクリーンショットを確認するには、<a href=\"https://karasunouta.com/wp-plugins/ku-sticky-video-for-youtube/\">KU Sticky Video for YouTube の紹介 & ライブデモ</a> をご覧ください。"
 
 #. Found in description list item.
 msgid "💻 <strong>Open Source</strong>: This plugin contains minified JavaScript for performance. The complete, unminified source code is available on <a href=\"https://github.com/karasunouta/ku-sticky-video-for-youtube\">GitHub</a>."
