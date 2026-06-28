@@ -336,7 +336,7 @@ msgid ""
 "Need more control? <strong>KU Sticky Video for YouTube Pro</strong> adds a suite of advanced options for power users and professional sites.\n"
 "👉 <a href=\"https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/\">View Pro details and pricing</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">Try the live demo</a>"
 msgstr ""
-"さらに高度な設定をお求めですか？<strong>KU Sticky Video for YouTube Pro</strong> は、パワーユーザーやプロフェッショナルサイト向けに多彩な高度オプションを追加します。\n"
+"さらに高度な設定をお求めですか ? <strong>KU Sticky Video for YouTube Pro</strong> は、パワーユーザーやプロフェッショナルサイト向けに多彩な高度オプションを追加します。\n"
 "👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
 
 #. Found in description list item.
@@ -400,7 +400,7 @@ msgid ""
 "Yes! <strong>KU Sticky Video for YouTube Pro</strong> extends the free plugin with advanced targeting, full design customization, exclusion zones, per-page filter hooks, and more.\n"
 "👉 <a href=\"https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/\">View Pro details and pricing</a> | <a href=\"https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/\">Try the live demo</a>"
 msgstr ""
-"はい！<strong>KU Sticky Video for YouTube Pro</strong> は、高度なターゲティング、デザインの完全カスタマイズ、除外ゾーン、ページ単位のフィルターフックなど、多彩な機能で通常版を拡張します。\n"
+"はい ! <strong>KU Sticky Video for YouTube Pro</strong> は、高度なターゲティング、デザインの完全カスタマイズ、除外ゾーン、ページ単位のフィルターフックなど、多彩な機能で通常版を拡張します。\n"
 "👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
 
 #. Found in description header.
