@@ -430,3 +430,15 @@ msgstr "改善: 設定ページの分かりやすさを向上させるため、�
 #. Found in description list item.
 msgid "Fix: Compatibility headers and PHP version compatibility."
 msgstr "修正: 互換性ヘッダーと PHP バージョンの互換性を調整しました。"
+
+#. Found in description header.
+msgid "1.8.8"
+msgstr "1.8.8"
+
+#. Found in description list item.
+msgid "Improve: Prevent duplicate script tags by checking for existing YouTube API scripts in the DOM."
+msgstr "改善: DOM 内の既存の YouTube API スクリプトを確認することで、重複したスクリプトタグの読み込みを防止しました。"
+
+#. Found in description list item.
+msgid "Fix: Ensure YT.get() utilizes the element's ID string as the primary argument per official API specification with a DOM element fallback."
+msgstr "修正: 公式 API 仕様に基づき、YT.get() の第一引数として要素の ID 文字列を使用し、フォールバックとして DOM 要素を使用するようにしました。"
