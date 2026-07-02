@@ -320,9 +320,9 @@
 			// 競合回避: すでに他プラグインが作成したプレイヤーオブジェクトがあれば再利用してイベントを相乗りする
 			let existingPlayer = null;
 			if ( window.YT && typeof window.YT.get === 'function' ) {
-				const id = iframe.id || iframe.getAttribute( 'id' );
+				// YT.get() の公式引数はID文字列。DOM要素渡しは非公式だがフォールバックとして機能する場合がある
 				existingPlayer =
-					( id ? window.YT.get( id ) : null ) ||
+					( iframe.id ? window.YT.get( iframe.id ) : null ) ||
 					window.YT.get( iframe );
 			}
 
@@ -397,7 +397,7 @@
 		}
 
 		// 1. window.YT が存在しない場合のみ、自ら API をロードする
-		if ( ! window.YT ) {
+		if ( ! window.YT && ! document.querySelector( 'script[src*="youtube.com/iframe_api"]' ) ) {
 			const tag = document.createElement( 'script' );
 			tag.src = 'https://www.youtube.com/iframe_api';
 			const firstScriptTag =
@@ -433,10 +433,10 @@
 			if ( isApiReady && typeof window.YT.get === 'function' ) {
 				allFound = true;
 				for ( let j = 0; j < iframes.length; j++ ) {
-					const id =
-						iframes[ j ].id || iframes[ j ].getAttribute( 'id' );
+					const id = iframes[ j ].id;
 					if (
 						! (
+							// YT.get() の公式引数はID文字列。DOM要素渡しは非公式フォールバック
 							( id ? window.YT.get( id ) : null ) ||
 							window.YT.get( iframes[ j ] )
 						)
