@@ -84,21 +84,21 @@ window.onYouTubeIframeAPIReady = function() {
 <p>そのため、単純に「<code>window.YT</code>&nbsp;が存在しなければAPIスクリプトをロードする」というチェックをしてしまいがちですが、これだけだと<strong>「他のプラグインがタグを挿入した直後で、まだネットワークロード中（<code>window.YT</code>&nbsp;はまだ未定義）」</strong>のタイミングで、二重にスクリプトタグが挿入されてしまいます。これを防ぐため、DOMツリー上にすでにYouTube APIのスクリプトが存在するかどうかも併せて確認します。</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:preformatted -->
-<pre class="wp-block-preformatted">javascript
-// URLの表記揺れ（iframe_api / player_api）を考慮して部分一致で検索
+<!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
+<div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>// URLの表記揺れ（iframe_api / player_api）を考慮して部分一致で検索
 const alreadyLoading = document.querySelector(
-    'script[src*="youtube.com/iframe_api"], script[src*="youtube.com/player_api"]'
+    &#39;script[src*=&quot;youtube.com/iframe_api&quot;], script[src*=&quot;youtube.com/player_api&quot;]&#39;
 );
-if ( ! window.YT &amp;&amp; ! alreadyLoading ) {
+if ( ! window.YT && ! alreadyLoading ) {
     // ここで初めてスクリプトタグを挿入する
-}</pre>
-<!-- /wp:preformatted -->
+}</code></pre></div>
+<!-- /wp:loos-hcb/code-block -->
 
-<!-- wp:paragraph -->
-<p>💡 <strong>コラム：なぜ <code>! window.YT</code> と <code>! alreadyLoading</code> の両方が必要なのか？</strong><br>
-一見すると「DOM上にスクリプトタグがあるか（<code>alreadyLoading</code>）」のチェックだけで十分に見えます。しかし、他プラグインが <code>player_api</code> という別の公式URLでロードしていたり、Vite等のビルドツール経由でJS内にAPIを直接バンドルしてロードしている場合、DOM上に <code>iframe_api</code> のタグは存在しません。そのため、すでにロードが完了していることを100%保証する <code>window.YT</code> と、まさに今非同期ロードしている途中の隙間を埋める <code>alreadyLoading</code>（URLの表記揺れに対応したセレクタ）の二重チェックが最も堅牢な防壁になります。</p>
-<!-- /wp:paragraph -->
+<!-- wp:group {"className":"is-style-column-box","layout":{"type":"constrained"}} -->
+<div class="wp-block-group is-style-column-box"><!-- wp:paragraph -->
+<p>💡 <strong>コラム：なぜ <code>! window.YT</code> と <code>! alreadyLoading</code> の両方が必要なのか？</strong><br> 一見すると「DOM上にスクリプトタグがあるか（<code>alreadyLoading</code>）」のチェックだけで十分に見えます。しかし、他プラグインが <code>player_api</code> という別の公式URLでロードしていたり、Vite等のビルドツール経由でJS内にAPIを直接バンドルしてロードしている場合、DOM上に <code>iframe_api</code> のタグは存在しません。そのため、すでにロードが完了していることを100%保証する <code>window.YT</code> と、まさに今非同期ロードしている途中の隙間を埋める <code>alreadyLoading</code>（URLの表記揺れに対応したセレクタ）の二重チェックが最も堅牢な防壁になります。</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
 
 <!-- wp:heading {"level":4} -->
 <h4 class="wp-block-heading">2. <code>window.YT.get()</code> による「イベントの相乗り（バインド）」</h4>
@@ -109,28 +109,27 @@ if ( ! window.YT &amp;&amp; ! alreadyLoading ) {
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>ここで注意したいのは、**<code>YT.get()</code>&nbsp;の公式な引数は「iframeのID文字列」**だということです。ID属性が無い場合に備え、非公式ながら互換性の高い「DOM要素渡し」をフォールバックに備えた2段構えのバインド処理を組むのが安全です。</p>
+<p>ここで注意したいのは、**<code>YT.get()</code> の公式な引数は「iframeのID文字列」**だということです。ID属性が無い場合に備え、非公式ながら互換性の高い「DOM要素渡し」をフォールバックに備えた2段構えのバインド処理を組むのが安全です。</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:preformatted -->
-<pre class="wp-block-preformatted">javascript
-let existingPlayer = null;
-if ( window.YT &amp;&amp; typeof window.YT.get === 'function' ) {
+<!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
+<div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>let existingPlayer = null;
+if ( window.YT && typeof window.YT.get === &#39;function&#39; ) {
     const id = iframeElement.id;
     // IDがあれば公式仕様で取得。無ければDOM要素渡しでフォールバック
     existingPlayer = ( id ? window.YT.get( id ) : null ) || window.YT.get( iframeElement );
 }
 if ( existingPlayer ) {
     // 既存インスタンスにイベントを相乗り
-    // ※YouTube APIのaddEventListenerは、DOM標準と違って 'on' プレフィックス（onStateChange）が必要です
-    existingPlayer.addEventListener('onStateChange', function(event) {
+    // ※YouTube APIのaddEventListenerは、DOM標準と違って &#39;on&#39; プレフィックス（onStateChange）が必要です
+    existingPlayer.addEventListener(&#39;onStateChange&#39;, function(event) {
         handlePlayerStateChange(event);
     });
 } else {
     // 誰も初期化していなければ、自分が第一発見者として新規作成
     const player = new window.YT.Player(iframeElement, { ... });
-}</pre>
-<!-- /wp:preformatted -->
+}</code></pre></div>
+<!-- /wp:loos-hcb/code-block -->
 
 <!-- wp:heading {"level":4} -->
 <h4 class="wp-block-heading">3. 先客のコールバック関数を破壊せずにラップする</h4>
@@ -144,7 +143,7 @@ if ( existingPlayer ) {
 <div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>const previousOnReady = window.onYouTubeIframeAPIReady;
 window.onYouTubeIframeAPIReady = function () {
     // 他のプラグインの初期化処理があれば、まずそれを実行してあげる
-    if ( typeof previousOnReady === 'function' ) {
+    if ( typeof previousOnReady === &#39;function&#39; ) {
         previousOnReady();
     }
 };</code></pre></div>
@@ -200,20 +199,19 @@ window.onYouTubeIframeAPIReady = function () {
 <p>これらをすべて組み合わせた、実際の初期化コードが以下になります。</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:preformatted -->
-<pre class="wp-block-preformatted">javascript
-function initPlayingMode(iframes) {
+<!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
+<div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>function initPlayingMode(iframes) {
     // 1. すでに他スクリプトが挿入済みかも含めてチェックし、APIをロード
-    if ( ! window.YT &amp;&amp; ! document.querySelector( 'script[src*="youtube.com/iframe_api"], script[src*="youtube.com/player_api"]' ) ) {
-        const tag = document.createElement( 'script' );
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName( 'script' )[ 0 ];
+    if ( ! window.YT && ! document.querySelector( &#39;script[src*=&quot;youtube.com/iframe_api&quot;], script[src*=&quot;youtube.com/player_api&quot;]&#39; ) ) {
+        const tag = document.createElement( &#39;script&#39; );
+        tag.src = &#39;https://www.youtube.com/iframe_api&#39;;
+        const firstScriptTag = document.getElementsByTagName( &#39;script&#39; )[ 0 ];
         firstScriptTag.parentNode.insertBefore( tag, firstScriptTag );
     }
     // 2. 先客のコールバックを退避させてラップ
     const previousOnReady = window.onYouTubeIframeAPIReady;
     window.onYouTubeIframeAPIReady = function () {
-        if ( typeof previousOnReady === 'function' ) {
+        if ( typeof previousOnReady === &#39;function&#39; ) {
             previousOnReady();
         }
     };
@@ -223,13 +221,13 @@ function initPlayingMode(iframes) {
     let setupCompleted = false;
     const checkInterval = setInterval( () =&gt; {
         attempts++;
-        const isApiReady = window.YT &amp;&amp; typeof window.YT.Player === 'function';
+        const isApiReady = window.YT && typeof window.YT.Player === &#39;function&#39;;
         if ( isApiReady ) {
             apiReadyAttempts++;
         }
         // すべてのiframeに対して他者がインスタンス生成を終えたかチェック
         let allFound = false;
-        if ( isApiReady &amp;&amp; typeof window.YT.get === 'function' ) {
+        if ( isApiReady && typeof window.YT.get === &#39;function&#39; ) {
             allFound = true;
             for ( let j = 0; j &lt; iframes.length; j++ ) {
                 const id = iframes[ j ].id;
@@ -252,14 +250,14 @@ function initPlayingMode(iframes) {
                 // 0〜100msのランダムなジッター（遅延）を挟んでからセットアップを実行する
                 // 同じ仕組みの別プラグインが同時に初期化しようとした場合の生成衝突を防ぐため
                 const jitterDelay = Math.random() * 100;
-                setTimeout( () => {
+                setTimeout( () =&gt; {
                     setupPlayers( iframes );
                 }, jitterDelay );
             }
         }
     }, 100 );
-}</pre>
-<!-- /wp:preformatted -->
+}</code></pre></div>
+<!-- /wp:loos-hcb/code-block -->
 
 <!-- wp:heading {"level":4} -->
 <h4 class="wp-block-heading">💡 なぜ300ms（3回ループ）待つのか？ と「ジッター」による衝突回避の限界</h4>
