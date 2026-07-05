@@ -460,7 +460,12 @@
 				if ( ! setupCompleted ) {
 					setupCompleted = true;
 
-					setupPlayers( iframes );
+					// 0〜100msのランダムなジッター（遅延）を挟んでからセットアップを実行する
+					// 同じ仕組みの別プラグインが同時に初期化しようとした場合の生成衝突を防ぐため
+					const jitterDelay = Math.random() * 100;
+					setTimeout( () => {
+						setupPlayers( iframes );
+					}, jitterDelay );
 				}
 			}
 		}, 100 );
