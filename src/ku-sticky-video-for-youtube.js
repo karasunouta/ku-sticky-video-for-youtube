@@ -397,7 +397,8 @@
 		}
 
 		// 1. window.YT が存在しない場合のみ、自ら API をロードする
-		if ( ! window.YT && ! document.querySelector( 'script[src*="youtube.com/iframe_api"]' ) ) {
+		//    (iframe_api と player_api の両方の公式URL表記揺れに対応)
+		if ( ! window.YT && ! document.querySelector( 'script[src*="youtube.com/iframe_api"], script[src*="youtube.com/player_api"]' ) ) {
 			const tag = document.createElement( 'script' );
 			tag.src = 'https://www.youtube.com/iframe_api';
 			const firstScriptTag =
