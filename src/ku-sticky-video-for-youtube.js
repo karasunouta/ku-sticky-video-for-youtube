@@ -406,16 +406,7 @@
 			firstScriptTag.parentNode.insertBefore( tag, firstScriptTag );
 		}
 
-		// 2. 他プラグインによる onYouTubeIframeAPIReady の上書きを考慮し、
-		//    一応 previousOnReady をラップする処理も残しておくが、それに依存しない。
-		const previousOnReady = window.onYouTubeIframeAPIReady;
-		window.onYouTubeIframeAPIReady = function () {
-			if ( typeof previousOnReady === 'function' ) {
-				previousOnReady();
-			}
-		};
-
-		// 3. APIのロードと他プラグインの初期化を自律的にポーリング監視する（一元化）
+		// 2. APIのロードと他プラグインの初期化を自律的にポーリング監視する（一元化）
 		let attempts = 0;
 		let apiReadyAttempts = 0;
 		let setupCompleted = false;

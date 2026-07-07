@@ -27,8 +27,8 @@ FOOTNOTES END -->
 <hr class="wp-block-separator has-alpha-channel-opacity"/>
 <!-- /wp:separator -->
 
-<!-- wp:heading {"level":3} -->
-<h3 class="wp-block-heading">なぜ競合する？ YouTube APIの主導権争い</h3>
+<!-- wp:heading -->
+<h2 class="wp-block-heading">なぜ競合する？YouTube APIの主導権争い</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -64,16 +64,16 @@ window.onYouTubeIframeAPIReady = function() {
 <hr class="wp-block-separator has-alpha-channel-opacity"/>
 <!-- /wp:separator -->
 
-<!-- wp:heading {"level":3} -->
-<h3 class="wp-block-heading">解決へのアプローチ: いかにしてプラグイン同士の「喧嘩」を避けるか</h3>
+<!-- wp:heading -->
+<h2 class="wp-block-heading">解決へのアプローチ: いかにしてプラグイン同士の「喧嘩」を避けるか</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>この競合を防ぎ、あらゆる環境で安全に動作させるために、KU Sticky Video for YouTubeプラグインには以下のような対策を取ることにしました。</p>
+<p>この競合を防ぎ、あらゆる環境で安全に動作させるために、KU Sticky Video for YouTubeプラグインでは以下のような対策を取ることにしました。</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:heading {"level":4} -->
-<h4 class="wp-block-heading">1. 非同期ロードの隙間を埋める「スクリプト存在チェック」</h4>
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">1. 非同期ロードの隙間を埋める「スクリプト存在チェック」</h3>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -81,7 +81,7 @@ window.onYouTubeIframeAPIReady = function() {
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>そのため、単純に「<code>window.YT</code>&nbsp;が存在しなければAPIスクリプトをロードする」というチェックをしてしまいがちですが、これだけだと<strong>「他のプラグインがタグを挿入した直後で、まだネットワークロード中（<code>window.YT</code>&nbsp;はまだ未定義）」</strong>のタイミングで、二重にスクリプトタグが挿入されてしまいます。これを防ぐため、DOMツリー上にすでにYouTube APIのスクリプトが存在するかどうかも併せて確認します。</p>
+<p>「なるほど。じゃあ <code>window.YT</code> の存在チェックさえしとけばいいや」…とはならないのが厄介なところです。それだけだと<strong>「他のプラグインがタグを挿入した直後の、ネットワークロード中（<code>window.YT</code>&nbsp;は未定義）」</strong>のタイミングで処理が走ったらどうなるか。二重にスクリプトタグが挿入されてしまいますよね。これを防ぐため、<code>window.YT</code> だけではなく「DOMツリー上にすでにYouTube APIのスクリプトタグが存在するか」も併せて確認します。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
@@ -89,114 +89,114 @@ window.onYouTubeIframeAPIReady = function() {
 const alreadyLoading = document.querySelector(
     &#39;script[src*=&quot;youtube.com/iframe_api&quot;], script[src*=&quot;youtube.com/player_api&quot;]&#39;
 );
+
 if ( ! window.YT && ! alreadyLoading ) {
-    // ここで初めてスクリプトタグを挿入する
+    // ここで初めてスクリプトタグを挿入します
 }</code></pre></div>
 <!-- /wp:loos-hcb/code-block -->
 
 <!-- wp:group {"className":"is-style-column-box","layout":{"type":"constrained"}} -->
-<div class="wp-block-group is-style-column-box"><!-- wp:paragraph -->
-<p>💡 <strong>コラム：なぜ <code>! window.YT</code> と <code>! alreadyLoading</code> の両方が必要なのか？</strong><br> 一見すると「DOM上にスクリプトタグがあるか（<code>alreadyLoading</code>）」のチェックだけで十分に見えます。しかし、他プラグインが <code>player_api</code> という別の公式URLでロードしていたり、Vite等のビルドツール経由でJS内にAPIを直接バンドルしてロードしている場合、DOM上に <code>iframe_api</code> のタグは存在しません。そのため、すでにロードが完了していることを100%保証する <code>window.YT</code> と、まさに今非同期ロードしている途中の隙間を埋める <code>alreadyLoading</code>（URLの表記揺れに対応したセレクタ）の二重チェックが最も堅牢な防壁になります。</p>
-<!-- /wp:paragraph --></div>
-<!-- /wp:group -->
-
-<!-- wp:heading {"level":4} -->
-<h4 class="wp-block-heading">2. <code>window.YT.get()</code> による「イベントの相乗り（バインド）」</h4>
+<div class="wp-block-group is-style-column-box"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">💡 <strong>なぜ window.YT も引き続きチェックするの？</strong></h4>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>すでにページ内のYouTube iframeに対して他者が&nbsp;<code>YT.Player</code>&nbsp;インスタンスを生成していた場合、<strong>自前で&nbsp;<code>new YT.Player</code>&nbsp;を二重に実行するとエラーになります。</strong>&nbsp;YouTube APIのグローバルメソッドである&nbsp;<code>window.YT.get()</code>&nbsp;を使い、すでに作成済みのプレイヤーインスタンスを取得して、そこにイベントリスナーだけを「相乗り」させてもらいます。</p>
+<p>上のソース、一見すると「DOM上にスクリプトタグがあるか（<code>alreadyLoading</code>）」のチェックだけで十分に見えます。「<code>windows.YT</code> が生成されるのはスクリプトが読み込まれた後」と決まっているわけですから。しかし、他プラグインがたとえばVite等のビルドツール経由でJS内にAPIを直接バンドルしてロードしている場合など、DOM上にYouTube APIのスクリプトタグが存在しないケースも考えられます。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>ここで注意したいのは、**<code>YT.get()</code> の公式な引数は「iframeのID文字列」**だということです。ID属性が無い場合に備え、非公式ながら互換性の高い「DOM要素渡し」をフォールバックに備えた2段構えのバインド処理を組むのが安全です。</p>
+<p>そのため、すでにロードが完了していることを100%保証する <code>window.YT</code> に加え、「まさに今、非同期ロードしている途中」であることをスクリプトタグによって検出しようとする <code>alreadyLoading</code> で二重チェックを行っておくことは必要です。両者の併用により、競合リスクを最小限に抑えることができます。</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">2. window.YT.get() による「イベントの相乗り（バインド）」</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>ページ内のYouTube iframeに対して他プラグインがすでに&nbsp;<code>YT.Player</code>&nbsp;インスタンスを生成していた場合、後から<strong>二重に <code>new YT.Player</code>&nbsp;を実行するとエラー</strong>になります。そこでYouTube APIのグローバルメソッドである&nbsp;<code>window.YT.get()</code>&nbsp;を使い、すでに作成済みのプレイヤーインスタンスがあれば取得して、そこにイベントリスナーだけを「相乗り」させてもらいます。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
 <div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>let existingPlayer = null;
+
 if ( window.YT && typeof window.YT.get === &#39;function&#39; ) {
     const id = iframeElement.id;
-    // IDがあれば公式仕様で取得。無ければDOM要素渡しでフォールバック
+    // IDがあれば公式仕様で取得。なければDOM要素渡しでフォールバック
     existingPlayer = ( id ? window.YT.get( id ) : null ) || window.YT.get( iframeElement );
 }
+
 if ( existingPlayer ) {
-    // 既存インスタンスにイベントを相乗り
-    // ※YouTube APIのaddEventListenerは、DOM標準と違って &#39;on&#39; プレフィックス（onStateChange）が必要です
+    // 既存インスタンスがあればイベントを相乗り
+    // ※YouTube APIのaddEventListenerはDOM標準と異なり「on」プリフィクス必須（onStateChange）
     existingPlayer.addEventListener(&#39;onStateChange&#39;, function(event) {
         handlePlayerStateChange(event);
     });
 } else {
-    // 誰も初期化していなければ、自分が第一発見者として新規作成
+    // なければ新規生成
     const player = new window.YT.Player(iframeElement, { ... });
 }</code></pre></div>
 <!-- /wp:loos-hcb/code-block -->
 
+<!-- wp:paragraph -->
+<p><code>YT.get()</code>&nbsp;の公式な引数は「iframeのID文字列」ですが、ID属性がない場合に備えて非公式ながら互換性の高いDOM要素渡しをフォールバックとし、2段構えのバインド処理を組んでいます。</p>
+<!-- /wp:paragraph -->
+
 <!-- wp:heading {"level":4} -->
-<h4 class="wp-block-heading">3. 先客のコールバック関数を破壊せずにラップする</h4>
+<h4 class="wp-block-heading">3. 「onYouTubeIframeAPIReady」に相乗りするアプローチの隠れたリスク</h4>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>もし他プラグインによって&nbsp;<code>window.onYouTubeIframeAPIReady</code>&nbsp;がすでに定義されていた場合、それを無視して上書きするのではなく、いったん変数に退避させてから実行されるようにラップします。</p>
+<p>YouTube APIには、スクリプトのロード完了時にAPI側から自動実行される <code>window.onYouTubeIframeAPIReady</code> というグローバルコールバック関数が用意されています。他プラグインとの競合を考慮する場合、多くの開発ブログ等で常套手段として紹介されているのが、「先客のコールバック関数を一度変数に退避してラップし、他者の初期化と自身の初期化を連続実行する」という以下のようなアプローチです。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
-<div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>const previousOnReady = window.onYouTubeIframeAPIReady;
+<div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>// 先客のコールバックがあれば退避しておく
+const previousOnReady = window.onYouTubeIframeAPIReady;
+
+// グローバルコールバックを上書きし、他者の処理も連続して実行させる
 window.onYouTubeIframeAPIReady = function () {
-    // 他のプラグインの初期化処理があれば、まずそれを実行してあげる
     if ( typeof previousOnReady === &#39;function&#39; ) {
         previousOnReady();
     }
+    myPluginInit(); // 自プラグインの初期化
 };</code></pre></div>
 <!-- /wp:loos-hcb/code-block -->
 
 <!-- wp:paragraph -->
-<p>「あれ？ ここで自分自身の初期化処理も続けて呼び出せばいいのでは？」と思われるかもしれません。一般論として、単に競合を避けて自身の処理を実行するだけであれば、このラッパーの中で <code>previousOnReady()</code> に続けて自身の初期化関数を呼び出せば動作します。</p>
+<p>一見すると完璧な共存対策に思えますが、実はこの実装には<strong>「他プラグインが非同期処理を挟んでプレイヤーを初期化する場合」に対応できない</strong>という致命的なリスクが潜んでいます。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>しかし、今回のケース（KU Sticky Video）ではあえてここでは呼び出さず、後述する「ポーリング（定期監視）」側に自身の初期化を完全に委ねています。これには以下の2つの理由があります。</p>
+<p>たとえば、共存相手となる他プラグインが「API Readyの検知後、Ajaxで設定データを取得してからプレイヤーを生成する」という非同期処理を挟んで初期化を行う設計だったとします。</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:list {"ordered":true} -->
-<ol class="wp-block-list"><!-- wp:list-item -->
-<li><strong>APIがすでにロード済みの場合に対応するため：</strong> もし他プラグインによってすでにAPIの読み込みが完了している状態で自プラグインがロードされた場合、<code>onYouTubeIframeAPIReady</code> は二度と実行されません。ラッパーだけに頼ると、自プラグインの初期化自体がスキップされるリスクがあります。</li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li><strong>他プラグインの初期化完了（相乗り）を待つため：</strong> 先に説明した通り、他プラグインがAPI Ready直後に非同期でプレイヤーインスタンスを生成する場合、ミリ秒単位のタイミングのズレで <code>YT.get()</code> による相乗りが失敗し、二重生成エラーになることがあります。そのため、他プラグインの初期化が完了するのを少し「待つ」必要があります。</li>
-<!-- /wp:list-item --></ol>
-<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>このとき、自プラグイン（Sticky）の初期化処理は、他プラグインが裏で非同期処理の完了を待っている状況を知る術がありません。そのため、API Readyの瞬間に「まだ競合相手（プレイヤーインスタンス）は存在しない」と判断し、一足先に新規プレイヤーを生成（<code>new YT.Player</code>）してしまいます。</p>
+<!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>そのため、ここでのラッパー定義は自分自身のためではなく、<strong>「もし自プラグインがAPIスクリプトをロードしたことでAPI Readyが発火した際、他プラグインのコールバックを握り潰さずに実行してあげる」という他者への安全弁（セーフティネット）</strong>としてのみ機能させています。</p>
+<p>非同期処理を終えた他プラグインがプレイヤーを生成しようとする頃には、すでに自プラグインの初期化が終わってしまっているため、同じiframe要素に対して<strong>二重初期化のエラー</strong>が発生し、相手のプラグインが破綻してしまいます。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>このため、競合を考慮した堅牢な実装を行いたい場合、この <code>onYouTubeIframeAPIReady</code> コールバックを自身の初期化トリガーとして直接使用することはできません。自プラグイン側はグローバルコールバックへの上書きや代入といった干渉は一切行わず、ただAPIをロードし、裏で「他プラグインの初期化が完了したこと」を監視し、完了後にそこへ安全に相乗りする（バインドする）アプローチをとる必要があります。これこそが、次章で解説する「ポーリング」を用いた時間制御の必要性につながります。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:separator -->
 <hr class="wp-block-separator has-alpha-channel-opacity"/>
 <!-- /wp:separator -->
 
-<!-- wp:heading {"level":3} -->
-<h3 class="wp-block-heading">実際の共存初期化ロジック：ポーリングによる制御</h3>
+<!-- wp:heading -->
+<h2 class="wp-block-heading">実際の共存初期化ロジック: ポーリングによる制御</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>ここまでに紹介した「ラッパー」「二重ロード防止」「イベントの相乗り」という3つのアプローチを綺麗に噛み合わせるには、<strong>初期化処理を実行する絶妙なタイミングのコントロール</strong>が必要です。</p>
+<p>ここまでで説明した「ラッパー」「二重ロード防止」「イベントの相乗り」という3つのアプローチをきれいに連動させるには、<strong>初期化処理のタイミングのコントロール</strong>が非常に重要です。そこで役立つのが、プログラム側からAPIのロード状況やプレイヤーの初期化ステータスを定期的にチェックする<strong>「ポーリング（Polling）」</strong>という設計パターンです。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>そこで役立つのが、プログラム側から定期的に状態をチェックしに行く<strong>「ポーリング（Polling）」</strong>という設計パターンです。</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>ポーリングとは、「対象の準備はできたか？」と一定の間隔（例えば100ミリ秒ごと）で繰り返し状況を問い合わせ、条件が満たされた段階で処理を実行する監視手法のことです。JavaScriptでは、主に <code>setInterval</code> を用いて実装します。</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>「他プラグインのロード完了を待って相乗りする」「APIがすでにロード済みならすぐに実行する」といった、相手の出方に左右される非同期処理も、このポーリング監視をハブにすることで、エラーを起こさず安全にタイミングを制御できるようになります。</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>これらをすべて組み合わせた、実際の初期化コードが以下になります。</p>
+<p>JavaScriptでは、ポーリングは主に <code>setInterval</code> を用いて実装します。実際の初期化コードは以下のようになります。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
@@ -208,14 +208,10 @@ window.onYouTubeIframeAPIReady = function () {
         const firstScriptTag = document.getElementsByTagName( &#39;script&#39; )[ 0 ];
         firstScriptTag.parentNode.insertBefore( tag, firstScriptTag );
     }
-    // 2. 先客のコールバックを退避させてラップ
-    const previousOnReady = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = function () {
-        if ( typeof previousOnReady === &#39;function&#39; ) {
-            previousOnReady();
-        }
-    };
-    // 3. APIのロードと「他プラグインの初期化完了」をポーリング監視
+
+
+
+    // 3. APIのロードおよび他プラグインの初期化完了をポーリングして監視
     let attempts = 0;
     let apiReadyAttempts = 0;
     let setupCompleted = false;
@@ -225,7 +221,8 @@ window.onYouTubeIframeAPIReady = function () {
         if ( isApiReady ) {
             apiReadyAttempts++;
         }
-        // すべてのiframeに対して他者がインスタンス生成を終えたかチェック
+
+        // すべてのiframeに対して他プラグインがインスタンス生成を終えたかチェック
         let allFound = false;
         if ( isApiReady && typeof window.YT.get === &#39;function&#39; ) {
             allFound = true;
@@ -238,49 +235,121 @@ window.onYouTubeIframeAPIReady = function () {
                 }
             }
         }
+
         // 終了条件の判定
-        // - 他プラグインによるバインドが完了した (allFound)
-        // - または、APIのロード完了を確認してからさらに他プラグインの初期化を待つ猶予時間（300ms）が経過した (apiReadyAttempts &gt;= 3)
-        // - または、最大タイムアウト（3秒）に達した (attempts &gt;= 30)
+        // - 他プラグインによるバインドが完了（allFound）、または
+        // - APIのロード完了後さらに他プラグインの初期化を待つ猶予時間（300ms）が経過（apiReadyAttempts &gt;= 3）、または
+        // - 最大タイムアウト時間（3秒）に達した（attempts &gt;= 30）
         const shouldStop = allFound || apiReadyAttempts &gt;= 3 || attempts &gt;= 30;
         if ( shouldStop ) {
             clearInterval( checkInterval );
             if ( ! setupCompleted ) {
                 setupCompleted = true;
-                // 0〜100msのランダムなジッター（遅延）を挟んでからセットアップを実行する
-                // 同じ仕組みの別プラグインが同時に初期化しようとした場合の生成衝突を防ぐため
-                const jitterDelay = Math.random() * 100;
-                setTimeout( () =&gt; {
-                    setupPlayers( iframes );
-                }, jitterDelay );
+
+                // 各iframeに対して「相乗り」か「新規作成」を行う
+                setupPlayers( iframes );
             }
         }
     }, 100 );
 }</code></pre></div>
 <!-- /wp:loos-hcb/code-block -->
 
-<!-- wp:heading {"level":4} -->
-<h4 class="wp-block-heading">💡 なぜ300ms（3回ループ）待つのか？ と「ジッター」による衝突回避の限界</h4>
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">💡 なぜ300ms（3ループ）待つのか？</h3>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>APIの準備完了後、すぐに自前でプレイヤーを初期化するのではなく、300msの「譲歩時間（他プラグインへの待ち時間）」を設けています。もし他プラグインが非同期にプレイヤーを生成しようとしている場合、その完了を少し待ってから「相乗り」することで、二重生成のエラーを防ぐためです。</p>
+<p>APIの準備完了後、このコードではすぐに自前でプレイヤーを初期化するのではなく最大300ms（100msごとに状況を最大3回チェック）の待機時間を設けています。もし他プラグインがAPI Readyの瞬間に非同期でプレイヤーを生成しようとしている場合、その完了を少し待ってから相乗りすることで、二重生成エラーの発生を極力防ぐことが目的です。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>しかし、これはあくまで<strong>「確率的な衝突回避」</strong>であり、理論上の競合確率を完全にゼロにするものではありません。他プラグインも全く同じ仕組み（固定の300ms待延）を採用していた場合、タイマーの同期によって同時にプレイヤーの新規作成（<code>new YT.Player</code>）が走り、二重生成エラーが起きるリスクがごく稀に残ります。また、一度二重生成されてしまうと、YouTube APIの仕様上、片方を後から <code>destroy()</code> で破棄しようとしても、生存しているはずのもう片方のプレイヤーまでDOMの書き換えによって巻き添えで破壊されてしまいます。</p>
+<p>しかし自プラグインによる初期化がいたずらに遅くなると、今度は動画が再生開始された時点でイベントリスナーが未登録のままになるリスクがあり、そうなれば自プラグイン自体の動画に支障が出てしまいます。そのため、この300msという時間が今回の開発プロセスにおける経験的マジックナンバー（実用上のベストな境界線）として浮上しました。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>この衝突確率をさらに極限まで下げるために、本実装では初期化の実行前に<strong>「ランダムジッター（0〜100msのランダムな遅延）」</strong>を挟むアプローチをとっています。実行タイミングに「揺らぎ」を与えることで、同じ仕組みのプラグインが同時に読み込まれた場合でも、先行した側がプレイヤーを作成し、遅れた側は <code>YT.get()</code> でそのインスタンスを検知して安全に相乗りできるようになります。YouTube API側にプラグイン間の完全な同期用イベントが用意されていない現状において、これが複数プラグインの共存を支える現実的な限界であり、かつ最も堅牢なベストプラクティスと言えます。</p>
+<p>ここはプラグインの目的によって変動が出てくる部分だと思います。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:separator -->
 <hr class="wp-block-separator has-alpha-channel-opacity"/>
 <!-- /wp:separator -->
 
-<!-- wp:heading {"level":3} -->
-<h3 class="wp-block-heading">おわりに</h3>
+<!-- wp:heading -->
+<h2 class="wp-block-heading">究極の問い: 一見完璧なコード同士が出会うとき</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>ここまでの実装で、「他プラグインのロードを邪魔せず」「他プラグインが作成したプレイヤーに相乗りし」「二重生成を防ぐために300ms待つ」という、非の打ち所がない完璧な競合回避コードが完成したように見えます。読者の中にも、「なるほど、これで完成だな！」と8割方納得された方がいるかもしれません。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>さて、ここで問題です。この記事で説明してきた「完璧な実装」をそれぞれ組み込んだ、別々のプラグインAとプラグインBが、同じページで同時にロードされたとき、両者はうまく共存できるでしょうか？</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>答えは、非常に残念ながら、<strong>「ごく稀に、しかし確実に競合エラーを起こして沈黙（破綻）する」</strong>です。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>原因は、YouTube APIが持つ「非同期登録のラグ」にあります。実は、<code>new YT.Player()</code> を実行してから、そのプレイヤーインスタンスがAPI内部に登録されて <code>window.YT.get()</code> で取得できるようになるまでには、ミリ秒単位のわずかなタイムラグが存在します。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>同じ「300ms待機」のロジックを持つプラグインAとプラグインBが、全く同じAPI Readyのタイミングでタイマーをスタートさせた場合、300ms後に両者がほぼ同時に <code>YT.get()</code> を実行します。この瞬間、まだどちらもプレイヤーを作っていないため、双方とも <code>null</code> が返ってきます。そして双方とも「自分が第一発見者だ」と判断し、ほぼ同時に <code>new YT.Player()</code> を実行してしまいます。結果として同じ iframe に対する二重生成エラーが走り、破綻します。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>「それなら、<code>onReady</code> コールバックの中で二重生成を検知して <code>destroy()</code> で後始末すればいいのでは？」と思われるかもしれません。しかし、YouTube APIの <code>destroy()</code> はDOM要素の書き換えやイベントハンドラのクリアを強制的に行うため、先に正常起動していた生存プレイヤーまで巻き添えで破壊してしまうという致命的な副作用を持っています。つまり、<strong>一度生まれてしまった二重生成は、後から安全に消すことができない</strong>のです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">解決策としての「ランダムジッター（揺らぎ）」とエコシステムへの展望</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>YouTube API側に複数プラグインの完全な同期用イベントが用意されていない以上、このタイミングの衝突を「確率0%」にする完璧なコードは存在しません。しかし、この衝突確率を実用上ほぼゼロ（無視できるレベル）に抑え込むための究極の知恵が、<strong>「ランダムジッター（揺らぎ）」</strong>の導入です。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>やることは非常にシンプルです。300msの譲歩時間が明けた後、すぐにプレイヤーを新規生成するのではなく、<strong>実行の手前に「0〜100msのランダムな遅延」</strong>を挟みます。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">javascript
+// 300msの監視終了条件が満たされた後...
+if ( shouldStop ) {
+    clearInterval( checkInterval );
+    if ( ! setupCompleted ) {
+        setupCompleted = true;
+
+        // 0〜100msのランダムなジッター（遅延）を挟んで実行をズラす
+        const jitterDelay = Math.random() * 100;
+        setTimeout( () =&gt; {
+            // 遅延が明けたタイミングで、もう一度 window.YT.get() をチェックする
+            setupPlayers( iframes );
+        }, jitterDelay );
+    }
+}</pre>
+<!-- /wp:preformatted -->
+
+<!-- wp:paragraph -->
+<p>この「揺らぎ」を挟むことで、同時に動き出したプラグインA（ランダムで15ms待機）とプラグインB（ランダムで78ms待機）の実行タイミングが物理的にズレます。先に15ms後にディレイが明けたプラグインAが <code>new YT.Player</code> を作成すると、78ms後に明けたプラグインBが実行する直前の <code>YT.get()</code> チェックにはすでにプラグインAのインスタンスが引っかかるようになり、Bは新規作成をキャンセルしてAに安全に「相乗り」できます。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>この設計の最も美しい点は、<strong>「すべてのYouTube API依存プラグインがこの『ランダムジッターによる譲歩』の設計を取り入れさえすれば、公式APIの枠組みだけで、特別な独自グローバル変数などを設けずとも、競合のない完璧な共存（相乗り）がエコシステム全体で自律的にほぼ達成できる」</strong>という点にあります。譲り合いの精神をコードに落とし込むことで、Web全体が健やかになるのです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>ちなみに、今回開発した追従プラグイン <strong>「KU Sticky Video for YouTube」</strong>（および有料版のPro）にも、まさにこのランダムジッターによる衝突回避と共存設計を標準で組み込んでいます。他プラグインがどのような設計であっても最大限に相乗りし、かつ他者と同じ仕組みであっても譲り合って共存する、文字通り「他の動作を絶対に妨げない」ための現時点で最善の回答が、このコードの裏側で静かに動作しています。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">おわりに</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
