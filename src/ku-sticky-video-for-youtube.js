@@ -9,7 +9,7 @@
  * 投稿内のYouTube動画プレイヤーをスクロール状態に応じてページ隅に追従表示します。
  *
  * Dependencies:
- * - jQuery
+ * - None
  *
  * Copyright (c) 2026 karasunouta
  * License: GPLv2 or later
@@ -780,7 +780,7 @@
 
 		if ( finalWidthUnit === 'vw' ) {
 			finalWidthStyle = finalWidthVal + 'vw';
-			finalHeightStyle = `calc((${ finalWidthVal }vw - ${ borderVal * 2 }px) * ${ aspectRatio } + ${ borderVal * 2 }px)`;
+			finalHeightStyle = `calc((${ finalWidthStyle } - ${ borderVal * 2 }px) * ${ aspectRatio } + ${ borderVal * 2 }px)`;
 		} else {
 			finalWidthStyle = pxWidth + 'px';
 			finalHeightStyle = pxHeight + 'px';
