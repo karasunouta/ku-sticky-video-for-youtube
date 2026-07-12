@@ -16,8 +16,6 @@ if ( ! isset( $options ) ) {
 $exclude_class                  = isset( $options['exclude_class'] ) ? $options['exclude_class'] : 'no-sticky';
 $position                       = isset( $options['position'] ) ? $options['position'] : 'bottom-right';
 $disable_narrow_viewport        = isset( $options['disable_narrow_viewport'] ) ? $options['disable_narrow_viewport'] : '1';
-$sticky_trigger_mode            = isset( $options['sticky_trigger_mode'] ) ? $options['sticky_trigger_mode'] : 'playing';
-$sticky_hide_above              = isset( $options['sticky_hide_above'] ) ? $options['sticky_hide_above'] : '1';
 $sticky_width_unit              = isset( $options['sticky_width_unit'] ) ? $options['sticky_width_unit'] : '%';
 $sticky_width_val_px            = isset( $options['sticky_width_val_px'] ) ? $options['sticky_width_val_px'] : 400;
 $sticky_width_val_pct           = isset( $options['sticky_width_val_pct'] ) ? $options['sticky_width_val_pct'] : 25;
@@ -60,38 +58,7 @@ $sticky_z_index                 = isset( $options['sticky_z_index'] ) ? $options
 				</p>
 			</div>
 
-			<div class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
-				<label><?php esc_html_e( 'Trigger Settings', 'ku-sticky-video-for-youtube' ); ?></label>
-				<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
-					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-						<input type="radio" name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]" value="playing" <?php checked( $sticky_trigger_mode, 'playing' ); ?> />
-						<?php esc_html_e( 'Only when playing', 'ku-sticky-video-for-youtube' ); ?>
-					</label>
-					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-						<input type="radio" name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]" value="always" <?php checked( $sticky_trigger_mode, 'always' ); ?> />
-						<?php esc_html_e( 'Always (Scroll Follow)', 'ku-sticky-video-for-youtube' ); ?>
-					</label>
-				</div>
-				<p class="field-description">
-					<?php esc_html_e( 'Only when playing: Enable sticky video only when the video is actually playing.', 'ku-sticky-video-for-youtube' ); ?><br>
-					<?php esc_html_e( 'Always: Enable sticky video when scrolling, regardless of playback state.', 'ku-sticky-video-for-youtube' ); ?>
-					<abbr title="<?php echo esc_attr__( 'In this free version, only the first (topmost) eligible video is targeted in both modes. To have multiple videos each become sticky while playing, upgrade to the Pro version\'s "Only when playing" mode.', 'ku-sticky-video-for-youtube' ); ?>" class="ku-sticky-note">*</abbr>
-				</p>
 
-				<?php
-				$is_playing_mode = ( 'playing' === $sticky_trigger_mode );
-				$hide_above_container_style = $is_playing_mode ? 'opacity: 0.5; pointer-events: none;' : 'opacity: 1; transition: opacity 0.3s ease;';
-				?>
-				<div id="hide_above_settings_container" style="margin-top: 12px; padding-left: 24px; <?php echo esc_attr( $hide_above_container_style ); ?>">
-					<label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-						<input type="checkbox" id="sticky_hide_above" name="ku-sticky-video-for-youtube-options[sticky_hide_above]" value="1" <?php checked( $sticky_hide_above, '1' ); ?> <?php disabled( $is_playing_mode, true ); ?> />
-						<?php esc_html_e( 'Hide when scrolling above', 'ku-sticky-video-for-youtube' ); ?>
-					</label>
-					<p class="field-description" style="margin-top: 4px;">
-						<?php esc_html_e( 'Prevents the sticky video from appearing when scrolling above the original video position. This only applies to the "Always" trigger mode.', 'ku-sticky-video-for-youtube' ); ?>
-					</p>
-				</div>
-			</div>
 		</div>
 
 		<!-- Layout Settings Card -->
@@ -234,34 +201,4 @@ $sticky_z_index                 = isset( $options['sticky_z_index'] ) ? $options
 	</div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-	var triggerRadios = document.querySelectorAll('input[name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]"]');
-	var hideAboveCheckbox = document.getElementById('sticky_hide_above');
-	var hideAboveContainer = document.getElementById('hide_above_settings_container');
 
-	function toggleHideAbove() {
-		var selectedRadio = document.querySelector('input[name="ku-sticky-video-for-youtube-options[sticky_trigger_mode]"]:checked');
-		if (selectedRadio && selectedRadio.value === 'playing') {
-			if (hideAboveCheckbox) hideAboveCheckbox.disabled = true;
-			if (hideAboveContainer) {
-				hideAboveContainer.style.opacity = '0.5';
-				hideAboveContainer.style.pointerEvents = 'none';
-			}
-		} else {
-			if (hideAboveCheckbox) hideAboveCheckbox.disabled = false;
-			if (hideAboveContainer) {
-				hideAboveContainer.style.opacity = '1';
-				hideAboveContainer.style.pointerEvents = 'auto';
-			}
-		}
-	}
-
-	triggerRadios.forEach(function(radio) {
-		radio.addEventListener('change', toggleHideAbove);
-	});
-
-	// Initialize on load
-	toggleHideAbove();
-});
-</script>

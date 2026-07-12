@@ -5,7 +5,7 @@ Tags: sticky video, floating video, picture in picture, youtube scroll, youtube
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.8.8
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Automatically float YouTube videos on scroll as a sticky video. Features picture
 
 Create a seamless and engaging viewing experience with **KU Sticky Video for YouTube**. This lightweight plugin automatically turns your YouTube embeds into a **floating video** (a **sticky video** in **picture in picture** style) that follows the reader as they browse your content.
 
-When a user scrolls past a playing video, the player smoothly glides to the corner of the page so they can keep watching. This prevents interruptions, keeping users engaged with your content while they read. (You can also configure it to float always on scroll.)
+When a user scrolls past a playing video, the player smoothly glides to the corner of the page so they can keep watching. This prevents interruptions, keeping users engaged with your content while they read.
 
 Whether you want to implement **youtube scroll** tracking or a simple **floating video** widget, this plugin delivers high performance with zero configuration needed.
 
@@ -26,8 +26,6 @@ Whether you want to implement **youtube scroll** tracking or a simple **floating
 === Features ===
 * Float YouTube video player automatically when it scrolls out of view.
 * Choose display position: Bottom Right or Bottom Left.
-* Flexible trigger options: float only when playing or float always (scroll follow).
-* Hide the floating player when scrolling above the original video position.
 * Customize video width using either pixel (px) or percentage (%) units.
 * Set maximum width limits for percentage-based sizing (keep within original video width or set custom pixel threshold).
 * Adjust Z-index to prevent overlapping with theme header menus, widgets, or popups.
@@ -89,19 +87,21 @@ To rebuild the minified assets, run the following commands in the plugin directo
 
 == Screenshots ==
 
-1. The upper part of the plugin settings page (General Settings and Trigger options).
+1. The upper part of the plugin settings page (General Settings).
 2. The lower part of the plugin settings page (Layout, Width, Z-index, and Mobile settings).
 3. A YouTube video player loaded in a WordPress post on the frontend.
 4. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
 
 == Changelog ==
 
+=== 1.9.0 ===
+* Add: Support for lazy-loaded YouTube embedded videos by observing DOM changes via MutationObserver.
+* Change: Removed "Always (Scroll Follow)" trigger mode and unified the behavior to "Only when playing" to eliminate configuration confusion and improve compatibility with lazy-loaded videos.
+* Fix: Support for privacy-enhanced YouTube embeds by including youtube-nocookie.com domain in player detection.
+
 === 1.8.8 ===
 * Improve: Prevent duplicate script tags by checking for existing YouTube API scripts in the DOM.
 * Fix: Ensure YT.get() utilizes the element's ID string as the primary argument per official API specification with a DOM element fallback.
-
-=== 1.8.7.1 ===
-* Update: Updated documentation, added a resource link to the setup guide, and optimized the changelog.
 
 === 1.8.7 ===
 * Improve: Split the Trigger Settings description into two lines with a tooltip footnote for the free-version limitation note, improving readability and translation granularity.
@@ -132,8 +132,6 @@ To rebuild the minified assets, run the following commands in the plugin directo
 * Fix: Resolved issue where the sticky player was not dismissed when playing another video while a sticky video is paused.
 * Fix: Refined YouTube API iframe loading and initialization timing.
 
-=== 1.6.1 ===
-* Improve: Refine Japanese translation strings for better settings page clarity.
 
 === 1.6.0 ===
 * Add: Option to select display position (Bottom Right or Bottom Left).

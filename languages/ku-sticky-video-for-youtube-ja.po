@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: KU Sticky Video for YouTube 1.8.7\n"
+"Project-Id-Version: KU Sticky Video for YouTube 1.9.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ku-sticky-video-for-youtube\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -55,38 +55,7 @@ msgstr "このクラスが YouTube ブロックまたはその親コンテナに
 msgid "Default: %s"
 msgstr "デフォルト: %s"
 
-#: templates/settings.php:64
-msgid "Trigger Settings"
-msgstr "トリガー設定"
 
-#: templates/settings.php:68
-msgid "Only when playing"
-msgstr "再生中のみ"
-
-#: templates/settings.php:72
-msgid "Always (Scroll Follow)"
-msgstr "常に (スクロール追従)"
-
-#: templates/settings.php:76
-msgid "Only when playing: Enable sticky video only when the video is actually playing."
-msgstr "再生中のみ: 動画が実際に再生されている場合のみ Sticky 動画を有効にします。"
-
-#: templates/settings.php:77
-msgid "Always: Enable sticky video when scrolling, regardless of playback state."
-msgstr "常に: 再生状態に関わらず、スクロール時に Sticky 動画を有効にします。"
-
-#: templates/settings.php:78
-msgid "In this free version, only the first (topmost) eligible video is targeted in both modes. To have multiple videos each become sticky while playing, upgrade to the Pro version's \"Only when playing\" mode."
-msgstr "本プラグイン (通常版) では、どちらのモードでもページ内で最初 (最上位) にある対象動画のみが追従表示の対象となります。複数の動画をそれぞれの再生状態に応じて追従表示させたい場合は、Pro 版の「再生中のみ」モードをご利用いただけます。"
-
-
-#: templates/settings.php:86
-msgid "Hide when scrolling above"
-msgstr "上にスクロールした時は隠す"
-
-#: templates/settings.php:89
-msgid "Prevents the sticky video from appearing when scrolling above the original video position. This only applies to the \"Always\" trigger mode."
-msgstr "動画の元の位置より上にスクロールした際に Sticky 動画が表示されないようにします。これは「常に」トリガーモードにのみ適用されます。"
 
 #: templates/settings.php:101
 msgid "Layout Settings"

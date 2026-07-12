@@ -42,8 +42,8 @@ msgid "Whether you want to implement <strong>youtube scroll</strong> tracking or
 msgstr "<strong>YouTube スクロール</strong>追従機能を実装したい場合でも、シンプルな<strong>フローティング動画</strong>ウィジェットを導入したい場合でも、このプラグインは特別な設定なしで高いパフォーマンスを発揮します。"
 
 #. Found in description paragraph.
-msgid "When a user scrolls past a playing video, the player smoothly glides to the corner of the page so they can keep watching. This prevents interruptions, keeping users engaged with your content while they read. (You can also configure it to float always on scroll.)"
-msgstr "ユーザーが再生中の動画を通り過ぎてスクロールすると、プレイヤーがスムーズにページの隅へとスライドし、そのまま視聴を続けられます。これにより視聴が途切れるのを防ぎ、ユーザーが記事を読み進めている間もコンテンツへのエンゲージメントを維持できます (スクロール時に常に追従表示するように設定することも可能です)。"
+msgid "When a user scrolls past a playing video, the player smoothly glides to the corner of the page so they can keep watching. This prevents interruptions, keeping users engaged with your content while they read."
+msgstr "ユーザーが再生中の動画を通り過ぎてスクロールすると、プレイヤーがスムーズにページの隅へとスライドし、そのまま視聴を続けられます。これにより視聴が途切れるのを防ぎ、ユーザーが記事を読み進めている間もコンテンツへのエンゲージメントを維持できます。"
 
 #. Found in description paragraph.
 msgid "Create a seamless and engaging viewing experience with <strong>KU Sticky Video for YouTube</strong>. This lightweight plugin automatically turns your YouTube embeds into a <strong>floating video</strong> (a <strong>sticky video</strong> in <strong>picture in picture</strong> style) that follows the reader as they browse your content."
@@ -149,13 +149,7 @@ msgstr "パーセンテージ基準のサイズ指定における最大幅の制
 msgid "Customize video width using either pixel (px) or percentage (%) units."
 msgstr "ピクセル (px) またはパーセンテージ (%) の単位を使用して、動画の幅をカスタマイズ。"
 
-#. Found in description list item.
-msgid "Hide the floating player when scrolling above the original video position."
-msgstr "元の動画の位置より上にスクロールした際、追従プレイヤーを非表示にします。"
 
-#. Found in description list item.
-msgid "Flexible trigger options: float only when playing or float always (scroll follow)."
-msgstr "柔軟なトリガーオプション: 再生中のみ追従表示、または常に追従表示 (スクロール追従)。"
 
 #. Found in description list item.
 msgid "Choose display position: Bottom Right or Bottom Left."
@@ -174,16 +168,13 @@ msgid "The lower part of the plugin settings page (Layout, Width, Z-index, and M
 msgstr "プラグイン設定ページの下部 (レイアウト、幅、Z-index、モバイル設定)。"
 
 #. Screenshot description.
-msgid "The upper part of the plugin settings page (General Settings and Trigger options)."
-msgstr "プラグイン設定ページの上部 (全般設定とトリガーオプション)。"
+msgid "The upper part of the plugin settings page (General Settings)."
+msgstr "プラグイン設定ページの上部 (全般設定)。"
 
 #. Found in description list item.
 msgid "Fix: Adjusted Japanese translation spacing and punctuation to align with the WordPress translation style guide."
 msgstr "修正: WordPress 翻訳スタイルガイドに合わせるため、日本語翻訳のスペースと句読点を調整しました。"
 
-#. Found in description header.
-msgid "1.6.1"
-msgstr "1.6.1"
 
 #. Found in description list item.
 msgid "Improve: Enhance internal hooks and architecture to support future extensions."
@@ -404,8 +395,8 @@ msgstr ""
 "👉 <a href=\"https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/\">Pro 版の詳細と価格を見る</a> | <a href=\"https://karasunouta.com/ku-sticky-video-for-youtube-pro-demo/\">ライブデモを試す</a>"
 
 #. Found in description header.
-msgid "1.8.7.1"
-msgstr "1.8.7.1"
+msgid "1.9.0"
+msgstr "1.9.0"
 
 #. Found in description header.
 msgid "Resources"
@@ -420,12 +411,16 @@ msgid "💻 <strong>Open Source</strong>: This plugin contains minified JavaScri
 msgstr "💻 <strong>オープンソース</strong>: このプラグインにはパフォーマンス向上のために圧縮された JavaScript が含まれています。圧縮されていない完全なソースコードは <a href=\"https://github.com/karasunouta/ku-sticky-video-for-youtube\">GitHub</a> で公開されています。"
 
 #. Found in description list item.
-msgid "Update: Updated documentation, added a resource link to the setup guide, and optimized the changelog."
-msgstr "更新: ドキュメントを更新し、セットアップガイドへのリソースリンクを追加して、チェンジログを最適化しました。"
+msgid "Add: Support for lazy-loaded YouTube embedded videos by observing DOM changes via MutationObserver."
+msgstr "追加: MutationObserver を使用して DOM の変更を監視し、遅延読み込み (Lazy Load) された YouTube 埋め込み動画に対応しました。"
 
 #. Found in description list item.
-msgid "Improve: Refine Japanese translation strings for better settings page clarity."
-msgstr "改善: 設定ページの分かりやすさを向上させるため、日本語の翻訳テキストをブラッシュアップしました。"
+msgid "Change: Removed \"Always (Scroll Follow)\" trigger mode and unified the behavior to \"Only when playing\" to eliminate configuration confusion and improve compatibility with lazy-loaded videos."
+msgstr "変更: 「常に (スクロール追従)」トリガーモードを廃止し、「再生中のみ」に一本化することで、設定の混乱を解消し遅延読み込み動画との互換性を向上させました。"
+
+#. Found in description list item.
+msgid "Fix: Support for privacy-enhanced YouTube embeds by including youtube-nocookie.com domain in player detection."
+msgstr "修正: プレイヤーの検出条件に youtube-nocookie.com ドメインを追加し、プライバシー強化モードの YouTube 埋め込み動画に対応しました。"
 
 #. Found in description list item.
 msgid "Fix: Compatibility headers and PHP version compatibility."

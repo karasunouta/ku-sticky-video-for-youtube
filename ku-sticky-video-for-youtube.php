@@ -3,7 +3,7 @@
 /**
  * Plugin Name: KU Sticky Video for YouTube
  * Description: Make YouTube video player in posts follow the scroll position, showing in the corner of the page.
- * Version: 1.8.8
+ * Version: 1.9.0
  * Requires at least: 5.6
  * Requires PHP: 7.4
  * Author: karasunouta
@@ -29,7 +29,7 @@ class KU_Sticky_Video_For_YouTube {
 	/**
 	 * プラグインバージョン
 	 */
-	const VERSION = '1.8.8';
+	const VERSION = '1.9.0';
 
 	/**
 	 * スラッグ
@@ -109,13 +109,11 @@ class KU_Sticky_Video_For_YouTube {
 		}
 
 		$localize_data = array(
-			'hideAbove'             => $options['sticky_hide_above'] === '1',
 			'excludeClass'          => $exclude_class,
 			'width'                 => $width,
 			'widthMaxOriginal'      => ! empty( $options['sticky_width_max_original'] ) ? true : false,
 			'widthMaxCustomActive'  => ! empty( $options['sticky_width_max_custom_active'] ) ? true : false,
 			'widthMaxCustomVal'     => isset( $options['sticky_width_max_custom_val'] ) ? intval( $options['sticky_width_max_custom_val'] ) : 450,
-			'triggerMode'           => isset( $options['sticky_trigger_mode'] ) ? $options['sticky_trigger_mode'] : 'always',
 			'position'              => isset( $options['position'] ) ? $options['position'] : 'bottom-right',
 			'disableNarrowViewport' => ! empty( $options['disable_narrow_viewport'] ) ? true : false,
 			'zIndex'                => isset( $options['sticky_z_index'] ) ? intval( $options['sticky_z_index'] ) : 9999,
@@ -178,8 +176,6 @@ class KU_Sticky_Video_For_YouTube {
 			'exclude_class'                  => 'no-sticky',
 			'position'                       => 'bottom-right',
 			'disable_narrow_viewport'        => '1',
-			'sticky_trigger_mode'            => 'playing',
-			'sticky_hide_above'              => '1',
 			'sticky_width_unit'              => '%',
 			'sticky_width_val_px'            => 400,
 			'sticky_width_val_pct'           => 25,
@@ -250,8 +246,6 @@ class KU_Sticky_Video_For_YouTube {
 				'sanitize_callback' => array( $this, 'sanitize_options' ),
 				'default'           => array(
 					'exclude_class'                  => 'no-sticky',
-					'sticky_trigger_mode'            => 'playing',
-					'sticky_hide_above'              => '1',
 					'sticky_width_unit'              => '%',
 					'sticky_width_val_px'            => 400,
 					'sticky_width_val_pct'           => 25,
@@ -289,14 +283,6 @@ class KU_Sticky_Video_For_YouTube {
 		}
 
 		$output['disable_narrow_viewport'] = ! empty( $input['disable_narrow_viewport'] ) ? '1' : '0';
-
-		if ( isset( $input['sticky_trigger_mode'] ) && in_array( $input['sticky_trigger_mode'], array( 'always', 'playing' ), true ) ) {
-			$output['sticky_trigger_mode'] = $input['sticky_trigger_mode'];
-		} else {
-			$output['sticky_trigger_mode'] = 'playing';
-		}
-
-		$output['sticky_hide_above'] = ! empty( $input['sticky_hide_above'] ) ? '1' : '0';
 
 		if ( isset( $input['sticky_width_unit'] ) && in_array( $input['sticky_width_unit'], array( 'px', '%' ), true ) ) {
 			$output['sticky_width_unit'] = $input['sticky_width_unit'];
@@ -417,13 +403,11 @@ class KU_Sticky_Video_For_YouTube {
 			}
 
 			$localize_data = array(
-				'hideAbove'             => $options['sticky_hide_above'] === '1',
 				'excludeClass'          => $exclude_class,
 				'width'                 => $width,
 				'widthMaxOriginal'      => ! empty( $options['sticky_width_max_original'] ) ? true : false,
 				'widthMaxCustomActive'  => ! empty( $options['sticky_width_max_custom_active'] ) ? true : false,
 				'widthMaxCustomVal'     => isset( $options['sticky_width_max_custom_val'] ) ? intval( $options['sticky_width_max_custom_val'] ) : 450,
-				'triggerMode'           => isset( $options['sticky_trigger_mode'] ) ? $options['sticky_trigger_mode'] : 'always',
 				'position'              => isset( $options['position'] ) ? $options['position'] : 'bottom-right',
 				'disableNarrowViewport' => ! empty( $options['disable_narrow_viewport'] ) ? true : false,
 				'zIndex'                => isset( $options['sticky_z_index'] ) ? intval( $options['sticky_z_index'] ) : 9999,

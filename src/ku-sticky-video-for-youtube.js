@@ -30,7 +30,6 @@
 		zIndex: 9999,
 		closeButton: true,
 		useFade: true, // フェード効果の使用
-		hideAbove: true, // 動画より上にスクロールした場合は隠す（デフォルトはtrue）
 		excludeClass: 'no-sticky', // デフォルト除外クラス
 		targetingMode: 'exclude', // デフォルトの指定方法
 		includeClass: '', // デフォルト対象クラス
@@ -310,7 +309,10 @@
 
 			// 通常版の場合、条件に合致する最初の1つのみをSticky対象(isEligible)とする
 			if ( ! config.isProActive && isEligible ) {
-				if ( foundFirstEligible ) {
+				const hasAlreadyEligible = ytPlayers.some( function ( item ) {
+					return item.isEligible;
+				} );
+				if ( hasAlreadyEligible || foundFirstEligible ) {
 					isEligible = false;
 				} else {
 					foundFirstEligible = true;
@@ -504,79 +506,113 @@
 		window.requestAnimationFrame( () => checkScroll() );
 	}
 
-	function init() {
-		const iframes = document.querySelectorAll(
-			'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
-		);
+	function isYouTubeIframe( iframe ) {
+		if ( ! iframe || iframe.tagName !== 'IFRAME' ) {
+			return false;
+		}
+		if ( iframe.getAttribute( 'data-ku-sticky-processed' ) === 'true' ) {
+			return false;
+		}
+		const src = iframe.getAttribute( 'src' ) || '';
+		return src.indexOf( 'youtube.com' ) !== -1 || 
+		       src.indexOf( 'youtube-nocookie.com' ) !== -1 || 
+		       src.indexOf( 'youtu.be' ) !== -1;
+	}
 
-		if ( iframes.length === 0 ) {
+	function markIframeAsProcessed( iframe ) {
+		if ( iframe ) {
+			iframe.setAttribute( 'data-ku-sticky-processed', 'true' );
+		}
+	}
+
+	function handleNewIframes( iframes ) {
+		const eligibleIframes = [];
+		for ( let i = 0; i < iframes.length; i++ ) {
+			if ( isYouTubeIframe( iframes[ i ] ) ) {
+				markIframeAsProcessed( iframes[ i ] );
+				eligibleIframes.push( iframes[ i ] );
+			}
+		}
+
+		if ( eligibleIframes.length === 0 ) {
 			return;
 		}
 
-		// Pro版が有効か、またはトリガー設定が「再生中のみ」の場合はYouTube APIを初期化する
-		if ( config.triggerMode === 'playing' || config.isProActive ) {
-			initPlayingMode( iframes );
+		// 常に動画再生中のみ動作する（トリガーモード廃止に伴う一本化）
+		initPlayingMode( eligibleIframes );
+	}
+
+	let mutationObserver = null;
+
+	function initMutationObserver() {
+		if ( mutationObserver ) {
+			return;
 		}
 
-		// Observerの初期化
+		mutationObserver = new MutationObserver( function ( mutations ) {
+			const detectedIframes = [];
+
+			mutations.forEach( function ( mutation ) {
+				if ( mutation.type === 'childList' ) {
+					mutation.addedNodes.forEach( function ( node ) {
+						if ( node.nodeType === Node.ELEMENT_NODE ) {
+							if ( node.tagName === 'IFRAME' ) {
+								detectedIframes.push( node );
+							} else {
+								const nested = node.querySelectorAll( 'iframe' );
+								if ( nested.length > 0 ) {
+									nested.forEach( function ( iframe ) {
+										detectedIframes.push( iframe );
+									} );
+								}
+							}
+						}
+					} );
+				} else if ( mutation.type === 'attributes' && mutation.attributeName === 'src' ) {
+					const node = mutation.target;
+					if ( node.nodeType === Node.ELEMENT_NODE && node.tagName === 'IFRAME' ) {
+						detectedIframes.push( node );
+					}
+				}
+			} );
+
+			const youtubeIframes = detectedIframes.filter( function ( iframe ) {
+				return isYouTubeIframe( iframe );
+			} );
+
+			if ( youtubeIframes.length > 0 ) {
+				handleNewIframes( youtubeIframes );
+			}
+		} );
+
+		mutationObserver.observe( document.body, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			attributeFilter: [ 'src' ],
+		} );
+	}
+
+	function init() {
+		// Observer of viewports
 		initObserver();
 
-		if ( config.triggerMode === 'always' ) {
-			const targetingMode = config.targetingMode || 'exclude';
-			let targetIframe = null;
+		// 初期表示時の iframe の取得と処理
+		const iframes = Array.prototype.slice.call(
+			document.querySelectorAll(
+				'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
+			)
+		);
 
-			if ( targetingMode === 'include' ) {
-				const cleanClass = config.includeClass
-					? config.includeClass.trim().replace( /^\.+/, '' )
-					: '';
-				const selector = cleanClass ? '.' + cleanClass : '';
-
-				if ( ! selector ) {
-					return;
-				}
-
-				for ( let i = 0; i < iframes.length; i++ ) {
-					const iframe = iframes[ i ];
-					if ( iframe.closest( selector ) ) {
-						targetIframe = iframe;
-						break;
-					}
-				}
-			} else {
-				const cleanClass = config.excludeClass
-					? config.excludeClass.trim().replace( /^\.+/, '' )
-					: '';
-				const selector = cleanClass ? '.' + cleanClass : '';
-
-				for ( let i = 0; i < iframes.length; i++ ) {
-					const iframe = iframes[ i ];
-					if ( selector && iframe.closest( selector ) ) {
-						continue;
-					}
-					targetIframe = iframe;
-					break;
-				}
-			}
-
-			if ( ! targetIframe ) {
-				return;
-			}
-
-			$originalVideo = targetIframe;
-			setupVideoElements( $originalVideo );
-
-			// 監視開始
-			startObserving( $originalVideo );
-
-			// 除外領域の監視用スクロールイベント（Pro用）
-			if ( config.limitTopActive || config.limitBottomActive ) {
-				window.addEventListener( 'scroll', checkScrollExclusionZone, { passive: true } );
-			}
-
-			window.addEventListener( 'resize', handleResize );
-		} else {
-			window.addEventListener( 'resize', handleResize );
+		if ( iframes.length > 0 ) {
+			handleNewIframes( iframes );
 		}
+
+		// 動的ロード監視用 MutationObserver の初期化
+		initMutationObserver();
+
+		// リサイズイベントの登録
+		window.addEventListener( 'resize', handleResize );
 	}
 
 	function checkScroll( forceSticky = false ) {
@@ -584,20 +620,12 @@
 			return;
 		}
 
-		const effectiveHideAbove = config.triggerMode === 'playing' ? false : config.hideAbove;
 		let isOutOfView = ! isWrapperIntersecting;
 
 		// スクロール位置に応じた除外領域（Pro用機能）の判定
 		if ( isOutOfView ) {
-			const isAboveViewport = lastBoundingClientRectTop < 0;
-
-			// 画面上部にスクロールアウトした場合のみ追従させる（hideAbove === true のとき）
-			if ( effectiveHideAbove && ! isAboveViewport ) {
-				isOutOfView = false;
-			}
-
 			// 除外領域に入っているかの判定
-			if ( isOutOfView && ( config.limitTopActive || config.limitBottomActive ) ) {
+			if ( config.limitTopActive || config.limitBottomActive ) {
 				const scrollTop = window.scrollY || document.documentElement.scrollTop;
 				const documentHeight = document.documentElement.scrollHeight;
 				const windowHeight = window.innerHeight;
@@ -647,7 +675,7 @@
 		}
 
 		if ( isOutOfView && ! isSticky ) {
-			if ( forceSticky !== true && config.triggerMode === 'playing' ) {
+			if ( forceSticky !== true ) {
 				const state = getCurrentPlayerState();
 				const isPlaying = ( state === 1 || state === 3 ); // 1: PLAYING, 3: BUFFERING
 				if ( ! isPlaying ) {

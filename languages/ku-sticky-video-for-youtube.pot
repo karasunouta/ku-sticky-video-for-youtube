@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: KU Sticky Video for YouTube 1.8.7\n"
+"Project-Id-Version: KU Sticky Video for YouTube 1.9.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ku-sticky-video-for-youtube\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-25T17:15:23+02:00\n"
+"POT-Creation-Date: 2026-07-12T10:24:33+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: ku-sticky-video-for-youtube\n"
@@ -34,171 +34,139 @@ msgstr ""
 msgid "https://karasunouta.com"
 msgstr ""
 
-#: ku-sticky-video-for-youtube.php:223
+#: ku-sticky-video-for-youtube.php:219
 msgid "Settings"
 msgstr ""
 
-#: ku-sticky-video-for-youtube.php:234
-#: templates/settings.php:30
+#: ku-sticky-video-for-youtube.php:230
+#: templates/settings.php:28
 msgid "KU Sticky Video for YouTube Settings"
 msgstr ""
 
-#: ku-sticky-video-for-youtube.php:404
+#: ku-sticky-video-for-youtube.php:390
 msgid "Unauthorized access."
 msgstr ""
 
-#: templates/settings.php:34
+#: templates/settings.php:32
 msgid "Configure options for your floating YouTube video player."
 msgstr ""
 
-#: templates/settings.php:45
+#: templates/settings.php:43
 msgid "General Settings"
 msgstr ""
 
-#: templates/settings.php:49
+#: templates/settings.php:47
 msgid "Exclude CSS Class Name"
 msgstr ""
 
-#: templates/settings.php:55
+#: templates/settings.php:53
 msgid "If this class is assigned to a YouTube block or its parent container, that video will not follow the scroll position. In this free version, only the first (topmost) video on the page that does not have this class will be targeted for the sticky effect."
 msgstr ""
 
 #. translators: %s: default class name
-#: templates/settings.php:58
+#: templates/settings.php:56
 #, php-format
 msgid "Default: %s"
 msgstr ""
 
-#: templates/settings.php:64
-msgid "Trigger Settings"
-msgstr ""
-
-#: templates/settings.php:68
-msgid "Only when playing"
-msgstr ""
-
-#: templates/settings.php:72
-msgid "Always (Scroll Follow)"
-msgstr ""
-
-#: templates/settings.php:76
-msgid "Only when playing: Enable sticky video only when the video is actually playing."
-msgstr ""
-
-#: templates/settings.php:77
-msgid "Always: Enable sticky video when scrolling, regardless of playback state."
-msgstr ""
-
-#: templates/settings.php:78
-msgid "In this free version, only the first (topmost) eligible video is targeted in both modes. To have multiple videos each become sticky while playing, upgrade to the Pro version's \"Only when playing\" mode."
-msgstr ""
-
-#: templates/settings.php:86
-msgid "Hide when scrolling above"
-msgstr ""
-
-#: templates/settings.php:89
-msgid "Prevents the sticky video from appearing when scrolling above the original video position. This only applies to the \"Always\" trigger mode."
-msgstr ""
-
-#: templates/settings.php:101
+#: templates/settings.php:70
 msgid "Layout Settings"
 msgstr ""
 
-#: templates/settings.php:105
+#: templates/settings.php:74
 msgid "Display Position"
 msgstr ""
 
-#: templates/settings.php:108
+#: templates/settings.php:77
 msgid "Bottom Right"
 msgstr ""
 
-#: templates/settings.php:109
+#: templates/settings.php:78
 msgid "Bottom Left"
 msgstr ""
 
-#: templates/settings.php:113
+#: templates/settings.php:82
 msgid "Choose which corner the floating video player should stick to."
 msgstr ""
 
-#: templates/settings.php:118
+#: templates/settings.php:87
 msgid "Z-index (Stack Order)"
 msgstr ""
 
-#: templates/settings.php:123
+#: templates/settings.php:92
 msgid "Adjust the Z-index value to prevent the sticky video player from overlapping with theme elements like header menus or chat widgets. Default is 9999."
 msgstr ""
 
-#: templates/settings.php:128
+#: templates/settings.php:97
 msgid "Sticky Video Width"
 msgstr ""
 
-#: templates/settings.php:149
+#: templates/settings.php:118
 msgid "Configure the width of the video player when it is in sticky mode. Switching units will preserve both pixel and percentage settings."
 msgstr ""
 
-#: templates/settings.php:159
+#: templates/settings.php:128
 msgid "Maximum Width Settings"
 msgstr ""
 
-#: templates/settings.php:163
+#: templates/settings.php:132
 msgid "Sticky video player does not exceed the width of the original video player"
 msgstr ""
 
-#: templates/settings.php:169
+#: templates/settings.php:138
 msgid "Limit the maximum width to:"
 msgstr ""
 
-#: templates/settings.php:181
+#: templates/settings.php:150
 msgid "Sticky Video Height"
 msgstr ""
 
-#: templates/settings.php:183
+#: templates/settings.php:152
 msgid "Automatically limited to 50% of the viewport height."
 msgstr ""
 
-#: templates/settings.php:188
+#: templates/settings.php:157
 msgid "Mobile User Experience"
 msgstr ""
 
-#: templates/settings.php:192
+#: templates/settings.php:161
 msgid "Disable on narrow viewports"
 msgstr ""
 
-#: templates/settings.php:196
+#: templates/settings.php:165
 msgid "If enabled, the sticky video player is automatically disabled when the browser width is narrower than the sticky video width + double margins (e.g., 400px + 20px×2 = 440px). This protects the mobile user experience."
 msgstr ""
 
-#: templates/settings.php:201
+#: templates/settings.php:170
 msgid "How to Exclude a YouTube Block"
 msgstr ""
 
-#: templates/settings.php:203
+#: templates/settings.php:172
 msgid "Open the post editor and select the YouTube block you want to exclude."
 msgstr ""
 
-#: templates/settings.php:204
+#: templates/settings.php:173
 msgid "In the block settings sidebar, expand the \"Advanced\" panel."
 msgstr ""
 
 #. translators: %s: CSS class name
-#: templates/settings.php:208
+#: templates/settings.php:177
 #, php-format
 msgid "Add the configured class name %s to the \"Additional CSS class(es)\" input field."
 msgstr ""
 
-#: templates/settings.php:219
+#: templates/settings.php:188
 msgid "Save Changes"
 msgstr ""
 
-#: templates/settings.php
-msgid "https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/"
-msgstr ""
-
-#: templates/settings.php
+#: templates/settings.php:195
 msgid "Want more? The Pro version supports multiple videos, each becoming sticky independently while playing — plus additional display positions and advanced targeting options."
 msgstr ""
 
-#: templates/settings.php
+#: templates/settings.php:197
+msgid "https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/"
+msgstr ""
+
+#: templates/settings.php:199
 msgid "Learn more about the Pro version →"
 msgstr ""
