@@ -439,6 +439,14 @@ msgid "Fix: Ensure YT.get() utilizes the element's ID string as the primary argu
 msgstr "修正: 公式 API 仕様に基づき、YT.get() の第一引数として要素の ID 文字列を使用し、フォールバックとして DOM 要素を使用するようにしました。"
 
 #. Found in description header.
+msgid "Why does a subsequent video become sticky instead of the first video when using a lazy-loading plugin?"
+msgstr "LazyLoad 系プラグインを使用している際、ページの最初の動画ではなく2番目以降の動画が追従プレイヤーになってしまうのはなぜですか ?"
+
+#. Found in description paragraph.
+msgid "Due to how lazy-loading plugins defer iframe loading, initial detection of the first video may not be stable. To ensure stable operation, please add the page's first YouTube video embed to the exclusion list in your lazy-loading plugin's settings."
+msgstr "LazyLoad 系プラグインの読み込みタイミングにより、最初の動画の自動検出が不安定になる場合があります。安定して動作させるには、ご利用の LazyLoad 系プラグインの設定で、ページの最初の YouTube 埋め込み動画を遅延読み込み (LazyLoad) の対象外に設定してください。"
+
+#. Found in description header.
 msgid "Does it work with the \"EmbedPlus for YouTube\" plugin?"
 msgstr "EmbedPlus for YouTube プラグインで埋め込んだ動画に対応していますか ?"
 

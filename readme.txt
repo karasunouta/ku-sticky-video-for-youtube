@@ -74,6 +74,9 @@ Yes, it works out of the box with the default WordPress YouTube Embed blocks, as
 Yes! **KU Sticky Video for YouTube Pro** extends the free plugin with advanced targeting, full design customization, exclusion zones, per-page filter hooks, and more.
 👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
 
+=== Why does a subsequent video become sticky instead of the first video when using a lazy-loading plugin? ===
+Due to how lazy-loading plugins defer iframe loading, initial detection of the first video may not be stable. To ensure stable operation, please add the page's first YouTube video embed to the exclusion list in your lazy-loading plugin's settings.
+
 === Does it work with the "EmbedPlus for YouTube" plugin? ===
 Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the "EmbedPlus for YouTube Compatibility" section below for instructions.
 
