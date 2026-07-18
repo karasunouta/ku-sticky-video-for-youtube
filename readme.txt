@@ -5,7 +5,7 @@ Tags: sticky video, floating video, picture in picture, youtube scroll, youtube
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.9.0
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,60 @@ Yes, it works out of the box with the default WordPress YouTube Embed blocks, as
 Yes! **KU Sticky Video for YouTube Pro** extends the free plugin with advanced targeting, full design customization, exclusion zones, per-page filter hooks, and more.
 👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
 
+=== Does it work with the "EmbedPlus for YouTube" plugin? ===
+Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the "EmbedPlus for YouTube Compatibility" section below for instructions.
+
+== EmbedPlus for YouTube Compatibility ==
+
+The "EmbedPlus for YouTube" plugin uses a unique architecture with custom initialization wrappers and dynamic lazy-loading. Because of these modifications, standard player tracking scripts cannot automatically capture its state change events.
+
+To enable the sticky video effect for videos embedded via EmbedPlus, add the following PHP code snippet to your theme's `functions.php` file (preferably in a child theme):
+
+`
+add_action( 'wp_enqueue_scripts', function() {
+	wp_add_inline_script(
+		'ku-sticky-video-for-youtube',
+		"
+		if ( window.wp && window.wp.hooks ) {
+			window.wp.hooks.addFilter(
+				'ku_sticky_video_for_youtube_get_existing_player',
+				'ku-sticky-video-compat-embedplus',
+				function( player, iframe ) {
+					if ( ! player && window._EPYT_ && window._EPYT_.apiVideos && iframe.id ) {
+						return window._EPYT_.apiVideos[ iframe.id ] || null;
+					}
+					return player;
+				}
+			);
+		}
+
+		if ( window._EPADashboard_ && ! window._EPADashboard_.__ku_sticky_hooked ) {
+			window._EPADashboard_.__ku_sticky_hooked = true;
+			const originalOnStateChange = window._EPADashboard_.onPlayerStateChange;
+			window._EPADashboard_.onPlayerStateChange = function( event ) {
+				if ( typeof originalOnStateChange === 'function' ) {
+					originalOnStateChange.apply( this, arguments );
+				}
+				if ( window.kuStickyVideoForYouTube && event.target ) {
+					let iframe = null;
+					try {
+						iframe = event.target.getIframe();
+					} catch(e) {}
+					if ( ! iframe && event.target.f ) {
+						iframe = event.target.f;
+					}
+					if ( iframe ) {
+						window.kuStickyVideoForYouTube.handleStateChange( event, iframe );
+					}
+				}
+			};
+		}
+		",
+		'before'
+	);
+}, 20 );
+`
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/ku-sticky-video-for-youtube` directory, or install the plugin through the WordPress plugins screen directly.
@@ -93,6 +147,10 @@ To rebuild the minified assets, run the following commands in the plugin directo
 4. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
 
 == Changelog ==
+
+=== 1.10.0 ===
+* Add: JS filter hooks (`ku_sticky_video_for_youtube_get_existing_player`) and global relay API (`window.kuStickyVideoForYouTube.handleStateChange`) to support third-party player compatibility.
+* Add: State caching mechanism to safely retrieve playback status of customized/obfuscated player objects.
 
 === 1.9.0 ===
 * Add: Support for lazy-loaded YouTube embedded videos by observing DOM changes via MutationObserver.

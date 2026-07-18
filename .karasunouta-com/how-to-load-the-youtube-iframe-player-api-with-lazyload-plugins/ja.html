@@ -1,0 +1,325 @@
+<!--
+title: LazyLoadと共存するYouTube IFrame Player APIの動的バインディング
+-->
+<!-- DESCRIPTION START
+YouTube APIとLazyLoad（遅延読み込み）の競合問題を解消！MutationObserverを活用し、後から追加・変更されるiframeを検知して安全にイベントをバインド・相乗りする動的バインディング設計について徹底解説します。
+DESCRIPTION END -->
+<!-- FEATURED IMAGE START
+TITLE: 
+ALT: 
+FEATURED IMAGE END -->
+<!-- FOOTNOTES START
+[1]: 
+FOOTNOTES END -->
+<!-- wp:paragraph -->
+<p>先日公開した「<a href="/web-tech/how-to-load-the-youtube-iframe-player-api-without-breaking-other-plugins/">他プラグインの動作を妨げずにYouTube IFrame Player APIを読み込む方法</a>」では、複数のプラグインが同時にYouTube APIを初期化しようとする環境下で、いかに「譲り合い（ポーリング、既存プレイヤーへの相乗り、ランダムジッター）」を行い競合を防ぐかについて解説しました。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>この設計を組み込んだWordPressプラグイン「<a href="https://karasunouta.com/wp-plugins/ku-sticky-video-for-youtube/">KU Sticky Video for YouTube</a>」は、当サイト上では競合トラブルを起こすことなく順調に動作していました。しかし、あるユーザーから<strong>遅延読み込み（LazyLoad）系のプラグインを併用すると追従機能が動作しない</strong>という報告が寄せられました。検証してみるとその通りでした！</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>前回記事のポーリング方式は、ページロード時に動画プレイヤー（<code>iframe</code>）自体はすでに静的な状態でDOM内に存在していることを前提としています。しかしスクロールやクリックなど訪問者のアクションに応じて後から動的に動画プレイヤーを読み込んでいく遅延読み込み（LazyLoad）の環境では、ページロードの時点では所定の形式の<code>iframe</code>は生成されていません。ここは正直、盲点でした。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>今回は、この「LazyLoadプラグインとの共存」という新たな課題を克服するための、<code>MutationObserver</code>を用いたYouTube APIの動的かつ非同期のバインディング設計について解説します。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">なぜ動作しない？LazyLoad適用時のYouTube API</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>LazyLoad系プラグインは、Webページの初期表示のパフォーマンスを向上させるために、たとえば以下のようなアプローチで画像や<code>iframe</code>の読み込みを遅延させます。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>属性の書き換え:</strong> <code>src</code>属性にプレースホルダーや空の値を指定しておき、実際のURLは<code>data-src</code>などの別属性に退避。スクロールによって表示領域に近づくなどした時点で、JavaScriptにより<code>src</code>に本番のURLを書き込む。</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>動的なDOM挿入:</strong> 表示領域に入るまで<code>iframe</code>要素自体をDOM上に生成せず、代わりにダミーの動画プレイヤー画像などを表示しておく。動画プレイヤー画像の再生ボタンが押された時点で動的に<code>iframe</code>を生成し代替表示する。</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>これに対してKU Sticky Video for YouTubeをはじめ多くのYouTube系プラグインは、<code>DOMContentLoaded</code>などのタイミングで <code>document.querySelectorAll('iframe')</code> を実行し、その時点で存在する要素に対して初期化処理やイベントリスナーの登録を行います。しかしLazyLoadが有効の場合、このタイミングではYouTube埋め込み動画のiframe要素はまだ生成されていないか、意図的に不完全な状態で生成されているかのいずれかです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>YouTube API依存プラグインはその状態のもとで処理対象のiframeを探そうとします。しかし、条件に適合するiframeは存在しません。このため初期化処理は見送られ、プラグインの機能──KU Sticky Video for YouTubeプラグインの場合でいえば、動画をスクロールに追従させる機能──は永遠に発動しなくなってしまうわけです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>前回の記事で実装したポーリングによる対策も、LazyLoad系プラグインに対してはほとんど無力だったといわざるを得ません。ポーリング開始のタイミングはページロード直後ですから、処理の発動が遅延されるといってもしょせんページ読み込み後の3秒間やそこらです。一方、読者がいつ記事をスクロールするかなんて誰にも読めないわけですから。もちろん3秒といわず、ずっとポーリングし続けるという対応方法も考えられます。しかし<strong>ポーリングという手法は定期的にタイマーイベントを発生させる</strong>ため、無期限に待機し続けるのは現実的ではありません。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>だって読者はもしかしたら記事を開いた直後にトイレに席を外すかもしれないし、トイレから戻る途中の廊下で同僚と出くわすかもしれない。そこでしばらく雑談してから再び席について、やっと記事をスクロールし始めるかもしれません。そのときまで <code>setInterval</code> を何分も、ことによったら1時間以上も回し続けながら待つ…となったら、どうなるか。ブラウザはアイドリング状態に移行できず、特にモバイル端末なんかでは<strong>「奇妙にバッテリー消費の激しいページ」の爆誕</strong>ってことになっちゃいます。そういうのは避けたい。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">解決策: MutationObserverを用いた動的バインディング</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>この問題を解消するためには、ページの初期ロード時だけでなく<strong>「後から動画が出現した瞬間」をリアルタイムで捉えて初期化プロセスを起動する仕組み</strong>がどうしても必要になります。そこで浮上するのが、モダンなブラウザであれば標準搭載されている <code>MutationObserver</code>（変更監視のためのAPI）です。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">MutationObserverによる動画検知と二重初期化の防止</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>LazyLoadの複数の手法に対応するため、<code>MutationObserver</code>には「動的なDOMノードの追加」と「既存要素のsrc属性の書き換え」という2つの変更イベントを並行して監視させます。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
+<div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>function initMutationObserver() {
+    const observer = new MutationObserver(function(mutations) {
+        const detectedIframes = [];
+
+        mutations.forEach(function(mutation) {
+            // パターンA: 動的なDOMノードの追加を監視
+            if (mutation.type === &#39;childList&#39;) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        if (node.tagName === &#39;IFRAME&#39;) {
+                            detectedIframes.push(node);
+                        } else {
+                            // 入れ子の中にiframeがある場合も抽出
+                            const nested = node.querySelectorAll(&#39;iframe&#39;);
+                            nested.forEach(iframe =&gt; detectedIframes.push(iframe));
+                        }
+                    }
+                });
+            } 
+
+            // パターンB: 既存要素のsrc属性の書き換えを監視
+            else if (mutation.type === &#39;attributes&#39; && mutation.attributeName === &#39;src&#39;) {
+                const node = mutation.target;
+                if (node.nodeType === Node.ELEMENT_NODE && node.tagName === &#39;IFRAME&#39;) {
+                    detectedIframes.push(node);
+                }
+            }
+        });
+
+        // 検出されたiframeの中からYouTubeのものだけをフィルタリングして処理
+        const youtubeIframes = detectedIframes.filter(isYouTubeIframe);
+        if (youtubeIframes.length &gt; 0) {
+            handleNewIframes(youtubeIframes);
+        }
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: [&#39;src&#39;] // src属性の監視に絞ることでパフォーマンスへの影響を抑制
+    });
+}</code></pre></div>
+<!-- /wp:loos-hcb/code-block -->
+
+<!-- wp:paragraph -->
+<p>これにより、LazyLoadプラグインがどのような機序で動画の出現を遅らせているとしても、出現する際には瞬時にそれを捕捉することが可能になります。<code>attributeFilter: ['src']</code>で属性の監視対象を <code>src</code> に限定しているのは、不要な処理の発生を極力避けるためです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>また、<code>MutationObserver</code> は非常に細かく発動するため、同じ <code>iframe</code> に対しても何度も検出イベントが発生することになります。もし二重に初期化が走ると他プラグインとの相乗りはおろか、自プラグインの処理すら覚束なくなります。この二重処理を確実に防ぐため、処理を開始した <code>iframe</code> にはカスタムの <code>data-</code> 属性を付与して状態管理（二重実行防止）を行います。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
+<div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>function isYouTubeIframe(iframe) {
+    if (!iframe || iframe.tagName !== &#39;IFRAME&#39;) {
+        return false;
+    }
+
+    // すでに本プラグインで処理中のものは除外
+    if (iframe.getAttribute(&#39;data-ku-sticky-processed&#39;) === &#39;true&#39;) {
+        return false;
+    }
+    
+    const src = iframe.getAttribute(&#39;src&#39;) || &#39;&#39;;
+    return src.indexOf(&#39;youtube.com&#39;) !== -1 || 
+           src.indexOf(&#39;youtube-nocookie.com&#39;) !== -1 || 
+           src.indexOf(&#39;youtu.be&#39;) !== -1;
+}
+
+function handleNewIframes(iframes) {
+    iframes.forEach(iframe =&gt; {
+        // 処理済みマークを付与
+        iframe.setAttribute(&#39;data-ku-sticky-processed&#39;, &#39;true&#39;);
+        
+        // このiframeに対する初期化・バインディング処理を実行
+        initPlayingMode([iframe]);
+    });
+}</code></pre></div>
+<!-- /wp:loos-hcb/code-block -->
+
+<!-- wp:paragraph -->
+<p><code>data-ku-sticky-processed</code> 属性が付与されている要素は、次回の <code>MutationObserver</code> の検知対象から即座に排除されるため、不要なループや競合エラーを確実に回避できます。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">動的に発動する競合回避プロセス</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>ここが「動的バインディング」設計の肝です。<a href="/web-tech/how-to-load-the-youtube-iframe-player-api-without-breaking-other-plugins/">前回の記事</a>で紹介したポーリングやランダムジッターは、処理を遅延させるとはいってもページロードという静的なタイミングを起点に走る処理でした。しかし今回の設計では<code>MutationObserver</code>を使うことで<strong>「動画がページ内に出現するたびに、その動画を起点とした独自の競合回避（譲り合い）から安全なバインディング（紐付け）に至るプロセスが非同期にスタートする」</strong>という動的なモデルへとシフトしています。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:loos-hcb/code-block {"langType":"js","langName":"JavaScript"} -->
+<div class="hcb_wrap"><pre class="prism undefined-numbers lang-js" data-lang="JavaScript"><code>function initPlayingMode(iframes) {
+    if (iframes.length === 0) return;
+
+    // 1. YouTube APIスクリプトが未ロードなら挿入
+    if (!window.YT && !document.querySelector(&#39;script[src*=&quot;youtube.com/iframe_api&quot;]&#39;)) {
+        const tag = document.createElement(&#39;script&#39;);
+        tag.src = &#39;https://www.youtube.com/iframe_api&#39;;
+        const firstScriptTag = document.getElementsByTagName(&#39;script&#39;)[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+
+    // 2. この動画に対して、他プラグインの初期化完了を待つポーリングを開始
+    let attempts = 0;
+    let apiReadyAttempts = 0;
+    let setupCompleted = false;
+    const checkInterval = setInterval(() =&gt; {
+        attempts++;
+        const isApiReady = window.YT && typeof window.YT.Player === &#39;function&#39;;
+        if (isApiReady) {
+            apiReadyAttempts++;
+        }
+
+        // 該当iframeに対して、他プラグインがすでにプレイヤーインスタンスを作ったか
+        let allFound = false;
+        if (isApiReady && typeof window.YT.get === &#39;function&#39;) {
+            allFound = true;
+            for (let j = 0; j &lt; iframes.length; j++) {
+                const id = iframes[j].id;
+                const player = (id ? window.YT.get(id) : null) || window.YT.get(iframes[j]);
+                if (!player) {
+                    allFound = false;
+                    break;
+                }
+            }
+        }
+
+        // 終了条件（相乗り対象が見つかる、または待機時間が超過）
+        const shouldStop = allFound || apiReadyAttempts &gt;= 3 || attempts &gt;= 30;
+        if (shouldStop) {
+            clearInterval(checkInterval);
+            if (!setupCompleted) {
+                setupCompleted = true;
+
+                // 3. ランダムジッター（0〜100msの遅延）を適用
+                const jitterDelay = Math.random() * 100;
+                setTimeout(() =&gt; {
+                    setupPlayers(iframes);
+                }, jitterDelay);
+            }
+        }
+    }, 100);
+}</code></pre></div>
+<!-- /wp:loos-hcb/code-block -->
+
+<!-- wp:paragraph -->
+<p>この非同期設計により、以下に説明するようなシナリオが自律的に実行されます。登場人物は以下の3者です。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>KU Sticky Video for YouTubeプラグイン</strong>: 本記事の主役。「本プラグイン」と表記します。</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>LazyLoad系プラグイン</strong>: YouTube動画をページスクロールなどに伴って遅延読み込みさせることでページを軽くするプラグイン。<a href="https://wordpress.org/plugins/lazy-load-for-videos/" target="_blank" rel="noreferrer noopener">Lazy Load for Videos</a>など。</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>その他のYouTube API依存プラグイン</strong>: YouTube APIに依存して、ページ内のYouTube動画にさまざまな効果を付与しようとする第3、第4のプラグイン。「その他プラグイン」と表記します。</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>本プラグインを2番のLazyLoad系プラグインと共存させることが本記事の直接の目的です。<br>3番のその他プラグインとの共存は前回の記事で達成されていましたが、本記事では<strong>「LazyLoad系プラグインとの共存を達成してなお、その他プラグインとの共存関係が壊れないこと」</strong>が目標となります。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>実際の動作は以下の通りです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li>訪問者がページをスクロールするなどした際、<strong>LazyLoad系プラグイン</strong>によってYouTube動画（iframe）がロードされる。</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>本プラグイン</strong>の <code>MutationObserver</code> がその出現を検知し、APIの存在チェックとポーリングを開始する。</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>同時に、同じiframeに対して<strong>その他プラグイン</strong>も自身の初期化（プレイヤー作成）処理を開始する。</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>本プラグイン</strong>は100msごとにその他プラグインの初期化状態をポーリングで監視する。<strong>その他プラグイン</strong>がプレイヤーを生成したことを <code>YT.get()</code> で検出できれば、安全にそのインスタンスへイベントを相乗りさせる。</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>もし<strong>その他プラグイン</strong>がプレイヤーを作成しなかった場合は、ランダムジッター（遅延のばらつき）を経た後に、<strong>本プラグイン</strong>自身がプレイヤーを安全に新規作成する。</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>動画ごとにプロセスを完全に独立させることで、読者がページ表示の何分後にスクロールを開始したとしても、「動画が出現したまさにその瞬間」に必要な処理だけがピンポイントで実行されるようになりました。これによりLazyLoad系プラグインだけではなく、第3第4のYouTube API依存プラグインとの共存可能性をも最大化した実装となったことがおわかりいただけるかと思います（ランダムジッターの役割については前回記事をご参照ください）。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">まとめ: 「時間軸の広がり」に寄り添う共存のあり方</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>プラグイン開発において、遅延読み込み（LazyLoad）との競合は非常によくある課題です。これまではページロード直後のわずか数秒間のせめぎあいの中にあった初期化処理の順番調整に、LazyLoadは「読者のスクロール速度」という予測不能かつ長大な時間軸を持ち込みます。KU Sticky Video for YouTubeプラグインでも、以前はこの「無限に広がりうる時間軸の存在」を考慮できておらず、大きな盲点となっていました。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>競合を避けるために「LazyLoadには非対応です」といって他プラグインの使用を断念してもらう選択肢もありますが、それではサイト全体の表示速度を改善したいというユーザーの希望を損なうことになってしまいます。幸いなことに今回実装した <code>MutationObserver</code> と動的非同期ポーリングの組み合わせによって、LazyLoad系プラグインによる遅延読み込みの恩恵をそのまま活かしながらKU Sticky Video for YouTubeプラグイン自体もまた安定して動作できるようになりました。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>他プラグインとの「譲り合い」による共存</strong>を実現するため、状況の変化を検知する仕組みを取り入れ、変化に応じて自身の処理を発動する。こうしたアプローチはYouTube APIに限らず、様々なサードパーティ製スクリプトが複雑に絡み合うWordPress環境で、お互いが心地よく共存しユーザーの思い描く動作を実現するために不可欠な設計パターンではないか、と改めて痛感しているところです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>本記事でご紹介した動的バインディング設計を組み込んだ「<a href="https://karasunouta.com/wp-plugins/ku-sticky-video-for-youtube/">KU Sticky Video for YouTube</a>」の通常版（v1.9.0以降）、およびPro版（v1.4.0以降）は、すでにアップデートが配信されています。LazyLoadが有効な環境でも安心して動画追従機能をお試しいただけるかと思います。お気づきの点があれば引き続き、<a href="https://karasunouta.com/contact/">お問い合わせフォーム</a>などからお気軽にお知らせください！</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><a href="https://karasunouta.com/wp-plugins/ku-sticky-video-for-youtube/">動画プレイヤーが追いかけてくるWordPressプラグイン（動作デモ・紹介ページ）</a></li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><a href="https://ja.wordpress.org/plugins/ku-sticky-video-for-youtube/" target="_blank" rel="noreferrer noopener">KU Sticky Video for YouTube（WordPress.org 公式）</a></li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><a href="https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/">KU Sticky Video for YouTube Pro（有料版ストア）</a></li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->

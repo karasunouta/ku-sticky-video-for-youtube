@@ -17,6 +17,16 @@
 
 /* global kuStickyVideoForYouTubeSettings */
 
+// WebpackのTree Shakingによるデッドコード削除を回避するため、グローバルAPIはトップレベルで公開
+let kuStickyVideoRelay = null;
+window.kuStickyVideoForYouTube = {
+	handleStateChange: function ( event, iframeElement ) {
+		if ( typeof kuStickyVideoRelay === 'function' ) {
+			kuStickyVideoRelay( event, iframeElement );
+		}
+	}
+};
+
 ( function () {
 	'use strict';
 
@@ -62,14 +72,30 @@
 	let lastBoundingClientRectTop = 0;
 	let lastWidth = window.innerWidth;
 
+	function cleanUpDestroyedPlayers() {
+		for ( let i = ytPlayers.length - 1; i >= 0; i-- ) {
+			if ( ! ytPlayers[ i ].iframe || ! document.body.contains( ytPlayers[ i ].iframe ) ) {
+				ytPlayers.splice( i, 1 );
+			}
+		}
+	}
+
 	function getCurrentPlayerState() {
 		if ( ! $originalVideo || ! window.YT ) {
 			return null;
 		}
 		for ( let i = 0; i < ytPlayers.length; i++ ) {
 			if ( ytPlayers[ i ].iframe === $originalVideo ) {
+				// 1. キャッシュされた状態があれば優先して返す（他プラグインの難読化プレイヤー対策）
+				if ( ytPlayers[ i ].state !== undefined && ytPlayers[ i ].state !== null ) {
+					return ytPlayers[ i ].state;
+				}
+				
+				// 2. なければ API メソッドを叩く（フォールバック）
 				try {
-					return ytPlayers[ i ].player.getPlayerState();
+					if ( typeof ytPlayers[ i ].player.getPlayerState === 'function' ) {
+						return ytPlayers[ i ].player.getPlayerState();
+					}
 				} catch ( e ) {
 					return null;
 				}
@@ -218,6 +244,7 @@
 	function handlePlayerStateChange( event, isEligible, iframeElement ) {
 		const state = event.data;
 		const currentPlayer = event.target;
+
 		const currentIframe = updatePlayerInstance(
 			currentPlayer,
 			iframeElement
@@ -227,21 +254,58 @@
 			return;
 		}
 
+		// 再生状態（State）をキャッシュに保存
+		for ( let i = 0; i < ytPlayers.length; i++ ) {
+			if ( ytPlayers[ i ].iframe === currentIframe ) {
+				ytPlayers[ i ].state = state;
+				break;
+			}
+		}
+
 		if ( state === window.YT.PlayerState.PLAYING ) {
 			// 他のすべてのプレイヤーを一時停止
 			for ( let i = 0; i < ytPlayers.length; i++ ) {
 				const item = ytPlayers[ i ];
-				let itemIframe = null;
-
-				try {
-					itemIframe = item.player.getIframe();
-				} catch ( e ) {}
+				const itemIframe = item.iframe;
 
 				if ( itemIframe && itemIframe !== currentIframe ) {
 					try {
-						item.player.pauseVideo();
+						let pausedSuccess = false;
+						if ( item.player && typeof item.player.pauseVideo === 'function' ) {
+							item.player.pauseVideo();
+							pausedSuccess = true;
+						}
+
+						// フォールバック: メソッドが無いまたは難読化されている場合は postMessage で直接停止
+						if ( ! pausedSuccess && itemIframe.contentWindow ) {
+							itemIframe.contentWindow.postMessage(
+								JSON.stringify( {
+									event: 'command',
+									func: 'pauseVideo',
+									args: [],
+								} ),
+								'*'
+							);
+							pausedSuccess = true;
+						}
+
+						if ( pausedSuccess ) {
+							item.state = window.YT.PlayerState.PAUSED;
+						}
 					} catch ( e ) {
-						// 一時停止に失敗した場合は無視
+						try {
+							if ( itemIframe.contentWindow ) {
+								itemIframe.contentWindow.postMessage(
+									JSON.stringify( {
+										event: 'command',
+										func: 'pauseVideo',
+										args: [],
+									} ),
+									'*'
+								);
+								item.state = window.YT.PlayerState.PAUSED;
+							}
+						} catch ( err ) {}
 					}
 				}
 			}
@@ -282,6 +346,7 @@
 	}
 
 	function setupPlayers( iframes ) {
+		cleanUpDestroyedPlayers();
 		const targetingMode = config.targetingMode || 'exclude';
 		const excludeSelector = config.excludeClass
 			? '.' + config.excludeClass.trim().replace( /^\.+/, '' )
@@ -326,6 +391,15 @@
 				existingPlayer =
 					( iframe.id ? window.YT.get( iframe.id ) : null ) ||
 					window.YT.get( iframe );
+			}
+
+			// JSフィルターフックを通して他プラグインのプレイヤーインスタンスも解決可能にする
+			if ( window.wp && window.wp.hooks ) {
+				existingPlayer = window.wp.hooks.applyFilters(
+					'ku_sticky_video_for_youtube_get_existing_player',
+					existingPlayer,
+					iframe
+				);
 			}
 
 			if ( existingPlayer ) {
@@ -424,17 +498,25 @@
 
 			// すべての iframe に既存プレイヤーが登録されたかチェック（相乗り確認）
 			let allFound = false;
-			if ( isApiReady && typeof window.YT.get === 'function' ) {
+			if ( isApiReady ) {
 				allFound = true;
 				for ( let j = 0; j < iframes.length; j++ ) {
 					const id = iframes[ j ].id;
-					if (
-						! (
-							// YT.get() の公式引数はID文字列。DOM要素渡しは非公式フォールバック
-							( id ? window.YT.get( id ) : null ) ||
-							window.YT.get( iframes[ j ] )
-						)
-					) {
+					let player = null;
+					if ( typeof window.YT.get === 'function' ) {
+						player = ( id ? window.YT.get( id ) : null ) || window.YT.get( iframes[ j ] );
+					}
+
+					// ポーリングの判定時にも同じフィルターを通す
+					if ( window.wp && window.wp.hooks ) {
+						player = window.wp.hooks.applyFilters(
+							'ku_sticky_video_for_youtube_get_existing_player',
+							player,
+							iframes[ j ]
+						);
+					}
+
+					if ( ! player ) {
 						allFound = false;
 						break;
 					}
@@ -616,6 +698,7 @@
 	}
 
 	function checkScroll( forceSticky = false ) {
+		cleanUpDestroyedPlayers();
 		if ( ! $originalVideo ) {
 			return;
 		}
@@ -1020,6 +1103,58 @@
 			}, 100 );
 		}
 	}
+
+	// グローバルAPIの公開（他プラグイン互換用）
+	kuStickyVideoRelay = function ( event, iframeElement ) {
+		if ( ! iframeElement ) {
+			return;
+		}
+		
+		// 既に登録されているか確認
+		let playerItem = ytPlayers.find( function ( item ) {
+			return item.iframe === iframeElement;
+		} );
+
+		if ( ! playerItem ) {
+			// 未登録なら登録する
+			let isEligible = false;
+			const targetingMode = config.targetingMode || 'exclude';
+			const excludeClass = config.excludeClass ? '.' + config.excludeClass.trim().replace( /^\.+/, '' ) : '';
+			const includeClass = config.includeClass ? '.' + config.includeClass.trim().replace( /^\.+/, '' ) : '';
+			
+			let checkEligible = false;
+			if ( targetingMode === 'include' ) {
+				if ( includeClass && iframeElement.closest( includeClass ) ) {
+					checkEligible = true;
+				}
+			} else {
+				if ( ! excludeClass || ! iframeElement.closest( excludeClass ) ) {
+					checkEligible = true;
+				}
+			}
+
+			if ( checkEligible ) {
+				const hasAlreadyEligible = ytPlayers.some( function ( item ) {
+					return item.isEligible;
+				} );
+				if ( ! hasAlreadyEligible ) {
+					isEligible = true;
+				}
+			}
+
+			playerItem = {
+				player: event.target,
+				iframe: iframeElement,
+				isEligible: isEligible
+			};
+			ytPlayers.push( playerItem );
+		} else {
+			// プレイヤーインスタンスがすり替わっている可能性があるため更新
+			playerItem.player = event.target;
+		}
+
+		handlePlayerStateChange( event, playerItem.isEligible, iframeElement );
+	};
 
 	// DOMContentLoaded
 	if ( document.readyState === 'loading' ) {

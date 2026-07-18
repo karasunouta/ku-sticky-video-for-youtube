@@ -97,7 +97,7 @@ if ( ! window.YT && ! alreadyLoading ) {
 
 <!-- wp:group {"className":"is-style-column-box","layout":{"type":"constrained"}} -->
 <div class="wp-block-group is-style-column-box"><!-- wp:heading {"level":4} -->
-<h4 class="wp-block-heading">💡 <strong>なぜ window.YT も引き続きチェックするの？</strong></h4>
+<h4 class="wp-block-heading">&#x1f4a1; <strong>なぜ window.YT も引き続きチェックするの？</strong></h4>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -345,6 +345,28 @@ if ( shouldStop ) {
 <hr class="wp-block-separator has-alpha-channel-opacity"/>
 <!-- /wp:separator -->
 
+<!-- wp:group {"className":"is-style-info-box","layout":{"type":"constrained"}} -->
+<div class="wp-block-group is-style-info-box"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">【追記】v1.9.0におけるLazyLoad（遅延読み込み）プラグインへの対応について</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>本記事で解説した「ポーリング」と「ランダムジッター」による競合回避モデルは、ページロード時にYouTubeの動画プレイヤー（iframe）が静的に存在していることを前提としていました。しかし、その後のアップデート（v1.9.0）において、<strong>LazyLoad系プラグイン（スクロールに応じて後から動画を読み込む仕組み）との共存</strong>という新たな技術課題に直面しました。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>LazyLoad環境下では、初期ロード時に動画要素が存在しない、あるいは属性が書き換えられるため、従来の静的アプローチだけでは追従機能が動作しません。この課題を<code>MutationObserver</code>（変更監視API）と動的ポーリングを組み合わせることで克服した軌跡について、続編記事として詳しく解説しました。併せてご覧ください。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>👉 <a href="https://karasunouta.com/blog/how-to-load-the-youtube-iframe-player-api-with-lazyload-plugins/">LazyLoad（遅延読み込み）と共存するYouTube IFrame Player APIの動的バインディング設計</a></p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
 <!-- wp:heading -->
 <h2 class="wp-block-heading">おわりに</h2>
 <!-- /wp:heading -->
@@ -371,10 +393,10 @@ if ( shouldStop ) {
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><a href="https://wordpress.org/plugins/ku-sticky-video-for-youtube/">KU Sticky Video for YouTube（WordPress.org 公式）</a></li>
+<li><a href="https://ja.wordpress.org/plugins/ku-sticky-video-for-youtube/" target="_blank" rel="noreferrer noopener">KU Sticky Video for YouTube（WordPress.org 公式）</a></li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><a href="https://karasunouta.com/ja/store/ku-sticky-video-for-youtube-pro/">KU Sticky Video for YouTube Pro（有料版ストア）</a></li>
+<li><a href="https://karasunouta.com/store/ku-sticky-video-for-youtube-pro/">KU Sticky Video for YouTube Pro（有料版ストア）</a></li>
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->

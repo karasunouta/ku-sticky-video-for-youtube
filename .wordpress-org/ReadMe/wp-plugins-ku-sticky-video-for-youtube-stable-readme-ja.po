@@ -437,3 +437,35 @@ msgstr "改善: DOM 内の既存の YouTube API スクリプトを確認する�
 #. Found in description list item.
 msgid "Fix: Ensure YT.get() utilizes the element's ID string as the primary argument per official API specification with a DOM element fallback."
 msgstr "修正: 公式 API 仕様に基づき、YT.get() の第一引数として要素の ID 文字列を使用し、フォールバックとして DOM 要素を使用するようにしました。"
+
+#. Found in description header.
+msgid "Does it work with the \"EmbedPlus for YouTube\" plugin?"
+msgstr "EmbedPlus for YouTube プラグインで埋め込んだ動画に対応していますか ?"
+
+#. Found in description paragraph.
+msgid "Due to the highly customized nature of the \"EmbedPlus for YouTube\" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the \"EmbedPlus for YouTube Compatibility\" section below for instructions."
+msgstr "EmbedPlus for YouTube プラグインは独自のカスタマイズ (動的な遅延読み込みやカスタムプレイヤーラッパーなど) が行われているため、標準の状態では自動的に追跡できません。しかし、お使いのテーマに短いコードスニペットを追加することで、完全な互換性を確保できます。具体的な手順については、後述の「EmbedPlus for YouTube 互換性」セクションを参照してください。"
+
+#. Found in description header.
+msgid "EmbedPlus for YouTube Compatibility"
+msgstr "EmbedPlus for YouTube 互換性"
+
+#. Found in description paragraph.
+msgid "The \"EmbedPlus for YouTube\" plugin uses a unique architecture with custom initialization wrappers and dynamic lazy-loading. Because of these modifications, standard player tracking scripts cannot automatically capture its state change events."
+msgstr "EmbedPlus for YouTube プラグインは、カスタム初期化ラッパーや動的な遅延読み込みといった独自のアーキテクチャを採用しています。これらのカスタマイズの影響により、標準のプレイヤー追従スクリプトでは再生状態の変更イベントを自動的にキャッチできません。"
+
+#. Found in description paragraph.
+msgid "To enable the sticky video effect for videos embedded via EmbedPlus, add the following PHP code snippet to your theme's <code>functions.php</code> file (preferably in a child theme):"
+msgstr "EmbedPlus 経由で埋め込まれた動画で追従効果を有効にするには、以下の PHP コードスニペットをお使いのテーマ (子テーマを推奨) の <code>functions.php</code> ファイルに追加してください:"
+
+#. Found in description header.
+msgid "1.10.0"
+msgstr "1.10.0"
+
+#. Found in description list item.
+msgid "Add: JS filter hooks (`ku_sticky_video_for_youtube_get_existing_player`) and global relay API (`window.kuStickyVideoForYouTube.handleStateChange`) to support third-party player compatibility."
+msgstr "追加: サードパーティ製プレイヤーとの互換性をサポートするため、JS フィルターフック (<code>ku_sticky_video_for_youtube_get_existing_player</code>) およびグローバル中継 API (<code>window.kuStickyVideoForYouTube.handleStateChange</code>) を追加しました。"
+
+#. Found in description list item.
+msgid "Add: State caching mechanism to safely retrieve playback status of customized/obfuscated player objects."
+msgstr "追加: カスタマイズまたは難読化されたプレイヤーオブジェクトの再生状態を安全に取得するための、状態キャッシュメカニズムを実装しました。"
