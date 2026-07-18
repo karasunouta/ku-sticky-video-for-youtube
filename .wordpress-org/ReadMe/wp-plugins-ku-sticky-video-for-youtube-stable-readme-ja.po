@@ -463,7 +463,7 @@ msgid "1.10.0"
 msgstr "1.10.0"
 
 #. Found in description list item.
-msgid "Add: JS filter hooks (`ku_sticky_video_for_youtube_get_existing_player`) and global relay API (`window.kuStickyVideoForYouTube.handleStateChange`) to support third-party player compatibility."
+msgid "Add: JS filter hooks (<code>ku_sticky_video_for_youtube_get_existing_player</code>) and global relay API (<code>window.kuStickyVideoForYouTube.handleStateChange</code>) to support third-party player compatibility."
 msgstr "追加: サードパーティ製プレイヤーとの互換性をサポートするため、JS フィルターフック (<code>ku_sticky_video_for_youtube_get_existing_player</code>) およびグローバル中継 API (<code>window.kuStickyVideoForYouTube.handleStateChange</code>) を追加しました。"
 
 #. Found in description list item.
