@@ -5,7 +5,7 @@ Tags: sticky video, floating video, youtube, floating, youtube player
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.10.0.3
+Stable tag: 1.10.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,7 +160,9 @@ Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such 
 3. Configure the settings under Settings -> KU Sticky Video for YouTube.
 
 **Build Instructions (for developers)**
+
 To rebuild the minified assets, run the following commands in the plugin directory:
+
 1. `npm install` (to install build dependencies)
 2. `npm run build` (to compile the source files using `@wordpress/scripts`)
 
