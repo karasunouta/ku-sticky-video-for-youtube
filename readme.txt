@@ -1,11 +1,11 @@
 === KU Sticky Video for YouTube ===
 Contributors: karasunouta
 Donate link: https://karasunouta.com/
-Tags: sticky video, floating video, picture in picture, youtube scroll, youtube
+Tags: sticky video, floating video, youtube, floating, youtube player
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.10.0.1
+Stable tag: 1.10.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,28 +63,36 @@ Need more control? **KU Sticky Video for YouTube Pro** adds a suite of advanced 
 == Frequently Asked Questions ==
 
 = How can I prevent a specific YouTube video from floating? =
+
 You can add the excluded CSS class (configured in the settings page, default: `no-sticky`) to the YouTube block or its parent container in the WordPress editor under "Advanced" -> "Additional CSS class(es)".
 
 = Will this plugin slow down my website? =
+
 No, it is built with performance in mind. The plugin is extremely lightweight (minified vanilla JS, no jQuery) and utilizes conditional loading. This means scripts and styles are only loaded on pages or posts that actually contain YouTube video embeds. Other pages will remain completely untouched.
 
 = How do I fix the floating player overlapping with my header menu or chat widget? =
+
 You can adjust the Z-index setting in the plugin options (Settings -> KU Sticky Video for YouTube). Increasing the Z-index will bring the player forward, while decreasing it can place it behind sticky menus. You can also switch the display position between Bottom Right and Bottom Left.
 
 = Can I disable the sticky effect on mobile devices? =
+
 Yes. There is a setting to automatically disable the sticky player on narrow viewports (mobile devices). This ensures a clean and user-friendly experience on smaller screens where screen space is limited.
 
 = Does it work with the default WordPress Gutenberg editor? =
+
 Yes, it works out of the box with the default WordPress YouTube Embed blocks, as well as classic editor embeds and raw iframe codes within post content.
 
 = Is there a Pro version with more features? =
+
 Yes! **KU Sticky Video for YouTube Pro** extends the free plugin with advanced targeting, full design customization, exclusion zones, per-page filter hooks, and more.
 👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
 
 = Why does a subsequent video become sticky instead of the first video when using a lazy-loading plugin? =
+
 Due to how lazy-loading plugins defer iframe loading, initial detection of the first video may not be stable. To ensure stable operation, please add the page's first YouTube video embed to the exclusion list in your lazy-loading plugin's settings.
 
 = Does it work with the "EmbedPlus for YouTube" plugin? =
+
 Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the "EmbedPlus for YouTube Compatibility" section below for instructions.
 
 == EmbedPlus for YouTube Compatibility ==
@@ -158,40 +166,40 @@ To rebuild the minified assets, run the following commands in the plugin directo
 
 == Changelog ==
 
-=== 1.10.0 ===
+= 1.10.0 =
 * Add: JS filter hooks (`ku_sticky_video_for_youtube_get_existing_player`) and global relay API (`window.kuStickyVideoForYouTube.handleStateChange`) to support third-party player compatibility.
 * Add: State caching mechanism to safely retrieve playback status of customized/obfuscated player objects.
 
-=== 1.9.0 ===
+= 1.9.0 =
 * Add: Support for lazy-loaded YouTube embedded videos by observing DOM changes via MutationObserver.
 * Change: Removed "Always (Scroll Follow)" trigger mode and unified the behavior to "Only when playing" to eliminate configuration confusion and improve compatibility with lazy-loaded videos.
 * Fix: Support for privacy-enhanced YouTube embeds by including youtube-nocookie.com domain in player detection.
 
-=== 1.8.8 ===
+= 1.8.8 =
 * Improve: Prevent duplicate script tags by checking for existing YouTube API scripts in the DOM.
 * Fix: Ensure YT.get() utilizes the element's ID string as the primary argument per official API specification with a DOM element fallback.
 
-=== 1.8.7 ===
+= 1.8.7 =
 * Improve: Split the Trigger Settings description into two lines with a tooltip footnote for the free-version limitation note, improving readability and translation granularity.
 * Add: Pro version upsell card at the bottom of the settings page with a link to the sales page.
 
-=== 1.8.5 ===
+= 1.8.5 =
 * Fix: Resolved an issue where a paused sticky video would unexpectedly reappear when scrolling back to the original position and then scrolling past it.
 
-=== 1.8.4 ===
+= 1.8.4 =
 * Fix: Resolved an issue where a paused sticky video would be permanently dismissed on mobile scroll (due to height-only resize event from address bar toggling) or screen orientation change.
 
-=== 1.8.3 ===
+= 1.8.3 =
 * Add: Settings link on plugins list page.
 
-=== 1.8.2 ===
+= 1.8.2 =
 * Fix: Resolved an issue where sticky borders and box-sizing styles would leak and remain on the original video player after dismissing the sticky state.
 
-=== 1.8.0 ===
+= 1.8.0 =
 * Improve: Migrated scroll tracking to IntersectionObserver API to eliminate layout reflows (getBoundingClientRect) for a much smoother scroll experience.
 * Improve: Implemented conditional asset loading on PHP side to skip loading JS/CSS on singular pages that do not contain any YouTube video embeds.
 
-=== 1.7.0 ===
+= 1.7.0 =
 * Add: Support for percentage (%) and pixel (px) width units for the floating player.
 * Add: Max-width constraints for percentage-based sizes to prevent exceeding original video width or a custom pixel limit.
 * Add: Configurable Z-index option to resolve overlapping with sticky header menus and chat widgets.
@@ -201,18 +209,18 @@ To rebuild the minified assets, run the following commands in the plugin directo
 * Fix: Refined YouTube API iframe loading and initialization timing.
 
 
-=== 1.6.0 ===
+= 1.6.0 =
 * Add: Option to select display position (Bottom Right or Bottom Left).
 * Add: Option to automatically disable sticky video on narrow (mobile) viewports.
 * Improve: Enhance internal hooks and architecture to support future extensions.
 
-=== 1.5.0 ===
+= 1.5.0 =
 * Rename: Renamed plugin from "Sticky YouTube" to "KU Sticky Video for YouTube".
 
-=== 1.4.3 ===
+= 1.4.3 =
 * Fix: Compatibility headers and PHP version compatibility.
 * Fix: Settings page security enhancements.
 * Add: License declarations for WordPress.org submission.
 
-=== 1.0.0 ===
+= 1.0.0 =
 * Initial release.
