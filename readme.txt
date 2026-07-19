@@ -5,7 +5,7 @@ Tags: sticky video, floating video, youtube, floating, youtube player
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.10.0.4
+Stable tag: 1.10.0.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,26 +39,7 @@ The following plugins have been tested and confirmed to work seamlessly alongsid
 
 * [Embed Optimizer](https://wordpress.org/plugins/embed-optimizer/)
 * [Lazy Load for Videos](https://wordpress.org/plugins/lazy-load-for-videos/)
-* [EmbedPlus for YouTube](https://wordpress.org/plugins/youtube-embed-plus/): Requires JS hook configuration (e.g. in functions.php)
-
-== Free vs Pro Feature Comparison ==
-
-Need more control? **KU Sticky Video for YouTube Pro** adds a suite of advanced options for power users and professional sites.
-👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
-
-* **Target Video Selection**: [Free] Exclusion mode only — add a CSS class to opt videos out. / [Pro] Inclusion mode also available — add a CSS class to opt specific videos in.
-* **Multiple Video Support**: [Free] Only the first matched video becomes sticky. / [Pro] Sticky target auto-switches to whichever video is currently playing.
-* **Sticky Positioning**: [Free] Bottom-right and bottom-left. / [Pro] All four corners (top-right and top-left added).
-* **Screen Margins**: [Free] Fixed at 20px from screen edges. / [Pro] Independently adjustable in pixels for horizontal and vertical offsets.
-* **Maximum Player Height**: [Free] Fixed at 50% of viewport height. / [Pro] Adjustable from 10% to 100% of viewport height.
-* **Exclusion Zones**: [Free] Not available. / [Pro] Suppress sticky within a defined pixel range from the top or bottom of the viewport — useful for avoiding overlap with fixed headers, ads, or cookie banners.
-* **Mobile Handling**: [Free] Auto-disables when the viewport is too narrow for the player. / [Pro] Also supports a custom viewport-width breakpoint to disable sticky on specific device sizes.
-* **Keep Sticky on End**: [Free] Not available. / [Pro] Optionally keep the player sticky after playback ends — great for tutorials and course content.
-* **Player Styling**: [Free] Fixed design (8px border-radius, default shadow, no border). / [Pro] Fully customizable border-radius, shadow opacity, border width, and border color.
-* **Close Button**: [Free] Standard design, fixed at top-right. / [Pro] Customizable colors and placement (all 4 corners). Option to show only when the video is paused.
-* **Live Preview**: [Free] Not available. / [Pro] Real-time preview in the settings panel with one-click reset to defaults.
-* **Filter Hooks**: [Free] Not available. / [Pro] Override settings conditionally per page via a filter hook in functions.php.
-* **Updates**: [Free] Auto-updates through WordPress.org. / [Pro] Auto-updates via the WordPress dashboard after license activation in settings.
+* [EmbedPlus for YouTube](https://wordpress.org/plugins/youtube-embed-plus/): Requires JS hook configuration in functions.php (see the "EmbedPlus for YouTube Compatibility" section below for details)
 
 == EmbedPlus for YouTube Compatibility ==
 
@@ -111,6 +92,25 @@ add_action( 'wp_enqueue_scripts', function() {
 }, 20 );
 `
 
+== Free vs Pro Feature Comparison ==
+
+Need more control? **KU Sticky Video for YouTube Pro** adds a suite of advanced options for power users and professional sites.
+👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
+
+* **Target Video Selection**: [Free] Exclusion mode only — add a CSS class to opt videos out. / [Pro] Inclusion mode also available — add a CSS class to opt specific videos in.
+* **Multiple Video Support**: [Free] Only the first matched video becomes sticky. / [Pro] Sticky target auto-switches to whichever video is currently playing.
+* **Sticky Positioning**: [Free] Bottom-right and bottom-left. / [Pro] All four corners (top-right and top-left added).
+* **Screen Margins**: [Free] Fixed at 20px from screen edges. / [Pro] Independently adjustable in pixels for horizontal and vertical offsets.
+* **Maximum Player Height**: [Free] Fixed at 50% of viewport height. / [Pro] Adjustable from 10% to 100% of viewport height.
+* **Exclusion Zones**: [Free] Not available. / [Pro] Suppress sticky within a defined pixel range from the top or bottom of the viewport — useful for avoiding overlap with fixed headers, ads, or cookie banners.
+* **Mobile Handling**: [Free] Auto-disables when the viewport is too narrow for the player. / [Pro] Also supports a custom viewport-width breakpoint to disable sticky on specific device sizes.
+* **Keep Sticky on End**: [Free] Not available. / [Pro] Optionally keep the player sticky after playback ends — great for tutorials and course content.
+* **Player Styling**: [Free] Fixed design (8px border-radius, default shadow, no border). / [Pro] Fully customizable border-radius, shadow opacity, border width, and border color.
+* **Close Button**: [Free] Standard design, fixed at top-right. / [Pro] Customizable colors and placement (all 4 corners). Option to show only when the video is paused.
+* **Live Preview**: [Free] Not available. / [Pro] Real-time preview in the settings panel with one-click reset to defaults.
+* **Filter Hooks**: [Free] Not available. / [Pro] Override settings conditionally per page via a filter hook in functions.php.
+* **Updates**: [Free] Auto-updates through WordPress.org. / [Pro] Auto-updates via the WordPress dashboard after license activation in settings.
+
 == Screenshots ==
 
 1. The upper part of the plugin settings page (General Settings).
@@ -151,7 +151,7 @@ Due to how lazy-loading plugins defer iframe loading, initial detection of the f
 
 = Does it work with the "EmbedPlus for YouTube" plugin? =
 
-Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the "EmbedPlus for YouTube Compatibility" section below for instructions.
+Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the "EmbedPlus for YouTube Compatibility" section for instructions.
 
 == Installation ==
 

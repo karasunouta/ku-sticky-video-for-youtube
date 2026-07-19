@@ -451,8 +451,8 @@ msgid "Does it work with the \"EmbedPlus for YouTube\" plugin?"
 msgstr "EmbedPlus for YouTube プラグインで埋め込んだ動画に対応していますか ?"
 
 #. Found in description paragraph.
-msgid "Due to the highly customized nature of the \"EmbedPlus for YouTube\" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the \"EmbedPlus for YouTube Compatibility\" section below for instructions."
-msgstr "EmbedPlus for YouTube プラグインは独自のカスタマイズ (動的な遅延読み込みやカスタムプレイヤーラッパーなど) が行われているため、標準の状態では自動的に追跡できません。しかし、お使いのテーマに短いコードスニペットを追加することで、完全な互換性を確保できます。具体的な手順については、後述の「EmbedPlus for YouTube 互換性」セクションを参照してください。"
+msgid "Due to the highly customized nature of the \"EmbedPlus for YouTube\" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the \"EmbedPlus for YouTube Compatibility\" section for instructions."
+msgstr "EmbedPlus for YouTube プラグインは独自のカスタマイズ (動的な遅延読み込みやカスタムプレイヤーラッパーなど) が行われているため、標準の状態では自動的に追跡できません。しかし、お使いのテーマに短いコードスニペットを追加することで、完全な互換性を確保できます。具体的な手順については、「EmbedPlus for YouTube 互換性」セクションを参照してください。"
 
 #. Found in description header.
 msgid "EmbedPlus for YouTube Compatibility"
@@ -495,5 +495,5 @@ msgid "<a href=\"https://wordpress.org/plugins/lazy-load-for-videos/\">Lazy Load
 msgstr "<a href=\"https://wordpress.org/plugins/lazy-load-for-videos/\">Lazy Load for Videos</a>"
 
 #. Found in description list item.
-msgid "<a href=\"https://wordpress.org/plugins/youtube-embed-plus/\">EmbedPlus for YouTube</a>: Requires JS hook configuration (e.g. in functions.php)"
-msgstr "<a href=\"https://wordpress.org/plugins/youtube-embed-plus/\">EmbedPlus for YouTube</a>: functions.php などで JS フックの設定が必要"
+msgid "<a href=\"https://wordpress.org/plugins/youtube-embed-plus/\">EmbedPlus for YouTube</a>: Requires JS hook configuration in functions.php (see the \"EmbedPlus for YouTube Compatibility\" section below for details)"
+msgstr "<a href=\"https://wordpress.org/plugins/youtube-embed-plus/\">EmbedPlus for YouTube</a>: functions.php などで JS フックの設定が必要 (詳細は下記の「EmbedPlus for YouTube 互換性」セクションを参照)"
