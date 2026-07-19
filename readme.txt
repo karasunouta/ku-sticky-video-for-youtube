@@ -5,7 +5,7 @@ Tags: sticky video, floating video, youtube, floating, youtube player
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.10.0.2
+Stable tag: 1.10.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,41 +60,6 @@ Need more control? **KU Sticky Video for YouTube Pro** adds a suite of advanced 
 * **Filter Hooks**: [Free] Not available. / [Pro] Override settings conditionally per page via a filter hook in functions.php.
 * **Updates**: [Free] Auto-updates through WordPress.org. / [Pro] Auto-updates via the WordPress dashboard after license activation in settings.
 
-== Frequently Asked Questions ==
-
-= How can I prevent a specific YouTube video from floating? =
-
-You can add the excluded CSS class (configured in the settings page, default: `no-sticky`) to the YouTube block or its parent container in the WordPress editor under "Advanced" -> "Additional CSS class(es)".
-
-= Will this plugin slow down my website? =
-
-No, it is built with performance in mind. The plugin is extremely lightweight (minified vanilla JS, no jQuery) and utilizes conditional loading. This means scripts and styles are only loaded on pages or posts that actually contain YouTube video embeds. Other pages will remain completely untouched.
-
-= How do I fix the floating player overlapping with my header menu or chat widget? =
-
-You can adjust the Z-index setting in the plugin options (Settings -> KU Sticky Video for YouTube). Increasing the Z-index will bring the player forward, while decreasing it can place it behind sticky menus. You can also switch the display position between Bottom Right and Bottom Left.
-
-= Can I disable the sticky effect on mobile devices? =
-
-Yes. There is a setting to automatically disable the sticky player on narrow viewports (mobile devices). This ensures a clean and user-friendly experience on smaller screens where screen space is limited.
-
-= Does it work with the default WordPress Gutenberg editor? =
-
-Yes, it works out of the box with the default WordPress YouTube Embed blocks, as well as classic editor embeds and raw iframe codes within post content.
-
-= Is there a Pro version with more features? =
-
-Yes! **KU Sticky Video for YouTube Pro** extends the free plugin with advanced targeting, full design customization, exclusion zones, per-page filter hooks, and more.
-👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
-
-= Why does a subsequent video become sticky instead of the first video when using a lazy-loading plugin? =
-
-Due to how lazy-loading plugins defer iframe loading, initial detection of the first video may not be stable. To ensure stable operation, please add the page's first YouTube video embed to the exclusion list in your lazy-loading plugin's settings.
-
-= Does it work with the "EmbedPlus for YouTube" plugin? =
-
-Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the "EmbedPlus for YouTube Compatibility" section below for instructions.
-
 == EmbedPlus for YouTube Compatibility ==
 
 The "EmbedPlus for YouTube" plugin uses a unique architecture with custom initialization wrappers and dynamic lazy-loading. Because of these modifications, standard player tracking scripts cannot automatically capture its state change events.
@@ -146,23 +111,58 @@ add_action( 'wp_enqueue_scripts', function() {
 }, 20 );
 `
 
-== Installation ==
-
-1. Upload the plugin files to the `/wp-content/plugins/ku-sticky-video-for-youtube` directory, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Configure the settings under Settings -> KU Sticky Video for YouTube.
-
-=== Build Instructions (for developers) ===
-To rebuild the minified assets, run the following commands in the plugin directory:
-1. `npm install` (to install build dependencies)
-2. `npm run build` (to compile the source files using `@wordpress/scripts`)
-
 == Screenshots ==
 
 1. The upper part of the plugin settings page (General Settings).
 2. The lower part of the plugin settings page (Layout, Width, Z-index, and Mobile settings).
 3. A YouTube video player loaded in a WordPress post on the frontend.
 4. The YouTube video player showing in a sticky (fixed position) state in the bottom-right corner when scrolling down the WordPress post.
+
+== Frequently Asked Questions ==
+
+= How can I prevent a specific YouTube video from floating? =
+
+You can add the excluded CSS class (configured in the settings page, default: `no-sticky`) to the YouTube block or its parent container in the WordPress editor under "Advanced" -> "Additional CSS class(es)".
+
+= Will this plugin slow down my website? =
+
+No, it is built with performance in mind. The plugin is extremely lightweight (minified vanilla JS, no jQuery) and utilizes conditional loading. This means scripts and styles are only loaded on pages or posts that actually contain YouTube video embeds. Other pages will remain completely untouched.
+
+= How do I fix the floating player overlapping with my header menu or chat widget? =
+
+You can adjust the Z-index setting in the plugin options (Settings -> KU Sticky Video for YouTube). Increasing the Z-index will bring the player forward, while decreasing it can place it behind sticky menus. You can also switch the display position between Bottom Right and Bottom Left.
+
+= Can I disable the sticky effect on mobile devices? =
+
+Yes. There is a setting to automatically disable the sticky player on narrow viewports (mobile devices). This ensures a clean and user-friendly experience on smaller screens where screen space is limited.
+
+= Does it work with the default WordPress Gutenberg editor? =
+
+Yes, it works out of the box with the default WordPress YouTube Embed blocks, as well as classic editor embeds and raw iframe codes within post content.
+
+= Is there a Pro version with more features? =
+
+Yes! **KU Sticky Video for YouTube Pro** extends the free plugin with advanced targeting, full design customization, exclusion zones, per-page filter hooks, and more.
+👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
+
+= Why does a subsequent video become sticky instead of the first video when using a lazy-loading plugin? =
+
+Due to how lazy-loading plugins defer iframe loading, initial detection of the first video may not be stable. To ensure stable operation, please add the page's first YouTube video embed to the exclusion list in your lazy-loading plugin's settings.
+
+= Does it work with the "EmbedPlus for YouTube" plugin? =
+
+Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the "EmbedPlus for YouTube Compatibility" section below for instructions.
+
+== Installation ==
+
+1. Upload the plugin files to the `/wp-content/plugins/ku-sticky-video-for-youtube` directory, or install the plugin through the WordPress plugins screen directly.
+2. Activate the plugin through the 'Plugins' screen in WordPress.
+3. Configure the settings under Settings -> KU Sticky Video for YouTube.
+
+**Build Instructions (for developers)**
+To rebuild the minified assets, run the following commands in the plugin directory:
+1. `npm install` (to install build dependencies)
+2. `npm run build` (to compile the source files using `@wordpress/scripts`)
 
 == Changelog ==
 
