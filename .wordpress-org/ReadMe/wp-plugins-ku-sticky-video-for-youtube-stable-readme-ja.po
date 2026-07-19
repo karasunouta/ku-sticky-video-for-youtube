@@ -320,7 +320,7 @@ msgstr "追加: 設定ページ末尾に Pro 版の案内カード (販売ペー
 
 #. Found in description header.
 msgid "Free vs Pro Feature Comparison"
-msgstr "Free 版 vs Pro 版 機能比較"
+msgstr "通常版 vs Pro 版 機能比較"
 
 #. Found in description paragraph.
 msgid ""
@@ -477,3 +477,23 @@ msgstr "追加: サードパーティ製プレイヤーとの互換性をサポ�
 #. Found in description list item.
 msgid "Add: State caching mechanism to safely retrieve playback status of customized/obfuscated player objects."
 msgstr "追加: カスタマイズまたは難読化されたプレイヤーオブジェクトの再生状態を安全に取得するための、状態キャッシュメカニズムを実装しました。"
+
+#. Found in description header.
+msgid "Tested Compatible Plugins"
+msgstr "併用動作確認済みプラグイン"
+
+#. Found in description paragraph.
+msgid "The following plugins have been tested and confirmed to work seamlessly alongside this plugin:"
+msgstr "以下のプラグインは、本プラグインと併用して正常に動作することを確認しています:"
+
+#. Found in description list item.
+msgid "<a href=\"https://wordpress.org/plugins/embed-optimizer/\">Embed Optimizer</a>"
+msgstr "<a href=\"https://wordpress.org/plugins/embed-optimizer/\">Embed Optimizer</a>"
+
+#. Found in description list item.
+msgid "<a href=\"https://wordpress.org/plugins/lazy-load-for-videos/\">Lazy Load for Videos</a>"
+msgstr "<a href=\"https://wordpress.org/plugins/lazy-load-for-videos/\">Lazy Load for Videos</a>"
+
+#. Found in description list item.
+msgid "<a href=\"https://wordpress.org/plugins/youtube-embed-plus/\">EmbedPlus for YouTube</a>: Requires JS hook configuration (e.g. in functions.php)"
+msgstr "<a href=\"https://wordpress.org/plugins/youtube-embed-plus/\">EmbedPlus for YouTube</a>: functions.php などで JS フックの設定が必要"

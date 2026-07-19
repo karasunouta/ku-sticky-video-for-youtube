@@ -5,7 +5,7 @@ Tags: sticky video, floating video, picture in picture, youtube scroll, youtube
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.10.0
+Stable tag: 1.10.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,10 +19,6 @@ When a user scrolls past a playing video, the player smoothly glides to the corn
 
 Whether you want to implement **youtube scroll** tracking or a simple **floating video** widget, this plugin delivers high performance with zero configuration needed.
 
-=== Resources ===
-* 📖 **Interactive Demo & Guide**: To experience the sticky video effect live on a blog post, read the backstory behind the plugin, and see setup screenshots, check out the [KU Sticky Video for YouTube Introduction & Live Demo](https://karasunouta.com/en/wp-plugins/ku-sticky-video-for-youtube/).
-* 💻 **Open Source**: This plugin contains minified JavaScript for performance. The complete, unminified source code is available on [GitHub](https://github.com/karasunouta/ku-sticky-video-for-youtube).
-
 === Features ===
 * Float YouTube video player automatically when it scrolls out of view.
 * Choose display position: Bottom Right or Bottom Left.
@@ -34,7 +30,18 @@ Whether you want to implement **youtube scroll** tracking or a simple **floating
 * Exclude specific videos using a customizable CSS class.
 * Beautiful and clean admin settings page.
 
-=== Free vs Pro Feature Comparison ===
+=== Resources ===
+* 📖 **Interactive Demo & Guide**: To experience the sticky video effect live on a blog post, read the backstory behind the plugin, and see setup screenshots, check out the [KU Sticky Video for YouTube Introduction & Live Demo](https://karasunouta.com/en/wp-plugins/ku-sticky-video-for-youtube/).
+* 💻 **Open Source**: This plugin contains minified JavaScript for performance. The complete, unminified source code is available on [GitHub](https://github.com/karasunouta/ku-sticky-video-for-youtube).
+
+=== Tested Compatible Plugins ===
+The following plugins have been tested and confirmed to work seamlessly alongside this plugin:
+
+* [Embed Optimizer](https://wordpress.org/plugins/embed-optimizer/)
+* [Lazy Load for Videos](https://wordpress.org/plugins/lazy-load-for-videos/)
+* [EmbedPlus for YouTube](https://wordpress.org/plugins/youtube-embed-plus/): Requires JS hook configuration (e.g. in functions.php)
+
+== Free vs Pro Feature Comparison ==
 
 Need more control? **KU Sticky Video for YouTube Pro** adds a suite of advanced options for power users and professional sites.
 👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
@@ -55,29 +62,29 @@ Need more control? **KU Sticky Video for YouTube Pro** adds a suite of advanced 
 
 == Frequently Asked Questions ==
 
-=== How can I prevent a specific YouTube video from floating? ===
+= How can I prevent a specific YouTube video from floating? =
 You can add the excluded CSS class (configured in the settings page, default: `no-sticky`) to the YouTube block or its parent container in the WordPress editor under "Advanced" -> "Additional CSS class(es)".
 
-=== Will this plugin slow down my website? ===
+= Will this plugin slow down my website? =
 No, it is built with performance in mind. The plugin is extremely lightweight (minified vanilla JS, no jQuery) and utilizes conditional loading. This means scripts and styles are only loaded on pages or posts that actually contain YouTube video embeds. Other pages will remain completely untouched.
 
-=== How do I fix the floating player overlapping with my header menu or chat widget? ===
+= How do I fix the floating player overlapping with my header menu or chat widget? =
 You can adjust the Z-index setting in the plugin options (Settings -> KU Sticky Video for YouTube). Increasing the Z-index will bring the player forward, while decreasing it can place it behind sticky menus. You can also switch the display position between Bottom Right and Bottom Left.
 
-=== Can I disable the sticky effect on mobile devices? ===
+= Can I disable the sticky effect on mobile devices? =
 Yes. There is a setting to automatically disable the sticky player on narrow viewports (mobile devices). This ensures a clean and user-friendly experience on smaller screens where screen space is limited.
 
-=== Does it work with the default WordPress Gutenberg editor? ===
+= Does it work with the default WordPress Gutenberg editor? =
 Yes, it works out of the box with the default WordPress YouTube Embed blocks, as well as classic editor embeds and raw iframe codes within post content.
 
-=== Is there a Pro version with more features? ===
+= Is there a Pro version with more features? =
 Yes! **KU Sticky Video for YouTube Pro** extends the free plugin with advanced targeting, full design customization, exclusion zones, per-page filter hooks, and more.
 👉 [View Pro details and pricing](https://karasunouta.com/en/store/ku-sticky-video-for-youtube-pro/) | [Try the live demo](https://karasunouta.com/en/ku-sticky-video-for-youtube-pro-demo/)
 
-=== Why does a subsequent video become sticky instead of the first video when using a lazy-loading plugin? ===
+= Why does a subsequent video become sticky instead of the first video when using a lazy-loading plugin? =
 Due to how lazy-loading plugins defer iframe loading, initial detection of the first video may not be stable. To ensure stable operation, please add the page's first YouTube video embed to the exclusion list in your lazy-loading plugin's settings.
 
-=== Does it work with the "EmbedPlus for YouTube" plugin? ===
+= Does it work with the "EmbedPlus for YouTube" plugin? =
 Due to the highly customized nature of the "EmbedPlus for YouTube" plugin (such as dynamic lazy-loading and custom player wrappers), it cannot be tracked automatically out of the box. However, you can achieve full compatibility by adding a small code snippet to your theme. Please refer to the "EmbedPlus for YouTube Compatibility" section below for instructions.
 
 == EmbedPlus for YouTube Compatibility ==
