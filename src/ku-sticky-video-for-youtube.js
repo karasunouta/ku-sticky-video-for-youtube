@@ -86,18 +86,19 @@ window.kuStickyVideoForYouTube = {
 		}
 		for ( let i = 0; i < ytPlayers.length; i++ ) {
 			if ( ytPlayers[ i ].iframe === $originalVideo ) {
-				// 1. キャッシュされた状態があれば優先して返す（他プラグインの難読化プレイヤー対策）
-				if ( ytPlayers[ i ].state !== undefined && ytPlayers[ i ].state !== null ) {
-					return ytPlayers[ i ].state;
-				}
-				
-				// 2. なければ API メソッドを叩く（フォールバック）
+				// 1. リアルタイムな API メソッドの取得を優先
 				try {
 					if ( typeof ytPlayers[ i ].player.getPlayerState === 'function' ) {
-						return ytPlayers[ i ].player.getPlayerState();
+						const liveState = ytPlayers[ i ].player.getPlayerState();
+						if ( liveState !== null && liveState !== undefined ) {
+							return liveState;
+						}
 					}
-				} catch ( e ) {
-					return null;
+				} catch ( e ) {}
+
+				// 2. メソッドが無い・失敗した場合のみキャッシュされた状態を返す（他プラグインの難読化プレイヤー対策フォールバック）
+				if ( ytPlayers[ i ].state !== undefined && ytPlayers[ i ].state !== null ) {
+					return ytPlayers[ i ].state;
 				}
 			}
 		}
@@ -318,16 +319,23 @@ window.kuStickyVideoForYouTube = {
 			if ( isEligible ) {
 				// 新ターゲットを登録
 				if ( $originalVideo !== currentIframe ) {
+					if ( $originalVideo ) {
+						stopObserving( $originalVideo );
+					}
 					$originalVideo = currentIframe;
 					setupVideoElements( $originalVideo );
 					isForceClosed = false;
-					startObserving( $originalVideo );
 
 					// 除外領域の監視用スクロールイベント（Pro用）
 					if ( config.limitTopActive || config.limitBottomActive ) {
 						window.addEventListener( 'scroll', checkScrollExclusionZone, { passive: true } );
 					}
 				}
+
+				// 動画が再生開始されたら、常に最新の iframe に対して IntersectionObserver を確実に再バインド（監視更新）する
+				stopObserving( currentIframe );
+				startObserving( currentIframe );
+
 				setTimeout( () => checkScroll(), 100 );
 			}
 		}
@@ -436,11 +444,8 @@ window.kuStickyVideoForYouTube = {
 					'enablejsapi=1&origin=' +
 					encodeURIComponent( origin );
 
-				iframe.addEventListener( 'load', function () {
-					createPlayer( iframe, isEligible );
-				}, { once: true } );
-
 				iframe.setAttribute( 'src', src );
+				createPlayer( iframe, isEligible );
 			} else {
 				createPlayer( iframe, isEligible );
 			}
@@ -571,6 +576,15 @@ window.kuStickyVideoForYouTube = {
 
 	function startObserving( element ) {
 		if ( observer && element ) {
+			const domIframe = document.querySelector( 'iframe[src*="youtube"], iframe[src*="youtu.be"]' );
+			console.log( '[KU-Verify] startObserving target:', {
+				observeTarget: element,
+				observeTargetId: element ? element.id : null,
+				inDOM: element ? document.body.contains( element ) : false,
+				domIframe: domIframe,
+				domIframeId: domIframe ? domIframe.id : null,
+				isMatch: element === domIframe,
+			} );
 			observer.observe( element );
 		}
 	}
@@ -702,6 +716,17 @@ window.kuStickyVideoForYouTube = {
 		if ( ! $originalVideo ) {
 			return;
 		}
+
+		const domIframe = document.querySelector( 'iframe[src*="youtube"], iframe[src*="youtu.be"]' );
+		console.log( '[KU-Verify] checkScroll evaluating:', {
+			originalVideo: $originalVideo,
+			originalVideoId: $originalVideo ? $originalVideo.id : null,
+			inDOM: $originalVideo ? document.body.contains( $originalVideo ) : false,
+			domIframe: domIframe,
+			domIframeId: domIframe ? domIframe.id : null,
+			isMatch: $originalVideo === domIframe,
+			isWrapperIntersecting: isWrapperIntersecting,
+		} );
 
 		let isOutOfView = ! isWrapperIntersecting;
 

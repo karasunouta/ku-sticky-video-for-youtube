@@ -5,7 +5,7 @@ Tags: sticky video, floating video, youtube, floating, youtube player
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.10.0.5
+Stable tag: 1.10.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -167,6 +167,9 @@ To rebuild the minified assets, run the following commands in the plugin directo
 2. `npm run build` (to compile the source files using `@wordpress/scripts`)
 
 == Changelog ==
+
+= 1.10.1 =
+* Fix: Resolved an issue where the sticky player did not appear after waiting for playback when video lazy loading plugins were active.
 
 = 1.10.0 =
 * Add: JS filter hooks (`ku_sticky_video_for_youtube_get_existing_player`) and global relay API (`window.kuStickyVideoForYouTube.handleStateChange`) to support third-party player compatibility.

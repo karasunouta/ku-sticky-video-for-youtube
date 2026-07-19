@@ -517,3 +517,11 @@ msgstr "<code>npm run build</code> (<code>@wordpress/scripts</code> を使用し
 #. Found in installation list item.
 msgid "<code>npm install</code> (to install build dependencies)"
 msgstr "<code>npm install</code> (ビルド用の依存関係をインストール)"
+
+#. Found in description header.
+msgid "1.10.1"
+msgstr "1.10.1"
+
+#. Found in description list item.
+msgid "Fix: Resolved an issue where the sticky player did not appear after waiting for playback when video lazy loading plugins were active."
+msgstr "修正: 動画の遅延読み込み (Lazy Load) プラグインの有効時、再生開始を待ってからスクロールした際に追従プレイヤーが表示されない問題を解決しました。"
