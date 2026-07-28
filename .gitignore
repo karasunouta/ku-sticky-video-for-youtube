@@ -9,4 +9,4 @@ build/*.map
 *.log
 *.zip
 # Antigravity Rules
-/.antigravity/
+/.agents/

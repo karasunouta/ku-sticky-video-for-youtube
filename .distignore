@@ -1,8 +1,9 @@
-.antigravity
+.agents
 .distignore
 .git
 .github
 .gitignore
+.karasunouta-com
 .wordpress-org
 .vscode
 node_modules
