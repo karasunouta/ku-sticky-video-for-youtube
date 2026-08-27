@@ -34,6 +34,6 @@
 	},
 	"homepage": "https://github.com/karasunouta/ku-sticky-video-for-youtube#readme",
 	"devDependencies": {
-		"@wordpress/scripts": "^31.4.0"
+		"@wordpress/scripts": "^34.2.0"
 	}
 }
