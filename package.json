@@ -20,7 +20,7 @@
 		"compile-mo": "python scripts/po2mo.py",
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
-		"plugin-export": "npm run build && npm run plugin-zip",
+		"plugin-export": "pnpm run build && pnpm run plugin-zip",
 		"test:i18n": "python scripts/check_translation.py"
 	},
 	"repository": {
